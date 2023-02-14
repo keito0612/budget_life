@@ -11,7 +11,7 @@ class DateBaseHelper {
   static const _databaseName = "budget.db";
   static const _databaseVersion = 1;
 
-  static const tableExpenses = 'expenses';
+  static const tableExpenses = 'expense';
   static const tableIncomes = 'incomes';
   static const tableCategories = 'categories';
   static const tableAccounts = 'accounts';

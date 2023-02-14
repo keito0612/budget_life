@@ -14,14 +14,19 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+Expense _$ExpenseFromJson(Map<String, dynamic> json) {
+  return _Expense.fromJson(json);
+}
+
 /// @nodoc
 mixin _$Expense {
-  int get id => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
   String get amount => throw _privateConstructorUsedError;
   String get date => throw _privateConstructorUsedError;
   String get memo => throw _privateConstructorUsedError;
   String get category => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $ExpenseCopyWith<Expense> get copyWith => throw _privateConstructorUsedError;
 }
@@ -31,7 +36,8 @@ abstract class $ExpenseCopyWith<$Res> {
   factory $ExpenseCopyWith(Expense value, $Res Function(Expense) then) =
       _$ExpenseCopyWithImpl<$Res, Expense>;
   @useResult
-  $Res call({int id, String amount, String date, String memo, String category});
+  $Res call(
+      {int? id, String amount, String date, String memo, String category});
 }
 
 /// @nodoc
@@ -47,17 +53,17 @@ class _$ExpenseCopyWithImpl<$Res, $Val extends Expense>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? amount = null,
     Object? date = null,
     Object? memo = null,
     Object? category = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       amount: null == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
@@ -85,7 +91,8 @@ abstract class _$$_ExpenseCopyWith<$Res> implements $ExpenseCopyWith<$Res> {
       __$$_ExpenseCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String amount, String date, String memo, String category});
+  $Res call(
+      {int? id, String amount, String date, String memo, String category});
 }
 
 /// @nodoc
@@ -98,17 +105,17 @@ class __$$_ExpenseCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? amount = null,
     Object? date = null,
     Object? memo = null,
     Object? category = null,
   }) {
     return _then(_$_Expense(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       amount: null == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
@@ -130,18 +137,20 @@ class __$$_ExpenseCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_Expense with DiagnosticableTreeMixin implements _Expense {
   const _$_Expense(
-      {this.id = 0,
+      {this.id,
       this.amount = "",
       this.date = "",
       this.memo = "",
       this.category = ""});
 
+  factory _$_Expense.fromJson(Map<String, dynamic> json) =>
+      _$$_ExpenseFromJson(json);
+
   @override
-  @JsonKey()
-  final int id;
+  final int? id;
   @override
   @JsonKey()
   final String amount;
@@ -185,6 +194,7 @@ class _$_Expense with DiagnosticableTreeMixin implements _Expense {
                 other.category == category));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, amount, date, memo, category);
@@ -194,18 +204,27 @@ class _$_Expense with DiagnosticableTreeMixin implements _Expense {
   @pragma('vm:prefer-inline')
   _$$_ExpenseCopyWith<_$_Expense> get copyWith =>
       __$$_ExpenseCopyWithImpl<_$_Expense>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_ExpenseToJson(
+      this,
+    );
+  }
 }
 
 abstract class _Expense implements Expense {
   const factory _Expense(
-      {final int id,
+      {final int? id,
       final String amount,
       final String date,
       final String memo,
       final String category}) = _$_Expense;
 
+  factory _Expense.fromJson(Map<String, dynamic> json) = _$_Expense.fromJson;
+
   @override
-  int get id;
+  int? get id;
   @override
   String get amount;
   @override
