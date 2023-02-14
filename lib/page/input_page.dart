@@ -8,19 +8,26 @@ final cupertinoSlidingValueProvider = StateProvider.autoDispose((ref) {
 });
 
 class InputPage extends ConsumerWidget {
-  InputPage({super.key});
+  InputPage({
+    super.key,
+  });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cupertinoSlidingValue = ref.watch(cupertinoSlidingValueProvider);
     List<Widget> pageWidget = [ExpensePage()];
 
-    return Scaffold(
-        backgroundColor: Colors.grey,
-        appBar: AppBar(
-          backgroundColor: Colors.green,
-          title: cupertinoSlidingWidget(ref),
-        ),
-        body: pageWidget[cupertinoSlidingValue]);
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+          backgroundColor: Colors.grey,
+          appBar: AppBar(
+            backgroundColor: Colors.green,
+            title: cupertinoSlidingWidget(ref),
+          ),
+          body: pageWidget[cupertinoSlidingValue]),
+    );
   }
 
   Widget cupertinoSlidingWidget(WidgetRef ref) {

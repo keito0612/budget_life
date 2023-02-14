@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-final dateProvider = StateProvider.autoDispose((ref) {
+final dateProvider = StateProvider((ref) {
   DateTime toDay = DateTime.now();
   initializeDateFormatting("ja");
   final formattedDate = DateFormat.yMMMMEEEEd('ja').format(toDay);
@@ -61,7 +61,8 @@ class dateBarWidget extends ConsumerWidget {
                 ),
               ),
             ),
-            Text(date, style: TextStyle(fontSize: 25, color: Colors.white)),
+            Text(date,
+                style: const TextStyle(fontSize: 25, color: Colors.white)),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
