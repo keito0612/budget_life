@@ -41,6 +41,12 @@ dependencies:
   path: ^1.8.2
   path_provider: ^2.0.12
   json_serializable: ^6.6.1
+  group_list_view: ^1.1.1
+  hooks_riverpod: ^2.2.0
+  flutter_hooks: ^0.18.5+1
+  sticky_grouped_list: ^3.1.0
+  grouped_list: ^5.1.2
+  flutter_slidable: ^2.0.0
 
 dev_dependencies:
   flutter_test:
