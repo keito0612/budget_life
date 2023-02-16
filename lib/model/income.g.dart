@@ -7,11 +7,11 @@ part of 'income.dart';
 // **************************************************************************
 
 _$_Income _$$_IncomeFromJson(Map<String, dynamic> json) => _$_Income(
-      id: json['id'] as int? ?? 0,
+      id: json['id'] as int?,
       amount: json['amount'] as String? ?? "",
       date: json['date'] as String? ?? "",
       memo: json['memo'] as String? ?? "",
-      category: json['category'] as String? ?? "",
+      category: json['category'] as String? ?? "衣服",
     );
 
 Map<String, dynamic> _$$_IncomeToJson(_$_Income instance) => <String, dynamic>{

@@ -4,7 +4,8 @@ import 'package:budget/repositorys/expense_repository.dart';
 import 'package:budget/states/expense_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final expenseViewModelProvider = StateNotifierProvider(
+final expenseViewModelProvider =
+    StateNotifierProvider<ExpenseViewModel, ExpenseState>(
   (ref) => ExpenseViewModel(
     ref,
     ExpenseRepository(ExpenseDatabase()),

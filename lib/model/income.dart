@@ -6,10 +6,10 @@ part 'income.g.dart';
 @freezed
 class Income with _$Income {
   const factory Income(
-      {@Default(0) int id,
+      {int? id,
       @Default("") String amount,
       @Default("") String date,
       @Default("") String memo,
-      @Default("") @Default("衣服") String category}) = _Income;
+      @Default("衣服") String category}) = _Income;
   factory Income.fromJson(Map<String, dynamic> json) => _$IncomeFromJson(json);
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:budget/page/input_page.dart';
+import 'package:budget/page/list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,8 +22,8 @@ class MyApp extends ConsumerWidget {
       label: 'ホーム',
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.person),
-      label: 'ユーザー',
+      icon: Icon(Icons.list),
+      label: 'リスト',
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.favorite),
@@ -39,13 +40,14 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = ref.watch(selectedPageProvider);
     final selectedIndexController = ref.read(selectedPageProvider.notifier);
+    List<Widget> pageList = [InputPage(), const ListPage()];
     return MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
         home: Scaffold(
-            body: InputPage(),
+            body: pageList[selectedIndex],
             bottomNavigationBar: BottomNavigationBar(
                 unselectedLabelStyle:
                     const TextStyle(color: Colors.white, fontSize: 14),

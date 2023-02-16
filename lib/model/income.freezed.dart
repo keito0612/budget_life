@@ -20,7 +20,7 @@ Income _$IncomeFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Income {
-  int get id => throw _privateConstructorUsedError;
+  int? get id => throw _privateConstructorUsedError;
   String get amount => throw _privateConstructorUsedError;
   String get date => throw _privateConstructorUsedError;
   String get memo => throw _privateConstructorUsedError;
@@ -36,7 +36,8 @@ abstract class $IncomeCopyWith<$Res> {
   factory $IncomeCopyWith(Income value, $Res Function(Income) then) =
       _$IncomeCopyWithImpl<$Res, Income>;
   @useResult
-  $Res call({int id, String amount, String date, String memo, String category});
+  $Res call(
+      {int? id, String amount, String date, String memo, String category});
 }
 
 /// @nodoc
@@ -52,17 +53,17 @@ class _$IncomeCopyWithImpl<$Res, $Val extends Income>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? amount = null,
     Object? date = null,
     Object? memo = null,
     Object? category = null,
   }) {
     return _then(_value.copyWith(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       amount: null == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
@@ -89,7 +90,8 @@ abstract class _$$_IncomeCopyWith<$Res> implements $IncomeCopyWith<$Res> {
       __$$_IncomeCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, String amount, String date, String memo, String category});
+  $Res call(
+      {int? id, String amount, String date, String memo, String category});
 }
 
 /// @nodoc
@@ -102,17 +104,17 @@ class __$$_IncomeCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? id = freezed,
     Object? amount = null,
     Object? date = null,
     Object? memo = null,
     Object? category = null,
   }) {
     return _then(_$_Income(
-      id: null == id
+      id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       amount: null == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
@@ -137,18 +139,17 @@ class __$$_IncomeCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_Income with DiagnosticableTreeMixin implements _Income {
   const _$_Income(
-      {this.id = 0,
+      {this.id,
       this.amount = "",
       this.date = "",
       this.memo = "",
-      this.category = ""});
+      this.category = "衣服"});
 
   factory _$_Income.fromJson(Map<String, dynamic> json) =>
       _$$_IncomeFromJson(json);
 
   @override
-  @JsonKey()
-  final int id;
+  final int? id;
   @override
   @JsonKey()
   final String amount;
@@ -213,7 +214,7 @@ class _$_Income with DiagnosticableTreeMixin implements _Income {
 
 abstract class _Income implements Income {
   const factory _Income(
-      {final int id,
+      {final int? id,
       final String amount,
       final String date,
       final String memo,
@@ -222,7 +223,7 @@ abstract class _Income implements Income {
   factory _Income.fromJson(Map<String, dynamic> json) = _$_Income.fromJson;
 
   @override
-  int get id;
+  int? get id;
   @override
   String get amount;
   @override
