@@ -21,7 +21,6 @@ class ExpensePage extends ConsumerWidget {
   String amount = "";
   String category = "";
   String memo = "";
-  DateTime? date;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
@@ -247,6 +246,7 @@ class ExpensePage extends ConsumerWidget {
     final expenseAddData =
         Expense(amount: amount, date: date, memo: memo, category: category);
     try {
+      print(expenseAddData);
       await expenseViewModel.addExpense(expenseAddData);
       await dialogResult(context);
     } on Exception catch (e) {
