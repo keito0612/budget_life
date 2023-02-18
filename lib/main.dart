@@ -5,8 +5,6 @@ import 'package:budget/page/list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'page/expense_page.dart';
-
 final selectedPageProvider = StateProvider.autoDispose((ref) => 0);
 
 void main() {
@@ -18,8 +16,8 @@ class MyApp extends ConsumerWidget {
 
   final List<BottomNavigationBarItem> _tabItems = const [
     BottomNavigationBarItem(
-      icon: Icon(Icons.home),
-      label: 'ホーム',
+      icon: Icon(Icons.edit_note_outlined),
+      label: '入力',
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.list),
@@ -42,7 +40,6 @@ class MyApp extends ConsumerWidget {
     final selectedIndexController = ref.read(selectedPageProvider.notifier);
     List<Widget> pageList = [InputPage(), const ListPage()];
     return MaterialApp(
-        title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
@@ -50,8 +47,9 @@ class MyApp extends ConsumerWidget {
             body: pageList[selectedIndex],
             bottomNavigationBar: BottomNavigationBar(
                 unselectedLabelStyle:
-                    const TextStyle(color: Colors.white, fontSize: 14),
-                fixedColor: Colors.green,
+                    const TextStyle(color: Colors.black, fontSize: 14),
+                unselectedItemColor: Colors.black45,
+                selectedItemColor: Colors.green,
                 currentIndex: selectedIndex,
                 onTap: (index) {
                   selectedIndexController.state = index;
