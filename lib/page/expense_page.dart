@@ -1,19 +1,14 @@
 import 'package:budget/model/expense.dart';
-import 'package:budget/repositorys/expense_repository.dart';
-import 'package:budget/utils/util.dart';
 import 'package:budget/viewModels/expense_model.dart';
 import 'package:budget/widgets/bottom_sheet_dar.dart';
 import 'package:budget/widgets/dateBar_widget.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:path/path.dart';
 
 final amountProvider = StateProvider.autoDispose((ref) => "");
 final memoProvider = StateProvider.autoDispose((ref) => "");
-final alertMessageProvider = StateProvider((ref) => "");
 
 class ExpensePage extends ConsumerWidget {
   ExpensePage({super.key});
@@ -27,7 +22,7 @@ class ExpensePage extends ConsumerWidget {
       child: Container(
         child: Column(children: <Widget>[
           dateBarWidget(),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: Container(
@@ -228,9 +223,23 @@ class ExpensePage extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 30),
       child: Container(
+        height: 50,
+        width: 100,
         color: Colors.green,
         child: ElevatedButton(
-          child: Text("追加"),
+          style: ElevatedButton.styleFrom(
+            elevation: 10,
+            backgroundColor: Colors.green,
+            foregroundColor: Colors.white,
+            side: const BorderSide(color: Colors.white, width: 3),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+          ),
+          child: const Text(
+            "追加",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           onPressed: () async {
             await addDialog(context, ref);
           },
@@ -241,14 +250,14 @@ class ExpensePage extends ConsumerWidget {
 
   //追加ダイアログ
   Future addDialog(BuildContext context, WidgetRef ref) async {
-    final expenseViewModel = ref.watch(expenseViewModelProvider.notifier);
+    final expenseViewModel = ref.read(expenseViewModelProvider.notifier);
     final date = ref.watch(dateProvider);
     final expenseAddData =
         Expense(amount: amount, date: date, memo: memo, category: category);
     try {
-      print(expenseAddData);
       await expenseViewModel.addExpense(expenseAddData);
-      await dialogResult(context);
+      await expenseViewModel.getExpenses();
+      await dialogResult(context, expenseViewModel);
     } on Exception catch (e) {
       await dialogError(e.toString(), context);
     } catch (e) {
@@ -257,7 +266,7 @@ class ExpensePage extends ConsumerWidget {
   }
 
   //成功した時のダイアログー
-  Future dialogResult(BuildContext context) async {
+  Future dialogResult(BuildContext context, ExpenseViewModel model) async {
     await showCupertinoDialog(
       context: context,
       builder: (context) {
@@ -267,7 +276,8 @@ class ExpensePage extends ConsumerWidget {
           actions: <Widget>[
             TextButton(
               child: const Text('OK'),
-              onPressed: () {
+              onPressed: () async {
+                model.getExpenses();
                 Navigator.of(context).pop();
               },
             )
