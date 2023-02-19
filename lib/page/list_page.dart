@@ -1,6 +1,4 @@
-import 'package:budget/model.dart';
 import 'package:budget/page/expense_list_page.dart';
-import 'package:budget/viewModels/expense_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

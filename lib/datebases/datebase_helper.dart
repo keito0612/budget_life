@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
@@ -11,8 +10,8 @@ class DateBaseHelper {
   static const _databaseName = "budget.db";
   static const _databaseVersion = 1;
 
-  static const tableExpenses = 'expense';
-  static const tableIncomes = 'incomes';
+  static const tableExpense = 'expense';
+  static const tableIncome = 'income';
   static const tableCategories = 'categories';
   static const tableAccounts = 'accounts';
   static const tableUsers = 'users';
@@ -53,9 +52,9 @@ class DateBaseHelper {
       onCreate: (db, version) async {
         await db.execute(
             // テーブルの作成
-            "CREATE TABLE $tableExpenses ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnAmount TEXT , $columnDate TEXT,$columnMemo TEXT, $columnCategory  TEXT)");
+            "CREATE TABLE $tableExpense ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnAmount TEXT , $columnDate TEXT,$columnMemo TEXT, $columnCategory  TEXT)");
         await db.execute(
-            "CREATE TABLE event (id INTEGER PRIMARY KEY AUTOINCREMENT , notificationId INTEGER , titleText TEXT , timeText TEXT, memoText TEXT, isOn INTEGER, notificationTime TEXT)");
+            "CREATE TABLE $tableIncome ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnAmount TEXT , $columnDate TEXT,$columnMemo TEXT, $columnCategory  TEXT)");
       },
       version: _databaseVersion,
     );
