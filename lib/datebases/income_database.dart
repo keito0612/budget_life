@@ -1,41 +1,41 @@
 import 'package:budget/datebases/datebase_helper.dart';
-import 'package:budget/model/expense.dart';
+import 'package:budget/model/income.dart';
 import 'package:sqflite/sqflite.dart';
 
-class ExpenseDatabase {
-  final String _tableName = 'expense';
+class IncomeDatabase {
+  final String _tableName = 'income';
 
-  Future<List<Expense>> getExpenses() async {
+  Future<List<Income>> getIncomes() async {
     final db = await DateBaseHelper.db.database;
     final res = await db.query(_tableName);
     if (res.isEmpty) return [];
-    return res.map((res) => Expense.fromJson(res)).toList();
+    return res.map((res) => Income.fromJson(res)).toList();
   }
 
-  Future<Expense> insert(Expense expense) async {
-    if (expense.amount == "") {
+  Future<Income> insert(Income income) async {
+    if (income.amount == "") {
       throw ("金額を設定してください");
     }
     try {
       final db = await DateBaseHelper.db.database;
       final id = await db.insert(
         _tableName,
-        expense.toJson(),
+        income.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
-      return expense.copyWith(id: id);
+      return income.copyWith(id: id);
     } on Exception catch (e) {
       throw Exception(e);
     }
   }
 
-  Future update(Expense expense) async {
+  Future update(Income income) async {
     final db = await DateBaseHelper.db.database;
     return await db.update(
       _tableName,
-      expense.toJson(),
+      income.toJson(),
       where: 'id = ?',
-      whereArgs: [expense.id],
+      whereArgs: [income.id],
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }

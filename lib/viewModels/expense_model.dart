@@ -21,8 +21,8 @@ class ExpenseViewModel extends StateNotifier<ExpenseState> {
   final ExpenseRepository _ExpenseRepository;
 
   Future<void> addExpense(Expense expense) async {
-    await _ExpenseRepository.addExpense(expense);
-    state = state.copyWith(expenses: [...state.expenses]);
+    final expenseData = await _ExpenseRepository.addExpense(expense);
+    state = state.copyWith(expenses: [expenseData, ...state.expenses]);
   }
 
   Future<void> getExpenses() async {

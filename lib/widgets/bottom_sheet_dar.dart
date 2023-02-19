@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -31,7 +30,7 @@ class bottomSheetBar {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Padding(
+                        const Padding(
                           padding: const EdgeInsets.only(left: 5),
                           child: Text(
                             "閉じる",

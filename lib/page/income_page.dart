@@ -1,5 +1,6 @@
-import 'package:budget/model/expense.dart';
-import 'package:budget/viewModels/expense_model.dart';
+import 'package:budget/model/income.dart';
+import 'package:budget/page/expense_page.dart';
+import 'package:budget/viewModels/income_model.dart';
 import 'package:budget/widgets/bottom_sheet_dar.dart';
 import 'package:budget/widgets/dateBar_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,11 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final amountProvider = StateProvider.autoDispose((ref) => "");
-final memoProvider = StateProvider.autoDispose((ref) => "");
-
-class ExpensePage extends ConsumerWidget {
-  ExpensePage({super.key});
+class IncomePage extends ConsumerWidget {
+  IncomePage({super.key});
   List<String> categoryList = ["交際費", "衣服"];
   String amount = "";
   String category = "";
@@ -41,7 +39,7 @@ class ExpensePage extends ConsumerWidget {
                   ],
                 ),
                 child: Column(children: [
-                  amountTextField(ref, "支出"),
+                  amountTextField(ref, "収入"),
                   categoryBar(context, ref, "カテゴリー"),
                   memoTextField("メモ"),
                   addButton(ref, context)
@@ -100,13 +98,13 @@ class ExpensePage extends ConsumerWidget {
                 Expanded(
                   flex: 5,
                   child: TextField(
-                    style: TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20),
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     onChanged: (amountText) {
                       amountController.state = amountText;
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: "支出",
                     ),
@@ -236,10 +234,8 @@ class ExpensePage extends ConsumerWidget {
               borderRadius: BorderRadius.circular(30),
             ),
           ),
-          child: const Text(
-            "追加",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+          child:
+              const Text("追加", style: TextStyle(fontWeight: FontWeight.bold)),
           onPressed: () async {
             await addDialog(context, ref);
           },
@@ -250,13 +246,12 @@ class ExpensePage extends ConsumerWidget {
 
   //追加ダイアログ
   Future addDialog(BuildContext context, WidgetRef ref) async {
-    final expenseViewModel = ref.read(expenseViewModelProvider.notifier);
+    final expenseViewModel = ref.read(incomeViewModelProvider.notifier);
     final date = ref.watch(dateProvider);
     final expenseAddData =
-        Expense(amount: amount, date: date, memo: memo, category: category);
+        Income(amount: amount, date: date, memo: memo, category: category);
     try {
-      await expenseViewModel.addExpense(expenseAddData);
-      await expenseViewModel.getExpenses();
+      await expenseViewModel.addIncomes(expenseAddData);
       await dialogResult(context, expenseViewModel);
     } on Exception catch (e) {
       await dialogError(e.toString(), context);
@@ -266,7 +261,7 @@ class ExpensePage extends ConsumerWidget {
   }
 
   //成功した時のダイアログー
-  Future dialogResult(BuildContext context, ExpenseViewModel model) async {
+  Future dialogResult(BuildContext context, IncomeViewModel model) async {
     await showCupertinoDialog(
       context: context,
       builder: (context) {
@@ -277,7 +272,7 @@ class ExpensePage extends ConsumerWidget {
             TextButton(
               child: const Text('OK'),
               onPressed: () async {
-                model.getExpenses();
+                model.getIncomes();
                 Navigator.of(context).pop();
               },
             )
