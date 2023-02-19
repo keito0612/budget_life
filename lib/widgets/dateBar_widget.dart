@@ -1,3 +1,7 @@
+import 'dart:async';
+
+import 'package:budget/utils/util.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -34,6 +38,7 @@ class dateBarWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final date = ref.watch(dateProvider);
+    final dateController = ref.read(dateProvider.notifier);
     return Padding(
       padding: const EdgeInsets.only(top: 25, bottom: 12, right: 12, left: 12),
       child: Container(
@@ -53,7 +58,7 @@ class dateBarWidget extends ConsumerWidget {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 5),
+              padding: const EdgeInsets.only(bottom: 1),
               child: Container(
                 child: const Text(
                   "日付",
@@ -61,8 +66,45 @@ class dateBarWidget extends ConsumerWidget {
                 ),
               ),
             ),
-            Text(date,
-                style: const TextStyle(fontSize: 25, color: Colors.white)),
+            TextButton(
+                child: Text(date,
+                    style: const TextStyle(fontSize: 25, color: Colors.white)),
+                onPressed: () async {
+                  await showModalBottomSheet<void>(
+                      context: context,
+                      builder: (BuildContext context) => SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height / 3,
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text(
+                                        '閉じる',
+                                        style: TextStyle(
+                                            fontSize: 20, color: Colors.green),
+                                      )),
+                                ),
+                                Expanded(
+                                  child: CupertinoDatePicker(
+                                    backgroundColor: Colors.white,
+                                    initialDateTime: _toDay,
+                                    mode: CupertinoDatePickerMode.date,
+                                    minimumDate: _toDay,
+                                    maximumDate: DateTime.utc(2100, 12, 30),
+                                    onDateTimeChanged: (value) {
+                                      dateController.state = Util.toDate(value);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ));
+                }),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
