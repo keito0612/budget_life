@@ -1,4 +1,5 @@
 import 'package:budget/page/expense_page.dart';
+import 'package:budget/page/income_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,13 +9,13 @@ final cupertinoSlidingValueProvider = StateProvider.autoDispose((ref) {
 });
 
 class InputPage extends ConsumerWidget {
-  InputPage({
+  const InputPage({
     super.key,
   });
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cupertinoSlidingValue = ref.watch(cupertinoSlidingValueProvider);
-    List<Widget> pageWidget = [ExpensePage()];
+    List<Widget> pageWidget = [ExpensePage(), IncomePage()];
 
     return GestureDetector(
       onTap: () {
