@@ -12,10 +12,11 @@ class ExpenseListPage extends ConsumerWidget {
   const ExpenseListPage({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ExpenseState expenseList = ref.watch(expenseViewModelProvider);
+    ExpenseState model = ref.watch(expenseViewModelProvider);
     return Container(
       child: GroupedListView<Expense, DateTime>(
-          elements: expenseList.expenses,
+          controller: ScrollController(),
+          elements: model.expenses,
           order: GroupedListOrder.ASC,
           groupBy: (Expense expense) {
             final time = Util.convartDate(expense.date);
@@ -23,8 +24,9 @@ class ExpenseListPage extends ConsumerWidget {
           },
           groupComparator: (DateTime value1, DateTime value2) =>
               value2.compareTo(value1),
-          itemComparator: (Expense expense1, Expense expense2) =>
-              expense1.date.compareTo(expense2.date),
+          itemComparator: (Expense expense1, Expense expense2) {
+            return expense1.date.compareTo(expense2.date);
+          },
           floatingHeader: true,
           groupSeparatorBuilder: _getGroupExpenseSeparator,
           itemBuilder: (context, expense) {
@@ -98,7 +100,10 @@ class ExpenseListPage extends ConsumerWidget {
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [Text(expense.category), Text(expense.amount)],
+              children: [
+                Text(expense.category),
+                Text("金額: ${expense.amount}円")
+              ],
             ),
             trailing: Text(expense.category),
           ),
