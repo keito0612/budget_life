@@ -4,6 +4,7 @@ import 'package:budget/page/input_page.dart';
 import 'package:budget/page/list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 final selectedPageProvider = StateProvider.autoDispose((ref) => 0);
 
@@ -40,6 +41,13 @@ class MyApp extends ConsumerWidget {
     final selectedIndexController = ref.read(selectedPageProvider.notifier);
     List<Widget> pageList = [InputPage(), const ListPage()];
     return MaterialApp(
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('ja'),
+        ],
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
