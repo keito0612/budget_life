@@ -34,6 +34,7 @@ class ExpenseViewModel extends StateNotifier<ExpenseState> {
 
   Future<void> changeStatus(Expense todo) async {
     await _ExpenseRepository.updateExpense(todo);
+
     final expenses = await _ExpenseRepository.getExpenses();
     state = state.copyWith(
       expenses: expenses,

@@ -30,14 +30,21 @@ class ExpenseDatabase {
   }
 
   Future update(Expense expense) async {
-    final db = await DateBaseHelper.db.database;
-    return await db.update(
-      _tableName,
-      expense.toJson(),
-      where: 'id = ?',
-      whereArgs: [expense.id],
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    if (expense.amount.isEmpty) {
+      throw ('金額が設定されていません');
+    }
+    try {
+      final db = await DateBaseHelper.db.database;
+      return await db.update(
+        _tableName,
+        expense.toJson(),
+        where: 'id = ?',
+        whereArgs: [expense.id],
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    } on Exception catch (e) {
+      throw Exception(e);
+    }
   }
 
   Future delete(int id) async {
