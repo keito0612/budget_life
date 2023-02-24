@@ -171,7 +171,7 @@ class ExpensePage extends ConsumerWidget {
 
   //メモ欄
   Widget memoTextField(String itemName, WidgetRef ref) {
-    final memo = ref.watch(memoProvider);
+    memo = ref.watch(memoProvider);
     final memoController = ref.read(memoProvider.notifier);
     return Padding(
       padding: const EdgeInsets.only(top: 40),
