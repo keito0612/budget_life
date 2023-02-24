@@ -30,14 +30,21 @@ class IncomeDatabase {
   }
 
   Future update(Income income) async {
-    final db = await DateBaseHelper.db.database;
-    return await db.update(
-      _tableName,
-      income.toJson(),
-      where: 'id = ?',
-      whereArgs: [income.id],
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
+    if (income.amount == "") {
+      throw ("金額を設定してください");
+    }
+    try {
+      final db = await DateBaseHelper.db.database;
+      return await db.update(
+        _tableName,
+        income.toJson(),
+        where: 'id = ?',
+        whereArgs: [income.id],
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    } on Exception catch (e) {
+      throw Exception(e);
+    }
   }
 
   Future delete(int id) async {
