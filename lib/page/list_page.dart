@@ -1,4 +1,4 @@
-import 'package:budget/page/expense_list_page.dart';
+import 'package:budget/page/expense/expense_list_page.dart';
 import 'package:budget/page/income_list_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
