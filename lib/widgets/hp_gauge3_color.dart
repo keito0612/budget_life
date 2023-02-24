@@ -19,7 +19,7 @@ class HpGauge3Color extends StatelessWidget {
           borderRadius: const BorderRadius.all(Radius.circular(50)),
           border: Border.all(width: 5, color: Colors.black)),
       width: 350,
-      height: 73,
+      height: 80,
       child: SizedBox(
         child: Padding(
           padding:
@@ -68,7 +68,8 @@ class HpGauge3Color extends StatelessWidget {
                 '${currentHp.toString().padLeft(4, '  ')}/${maxHp}円',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: getHpTextColor(currentHp)),
+                    color: getHpTextColor(currentHp),
+                    fontSize: 20),
               ),
             ),
           ]),
