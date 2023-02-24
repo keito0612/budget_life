@@ -37,7 +37,7 @@ class bottomSheetBar {
                             style: TextStyle(fontSize: 20),
                           ),
                         ),
-                        SizedBox(width: 230),
+                        const SizedBox(width: 230),
                         TextButton(
                           style: TextButton.styleFrom(
                             splashFactory: NoSplash.splashFactory,
