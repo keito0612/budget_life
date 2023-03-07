@@ -54,7 +54,6 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
     //残りの貯金額
     int remainingSaving = saving;
 
-    print("初期金額$balanse");
     //支出リストから日付ごとの支出合計金額を取り出す。
     expenses.forEach((expense) {
       final month = expense.date.substring(0, 7);
@@ -66,7 +65,7 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
         monthExpenseTotal[month] = int.parse(expense.amount);
       }
     });
-    print(monthExpenseTotal[currentMonth]);
+
     //収入リストから日付ごとの収入合計金額を取り出す。
     incomes.forEach((income) {
       final month = income.date.substring(0, 7);
@@ -84,7 +83,6 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
           deductExpenses(monthIncomeTotal[currentMonth]!,
               monthExpenseTotal[currentMonth]!);
       balanse += monthIncomeTotal[currentMonth]!;
-      print(remainingBalanse);
     } else if (monthIncomeTotal[currentMonth] == null &&
         monthExpenseTotal[currentMonth] != null) {
       // 今月の収入がなければそのまま支出を引く
@@ -94,11 +92,9 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
       // 今月の支出がなければそのまま収入分を足す
       remainingBalanse += monthIncomeTotal[currentMonth]!;
       balanse += monthIncomeTotal[currentMonth]!;
-      print(remainingBalanse);
     }
     //設定した残高を超えたらその分を貯金額に引く
     if (remainingBalanse < 0) {
-      print(remainingBalanse);
       remainingSaving = remainingSaving + remainingBalanse;
       remainingBalanse = 0;
     }
@@ -106,8 +102,6 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
     if (remainingSaving <= 0) {
       remainingSaving = 0;
     }
-    print("残高:$remainingBalanse");
-    print("貯金額 :$saving");
 
     state = state.copyWith(
         date: "${today.year}年${today.month}月",
