@@ -161,7 +161,7 @@ class ExpensePage extends ConsumerWidget {
                         bottomSheetBar.showModalPicker(
                             categoryList, context, ref);
                       },
-                      icon: Icon(Icons.arrow_downward)),
+                      icon: const Icon(Icons.arrow_downward)),
                 )
               ])),
         ],

@@ -32,7 +32,7 @@ class IncomeViewModel extends StateNotifier<IncomeState> {
     );
   }
 
-  Future<void> changeStatus(Income income) async {
+  Future<void> updateIncome(Income income) async {
     await _IncomeRepository.updateIncome(income);
     final incomes = await _IncomeRepository.getIncomes();
     state = state.copyWith(
