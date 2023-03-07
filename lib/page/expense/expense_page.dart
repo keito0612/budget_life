@@ -1,6 +1,5 @@
-import 'package:budget/model/income.dart';
-import 'package:budget/page/expense/expense_page.dart';
-import 'package:budget/viewModels/income_model.dart';
+import 'package:budget/model/expense.dart';
+import 'package:budget/viewModels/expense_model.dart';
 import 'package:budget/widgets/bottom_sheet_dar.dart';
 import 'package:budget/widgets/dateBar_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,8 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class IncomePage extends ConsumerWidget {
-  IncomePage({super.key});
+final amountProvider = StateProvider.autoDispose((ref) => "");
+final memoProvider = StateProvider.autoDispose((ref) => "");
+
+class ExpensePage extends ConsumerWidget {
+  ExpensePage({super.key});
   List<String> categoryList = ["交際費", "衣服"];
   String amount = "";
   String category = "";
@@ -39,9 +41,9 @@ class IncomePage extends ConsumerWidget {
                   ],
                 ),
                 child: Column(children: [
-                  amountTextField(ref, "収入"),
+                  amountTextField(ref, "支出"),
                   categoryBar(context, ref, "カテゴリー"),
-                  memoTextField("メモ"),
+                  memoTextField("メモ", ref),
                   addButton(ref, context)
                 ])),
           )
@@ -98,13 +100,13 @@ class IncomePage extends ConsumerWidget {
                 Expanded(
                   flex: 5,
                   child: TextField(
-                    style: const TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 20),
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     onChanged: (amountText) {
                       amountController.state = amountText;
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: "支出",
                     ),
@@ -168,7 +170,9 @@ class IncomePage extends ConsumerWidget {
   }
 
   //メモ欄
-  Widget memoTextField(String itemName) {
+  Widget memoTextField(String itemName, WidgetRef ref) {
+    memo = ref.watch(memoProvider);
+    final memoController = ref.read(memoProvider.notifier);
     return Padding(
       padding: const EdgeInsets.only(top: 40),
       child: Column(
@@ -200,7 +204,7 @@ class IncomePage extends ConsumerWidget {
                   child: TextField(
                     style: const TextStyle(fontSize: 20),
                     onChanged: (memoText) {
-                      memo = memoText;
+                      memoController.state = memoText;
                     },
                     decoration: const InputDecoration(
                       border: InputBorder.none,
@@ -234,8 +238,10 @@ class IncomePage extends ConsumerWidget {
               borderRadius: BorderRadius.circular(30),
             ),
           ),
-          child:
-              const Text("追加", style: TextStyle(fontWeight: FontWeight.bold)),
+          child: const Text(
+            "追加",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           onPressed: () async {
             await addDialog(context, ref);
           },
@@ -246,12 +252,13 @@ class IncomePage extends ConsumerWidget {
 
   //追加ダイアログ
   Future addDialog(BuildContext context, WidgetRef ref) async {
-    final expenseViewModel = ref.read(incomeViewModelProvider.notifier);
+    final expenseViewModel = ref.read(expenseViewModelProvider.notifier);
     final date = ref.watch(dateProvider);
     final expenseAddData =
-        Income(amount: amount, date: date, memo: memo, category: category);
+        Expense(amount: amount, date: date, memo: memo, category: category);
     try {
-      await expenseViewModel.addIncomes(expenseAddData);
+      await expenseViewModel.addExpense(expenseAddData);
+      await expenseViewModel.getExpenses();
       await dialogResult(context, expenseViewModel);
     } on Exception catch (e) {
       await dialogError(e.toString(), context);
@@ -261,7 +268,7 @@ class IncomePage extends ConsumerWidget {
   }
 
   //成功した時のダイアログー
-  Future dialogResult(BuildContext context, IncomeViewModel model) async {
+  Future dialogResult(BuildContext context, ExpenseViewModel model) async {
     await showCupertinoDialog(
       context: context,
       builder: (context) {
@@ -272,7 +279,7 @@ class IncomePage extends ConsumerWidget {
             TextButton(
               child: const Text('OK'),
               onPressed: () async {
-                model.getIncomes();
+                model.getExpenses();
                 Navigator.of(context).pop();
               },
             )

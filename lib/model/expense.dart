@@ -10,7 +10,7 @@ abstract class Expense with _$Expense {
       @Default("") String amount,
       @Default("") String date,
       @Default("") String memo,
-      @Default("") @Default("衣服") String category}) = _Expense;
+      @Default("衣服") String category}) = _Expense;
   factory Expense.fromJson(Map<String, dynamic> json) =>
       _$ExpenseFromJson(json);
 }

@@ -1,6 +1,6 @@
-import 'package:budget/model/income.dart';
+import 'package:budget/model/expense.dart';
 import 'package:budget/page/expense/expense_page.dart';
-import 'package:budget/viewModels/income_model.dart';
+import 'package:budget/viewModels/expense_model.dart';
 import 'package:budget/widgets/bottom_sheet_dar.dart';
 import 'package:budget/widgets/dateBar_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,44 +8,65 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class IncomePage extends ConsumerWidget {
-  IncomePage({super.key});
+class ExpenseEditPage extends ConsumerWidget {
+  late final amountEditProvider = StateProvider.autoDispose((ref) => amount);
+  late final memoEditProvider = StateProvider.autoDispose((ref) => memo);
+
+  ExpenseEditPage(
+      {super.key,
+      required this.id,
+      required this.amount,
+      required this.category,
+      required this.memo}) {
+    amountTextEditingController.text = amount!;
+    memoTextEditingController.text = memo!;
+  }
   List<String> categoryList = ["交際費", "衣服"];
-  String amount = "";
-  String category = "";
-  String memo = "";
+  int? id;
+  String? amount;
+  String? category;
+  String? memo;
+  TextEditingController amountTextEditingController = TextEditingController();
+  TextEditingController memoTextEditingController = TextEditingController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return SingleChildScrollView(
-      child: Container(
-        child: Column(children: <Widget>[
-          dateBarWidget(),
-          const SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Container(
-                width: 380,
-                height: 500,
-                decoration: const BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.all(Radius.circular(50)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black38,
-                      offset: Offset(2.0, 2.0),
-                      blurRadius: 4.0,
-                      spreadRadius: 4.0,
-                    ),
-                  ],
-                ),
-                child: Column(children: [
-                  amountTextField(ref, "収入"),
-                  categoryBar(context, ref, "カテゴリー"),
-                  memoTextField("メモ"),
-                  addButton(ref, context)
-                ])),
-          )
-        ]),
+    return Scaffold(
+      backgroundColor: Colors.grey,
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        title: const Text("支出"),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(children: <Widget>[
+            dateBarWidget(),
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Container(
+                  width: 380,
+                  height: 500,
+                  decoration: const BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black38,
+                        offset: Offset(2.0, 2.0),
+                        blurRadius: 4.0,
+                        spreadRadius: 4.0,
+                      ),
+                    ],
+                  ),
+                  child: Column(children: [
+                    amountTextField(ref, "支出"),
+                    categoryBar(context, ref, "カテゴリー"),
+                    memoTextField("メモ", ref),
+                    editButton(ref, context)
+                  ])),
+            )
+          ]),
+        ),
       ),
     );
   }
@@ -67,8 +88,8 @@ class IncomePage extends ConsumerWidget {
 
   //支出欄
   Widget amountTextField(WidgetRef ref, String itemName) {
-    amount = ref.watch(amountProvider);
-    final amountController = ref.read(amountProvider.notifier);
+    amount = ref.watch(amountEditProvider);
+    final amountController = ref.read(amountEditProvider.notifier);
     return Padding(
       padding: const EdgeInsets.only(top: 40),
       child: Column(
@@ -98,13 +119,14 @@ class IncomePage extends ConsumerWidget {
                 Expanded(
                   flex: 5,
                   child: TextField(
-                    style: const TextStyle(fontSize: 20),
+                    controller: amountTextEditingController,
+                    style: TextStyle(fontSize: 20),
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     onChanged: (amountText) {
                       amountController.state = amountText;
                     },
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: "支出",
                     ),
@@ -159,7 +181,7 @@ class IncomePage extends ConsumerWidget {
                         bottomSheetBar.showModalPicker(
                             categoryList, context, ref);
                       },
-                      icon: Icon(Icons.arrow_downward)),
+                      icon: const Icon(Icons.arrow_downward)),
                 )
               ])),
         ],
@@ -168,7 +190,9 @@ class IncomePage extends ConsumerWidget {
   }
 
   //メモ欄
-  Widget memoTextField(String itemName) {
+  Widget memoTextField(String itemName, WidgetRef ref) {
+    memo = ref.watch(memoEditProvider);
+    final memoController = ref.read(memoEditProvider.notifier);
     return Padding(
       padding: const EdgeInsets.only(top: 40),
       child: Column(
@@ -198,9 +222,10 @@ class IncomePage extends ConsumerWidget {
                 Expanded(
                   flex: 5,
                   child: TextField(
+                    controller: memoTextEditingController,
                     style: const TextStyle(fontSize: 20),
                     onChanged: (memoText) {
-                      memo = memoText;
+                      memoController.state = memoText;
                     },
                     decoration: const InputDecoration(
                       border: InputBorder.none,
@@ -217,7 +242,7 @@ class IncomePage extends ConsumerWidget {
   }
 
   //追加ボタン
-  Widget addButton(WidgetRef ref, BuildContext context) {
+  Widget editButton(WidgetRef ref, BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 30),
       child: Container(
@@ -234,10 +259,12 @@ class IncomePage extends ConsumerWidget {
               borderRadius: BorderRadius.circular(30),
             ),
           ),
-          child:
-              const Text("追加", style: TextStyle(fontWeight: FontWeight.bold)),
+          child: const Text(
+            "編集",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           onPressed: () async {
-            await addDialog(context, ref);
+            await editDialog(context, ref);
           },
         ),
       ),
@@ -245,13 +272,13 @@ class IncomePage extends ConsumerWidget {
   }
 
   //追加ダイアログ
-  Future addDialog(BuildContext context, WidgetRef ref) async {
-    final expenseViewModel = ref.read(incomeViewModelProvider.notifier);
+  Future editDialog(BuildContext context, WidgetRef ref) async {
+    final expenseViewModel = ref.read(expenseViewModelProvider.notifier);
     final date = ref.watch(dateProvider);
-    final expenseAddData =
-        Income(amount: amount, date: date, memo: memo, category: category);
+    final expenseEditData = Expense(
+        id: id, amount: amount!, date: date, memo: memo!, category: category!);
     try {
-      await expenseViewModel.addIncomes(expenseAddData);
+      await expenseViewModel.changeStatus(expenseEditData);
       await dialogResult(context, expenseViewModel);
     } on Exception catch (e) {
       await dialogError(e.toString(), context);
@@ -261,18 +288,18 @@ class IncomePage extends ConsumerWidget {
   }
 
   //成功した時のダイアログー
-  Future dialogResult(BuildContext context, IncomeViewModel model) async {
+  Future dialogResult(BuildContext context, ExpenseViewModel model) async {
     await showCupertinoDialog(
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: const Text('追加しました。'),
+          title: const Text('編集しました。'),
           content: const Text(''),
           actions: <Widget>[
             TextButton(
               child: const Text('OK'),
               onPressed: () async {
-                model.getIncomes();
+                model.getExpenses();
                 Navigator.of(context).pop();
               },
             )

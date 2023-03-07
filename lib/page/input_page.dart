@@ -1,4 +1,4 @@
-import 'package:budget/page/expense_page.dart';
+import 'package:budget/page/expense/expense_page.dart';
 import 'package:budget/page/income_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +40,8 @@ class InputPage extends ConsumerWidget {
         0: Text(
           "支出",
           style: TextStyle(
-            color: cupertinoSlidingValue == 0 ? Colors.black : Colors.white,
+            color:
+                cupertinoSlidingValue == 0 ? Colors.lightGreen : Colors.white,
             fontSize: 15,
             fontWeight: FontWeight.w400,
             fontFamily: "SFProRounded",
@@ -50,7 +51,8 @@ class InputPage extends ConsumerWidget {
         1: Text(
           "収入",
           style: TextStyle(
-            color: cupertinoSlidingValue == 1 ? Colors.black : Colors.white,
+            color:
+                cupertinoSlidingValue == 1 ? Colors.lightGreen : Colors.white,
             fontSize: 15,
             fontWeight: FontWeight.w400,
             fontFamily: "SFProRounded",
@@ -62,8 +64,8 @@ class InputPage extends ConsumerWidget {
       onValueChanged: (index) {
         cupertinoSlidingValueController.state = index!;
       },
-      thumbColor: Colors.green,
-      backgroundColor: Colors.white,
+      thumbColor: Colors.white,
+      backgroundColor: Colors.lightGreen,
     );
   }
 }
