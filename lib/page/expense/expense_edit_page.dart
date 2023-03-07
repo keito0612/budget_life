@@ -34,7 +34,7 @@ class ExpenseEditPage extends ConsumerWidget {
       backgroundColor: Colors.grey,
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: const Text("支出"),
+        title: const Text("編集"),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -278,7 +278,7 @@ class ExpenseEditPage extends ConsumerWidget {
     final expenseEditData = Expense(
         id: id, amount: amount!, date: date, memo: memo!, category: category!);
     try {
-      await expenseViewModel.changeStatus(expenseEditData);
+      await expenseViewModel.updateExpense(expenseEditData);
       await dialogResult(context, expenseViewModel);
     } on Exception catch (e) {
       await dialogError(e.toString(), context);

@@ -32,7 +32,7 @@ class ExpenseViewModel extends StateNotifier<ExpenseState> {
     );
   }
 
-  Future<void> changeStatus(Expense todo) async {
+  Future<void> updateExpense(Expense todo) async {
     await _ExpenseRepository.updateExpense(todo);
 
     final expenses = await _ExpenseRepository.getExpenses();
