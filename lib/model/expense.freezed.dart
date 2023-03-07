@@ -144,7 +144,7 @@ class _$_Expense with DiagnosticableTreeMixin implements _Expense {
       this.amount = "",
       this.date = "",
       this.memo = "",
-      this.category = ""});
+      this.category = "衣服"});
 
   factory _$_Expense.fromJson(Map<String, dynamic> json) =>
       _$$_ExpenseFromJson(json);

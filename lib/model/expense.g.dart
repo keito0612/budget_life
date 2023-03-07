@@ -11,7 +11,7 @@ _$_Expense _$$_ExpenseFromJson(Map<String, dynamic> json) => _$_Expense(
       amount: json['amount'] as String? ?? "",
       date: json['date'] as String? ?? "",
       memo: json['memo'] as String? ?? "",
-      category: json['category'] as String? ?? "",
+      category: json['category'] as String? ?? "衣服",
     );
 
 Map<String, dynamic> _$$_ExpenseToJson(_$_Expense instance) =>
