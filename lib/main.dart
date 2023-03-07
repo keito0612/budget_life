@@ -1,7 +1,7 @@
-import 'dart:async';
-
+import 'package:budget/page/home_page.dart';
 import 'package:budget/page/input_page.dart';
 import 'package:budget/page/list_page.dart';
+import 'package:budget/page/setting_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -17,16 +17,16 @@ class MyApp extends ConsumerWidget {
 
   final List<BottomNavigationBarItem> _tabItems = const [
     BottomNavigationBarItem(
+      icon: Icon(Icons.home),
+      label: 'ホーム',
+    ),
+    BottomNavigationBarItem(
       icon: Icon(Icons.edit_note_outlined),
       label: '入力',
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.list),
       label: 'リスト',
-    ),
-    BottomNavigationBarItem(
-      icon: Icon(Icons.favorite),
-      label: 'お気に入り',
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.settings),
@@ -39,7 +39,12 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = ref.watch(selectedPageProvider);
     final selectedIndexController = ref.read(selectedPageProvider.notifier);
-    List<Widget> pageList = [InputPage(), const ListPage()];
+    List<Widget> pageList = [
+      const HomePage(),
+      const InputPage(),
+      const ListPage(),
+      const SettingPage()
+    ];
     return MaterialApp(
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
