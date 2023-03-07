@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-final dateProvider = StateProvider((ref) {
+final dateProvider = StateProvider.autoDispose((ref) {
   DateTime toDay = DateTime.now();
   initializeDateFormatting("ja");
   final formattedDate = DateFormat.yMMMMEEEEd('ja').format(toDay);

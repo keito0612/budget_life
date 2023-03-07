@@ -1,5 +1,5 @@
 import 'package:budget/page/expense/expense_list_page.dart';
-import 'package:budget/page/income_list_page.dart';
+import 'package:budget/page/income/income_list_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,7 +11,7 @@ class ListPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cupertinoSliderValue = ref.watch(cupertinoSlidingListValueProvider);
-    List<Widget> pageList = [ExpenseListPage(), IncomeListPage()];
+    List<Widget> pageList = const [ExpenseListPage(), IncomeListPage()];
     return Scaffold(
         backgroundColor: Colors.grey,
         appBar: AppBar(
