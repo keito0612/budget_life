@@ -14,15 +14,14 @@ final balanceWithSavingModelProvider =
     StateNotifierProvider<BalanceWithSavingModel, BalanceWithSaving>((ref) {
   final expenseModel = ref.watch(expenseViewModelProvider);
   final incomeModel = ref.watch(incomeViewModelProvider);
-  return BalanceWithSavingModel(ref, expenseModel, incomeModel);
+  return BalanceWithSavingModel(expenseModel, incomeModel);
 });
 
 class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
-  BalanceWithSavingModel(this._ref, this.expenseModel, this.incomeModel)
+  BalanceWithSavingModel(this.expenseModel, this.incomeModel)
       : super(const BalanceWithSaving()) {
     getBalanseWithSaving();
   }
-  final Ref _ref;
 
   ExpenseState expenseModel;
   IncomeState incomeModel;
