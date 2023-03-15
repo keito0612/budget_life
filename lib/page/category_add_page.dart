@@ -1,4 +1,9 @@
-import 'package:flutter/foundation.dart';
+import 'package:budget/model/category.dart';
+import 'package:budget/page/input_page.dart';
+import 'package:budget/viewModels/category_expense_model.dart';
+import 'package:budget/viewModels/category_income_model.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -68,31 +73,45 @@ class categoryAddPage extends ConsumerWidget {
     Icons.directions_run,
     Icons.currency_bitcoin,
     Icons.tungsten,
-    Icons.local_gas_station
+    Icons.local_gas_station,
+    Icons.home,
+    Icons.coffee,
+    Icons.savings,
+    Icons.pedal_bike,
+    Icons.favorite,
+    Icons.content_cut_outlined,
+    Icons.local_fire_department
   ];
-
+  String? category;
+  Color? color;
+  IconData? icon;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedColor = ref.watch(selectedColorProvider);
-    final selectedIcon = ref.watch(selectedIconProvider);
-    final category = ref.watch(categoryProvider);
+    color = ref.watch(selectedColorProvider);
+    icon = ref.watch(selectedIconProvider);
+    category = ref.watch(categoryProvider);
+    final cupertinoSlidingValue = ref.watch(cupertinoSlidingValueProvider);
+
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: const Text("カテゴリー"),
-        actions: [_saveCategoryButtom(category, selectedIcon, selectedColor)],
+        title: const Text("新規カテゴリー"),
+        actions: [
+          _saveCategoryButtom(
+              cupertinoSlidingValue, category!, icon!, color!, ref, context),
+        ],
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: 1100,
+          height: 1400,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                _categoryTextField(ref),
-                _selectedIconWithColor(selectedIcon, selectedColor),
+                _categoryTextField(cupertinoSlidingValue, ref),
+                _selectedIconWithColor(icon!, color!),
                 const SizedBox(height: 8.0),
                 _selectColorWidget(ref),
                 const SizedBox(height: 20.0),
@@ -105,7 +124,7 @@ class categoryAddPage extends ConsumerWidget {
     );
   }
 
-  Widget _categoryTextField(WidgetRef ref) {
+  Widget _categoryTextField(int cupertinoSliderValue, WidgetRef ref) {
     final categoryController = ref.read(categoryProvider.notifier);
     return Container(
       width: 400,
@@ -133,6 +152,10 @@ class categoryAddPage extends ConsumerWidget {
             indent: 20,
             endIndent: 20,
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: _cupertinoSlidingWidget(cupertinoSliderValue, ref),
+          )
         ],
       ),
     );
@@ -143,7 +166,7 @@ class categoryAddPage extends ConsumerWidget {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         width: 200,
-        height: 100,
+        height: 130,
         decoration: BoxDecoration(
             color: Colors.white, borderRadius: BorderRadius.circular(30)),
         child: Padding(
@@ -154,6 +177,44 @@ class categoryAddPage extends ConsumerWidget {
             color: color,
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _cupertinoSlidingWidget(int cupertinoSlidingValue, WidgetRef ref) {
+    final cupertinoSlidingValueController =
+        ref.read(cupertinoSlidingValueProvider.notifier);
+    return SizedBox(
+      width: 300,
+      child: CupertinoSlidingSegmentedControl(
+        children: {
+          0: Text(
+            "支出",
+            style: TextStyle(
+              color: cupertinoSlidingValue == 0 ? Colors.green : Colors.white,
+              fontSize: 15,
+              fontWeight: FontWeight.w400,
+              fontFamily: "SFProRounded",
+            ),
+            textAlign: TextAlign.center,
+          ),
+          1: Text(
+            "収入",
+            style: TextStyle(
+              color: cupertinoSlidingValue == 1 ? Colors.green : Colors.white,
+              fontSize: 15,
+              fontWeight: FontWeight.w400,
+              fontFamily: "SFProRounded",
+            ),
+            textAlign: TextAlign.center,
+          ),
+        },
+        groupValue: cupertinoSlidingValue,
+        onValueChanged: (index) {
+          cupertinoSlidingValueController.state = index!;
+        },
+        thumbColor: Colors.white,
+        backgroundColor: Colors.green,
       ),
     );
   }
@@ -216,15 +277,19 @@ class categoryAddPage extends ConsumerWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Expanded(
-              child: Wrap(
-                spacing: 20.0,
-                runSpacing: 20.0,
-                children: colorList
-                    .map((color) => _buildColorButton(color, ref))
-                    .toList(),
-              ),
+            padding: const EdgeInsets.all(15),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Wrap(
+                    spacing: 20.0,
+                    runSpacing: 20.0,
+                    children: colorList
+                        .map((color) => _buildColorButton(color, ref))
+                        .toList(),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -236,7 +301,7 @@ class categoryAddPage extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(30)),
-      height: 430,
+      height: 550,
       child: Column(
         children: [
           Padding(
@@ -255,16 +320,23 @@ class categoryAddPage extends ConsumerWidget {
               ),
             ),
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Wrap(
-                spacing: 20.0,
-                runSpacing: 20.0,
-                children: iconList
-                    .map((icon) => _buildIconButton(icon, ref))
-                    .toList(),
-              ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Wrap(
+                      spacing: 20.0,
+                      runSpacing: 20.0,
+                      children: iconList
+                          .map((icon) => _buildIconButton(icon, ref))
+                          .toList(),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -272,10 +344,13 @@ class categoryAddPage extends ConsumerWidget {
     );
   }
 
-  Widget _saveCategoryButtom(String category, IconData icon, Color color) {
+  Widget _saveCategoryButtom(int cupertinoSliderValue, String category,
+      IconData icon, Color color, WidgetRef ref, BuildContext context) {
     return category != ""
         ? TextButton(
-            onPressed: () {},
+            onPressed: () {
+              addDialog(cupertinoSliderValue, context, ref);
+            },
             child: const Text(
               "保存",
               style: TextStyle(
@@ -293,5 +368,83 @@ class categoryAddPage extends ConsumerWidget {
                   fontWeight: FontWeight.bold),
             ),
           );
+  }
+
+  //追加ダイアログ
+  Future addDialog(
+      int cupertinoSliderValue, BuildContext context, WidgetRef ref) async {
+    final categoryExpenseModel =
+        ref.read(categoryExpenseModelProvider.notifier);
+    final categoryIncomeModel = ref.watch(categoryIncomeModelProvider.notifier);
+    final categoryData = Category(
+        category: category!, color: color!.value, icon: icon!.codePoint);
+    try {
+      cupertinoSliderValue == 0
+          ? await categoryExpenseModel.addCategory(categoryData)
+          : await categoryIncomeModel.addCategory(categoryData);
+      await dialogResult(context);
+    } on Exception catch (e) {
+      await dialogError(e.toString(), context);
+    } catch (e) {
+      await dialogError(e.toString(), context);
+    }
+  }
+
+  //成功した時のダイアログー
+  Future dialogResult(BuildContext context) async {
+    await showCupertinoDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: const Text('保存しました。'),
+          content: const Text(''),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () async {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  //エラーダイアログ
+  Future dialogError(String error, BuildContext context) async {
+    await showCupertinoDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: const [
+              Icon(
+                Icons.error_outline_rounded,
+                color: Colors.red,
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text("エラーが発生しました"),
+              )
+            ],
+          ),
+          content: Column(
+            children: [
+              Text(error),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 }
