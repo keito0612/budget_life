@@ -8,17 +8,18 @@ import '../repositorys/category_repository.dart';
 final categoryExpenseModelProvider =
     StateNotifierProvider<CategoryExpenseModel, CategoryExpenseState>(
   (ref) => CategoryExpenseModel(
-    CategoryRepository(CategoryExpenseDatabase()),
+    ref,
+    CategoryExpenseRepository(CategoryExpenseDatabase()),
   ),
 );
 
 class CategoryExpenseModel extends StateNotifier<CategoryExpenseState> {
-  CategoryExpenseModel(this._categoryExpenseRepository)
+  CategoryExpenseModel(this._ref, this._categoryExpenseRepository)
       : super(const CategoryExpenseState()) {
     getCategorys();
   }
-
-  final CategoryRepository _categoryExpenseRepository;
+  final Ref _ref;
+  final CategoryExpenseRepository _categoryExpenseRepository;
 
   Future<void> addCategory(Category category) async {
     final categoryData =

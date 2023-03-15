@@ -82,6 +82,7 @@ class categoryAddPage extends ConsumerWidget {
     Icons.content_cut_outlined,
     Icons.local_fire_department
   ];
+
   String? category;
   Color? color;
   IconData? icon;

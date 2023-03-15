@@ -1,5 +1,5 @@
 import 'package:budget/model/income.dart';
-import 'package:budget/widgets/bottom_sheet_dar.dart';
+import 'package:budget/widgets/category_bottom_sheet_dar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -174,15 +174,7 @@ class IncomeEditPage extends ConsumerWidget {
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                 ),
-                Expanded(
-                  flex: 3,
-                  child: IconButton(
-                      onPressed: () {
-                        bottomSheetBar.showModalPicker(
-                            categoryList, context, ref);
-                      },
-                      icon: const Icon(Icons.arrow_downward)),
-                )
+                categoryBottomSheetBarButtom()
               ])),
         ],
       ),

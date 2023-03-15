@@ -78,7 +78,7 @@ class dateBarWidget extends ConsumerWidget {
                             child: Column(
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(8.0),
                                   child: TextButton(
                                       onPressed: () {
                                         Navigator.pop(context);
@@ -115,7 +115,7 @@ class dateBarWidget extends ConsumerWidget {
                         elevation: 10,
                         backgroundColor: Colors.green,
                         foregroundColor: Colors.white,
-                        side: BorderSide(color: Colors.white, width: 3),
+                        side: const BorderSide(color: Colors.white, width: 3),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -130,7 +130,7 @@ class dateBarWidget extends ConsumerWidget {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                       foregroundColor: Colors.white,
-                      side: BorderSide(color: Colors.white, width: 3),
+                      side: const BorderSide(color: Colors.white, width: 3),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
