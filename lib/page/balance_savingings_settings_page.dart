@@ -25,7 +25,7 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
           backgroundColor: Colors.grey,
           appBar: AppBar(
             backgroundColor: Colors.green,
-            title: const Text("設定"),
+            title: const Text("月の手取りと貯金の設定"),
           ),
           body: Center(
             child: Padding(
@@ -46,7 +46,7 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
                 height: 400,
                 child: Column(
                   children: [
-                    balanceTextField(ref, "月に使えるお金"),
+                    balanceTextField(ref, "月の手取り"),
                     savingTextField("貯金額", ref),
                     settingButton(context, ref)
                   ],

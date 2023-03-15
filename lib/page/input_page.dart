@@ -1,5 +1,5 @@
 import 'package:budget/page/expense/expense_page.dart';
-import 'package:budget/page/income_page.dart';
+import 'package:budget/page/income/income_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
