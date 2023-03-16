@@ -4,6 +4,7 @@ import 'package:budget/model/expense.dart';
 import 'package:budget/page/expense/expense_edit_page.dart';
 import 'package:budget/states/expense_state.dart';
 import 'package:budget/utils/util.dart';
+import 'package:budget/viewModels/category_expense_model.dart';
 import 'package:budget/viewModels/expense_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,6 +17,7 @@ class ExpenseListPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ExpenseState model = ref.watch(expenseViewModelProvider);
+
     return Container(
       child: GroupedListView<Expense, DateTime>(
           controller: ScrollController(),
@@ -67,6 +69,7 @@ class ExpenseListPage extends ConsumerWidget {
 
   Widget _getExpenseItem(BuildContext context, Expense expense, WidgetRef ref) {
     final model = ref.read(expenseViewModelProvider.notifier);
+    final categoryExpenseModel = ref.watch(categoryExpenseModelProvider);
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(6.0),
@@ -91,7 +94,8 @@ class ExpenseListPage extends ConsumerWidget {
                         builder: (context) => ExpenseEditPage(
                               id: expense.id,
                               amount: expense.amount,
-                              category: expense.category,
+                              category:
+                                  categoryExpenseModel.categorys[expense.id!],
                               memo: expense.memo,
                             )),
                   );
