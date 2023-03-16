@@ -1,5 +1,6 @@
 import 'package:budget/model/category.dart';
 import 'package:budget/page/category_add_page.dart';
+import 'package:budget/page/category_edit.dart';
 import 'package:budget/viewModels/category_expense_model.dart';
 import 'package:budget/viewModels/category_income_model.dart';
 import 'package:flutter/material.dart';
@@ -112,7 +113,19 @@ class categorySettingPage extends ConsumerWidget {
                           foregroundColor: Colors.white,
                           icon: Icons.edit,
                           label: '編集',
-                          onPressed: (context) async {},
+                          onPressed: (context) async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => categoryEditPage(
+                                        id: category.id,
+                                        category: category.category,
+                                        icon: IconData(category.icon!,
+                                            fontFamily: 'MaterialIcons'),
+                                        color: Color(category.color!),
+                                      )),
+                            );
+                          },
                         ),
                         SlidableAction(
                             backgroundColor: Colors.red,

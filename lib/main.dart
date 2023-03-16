@@ -9,11 +9,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 final selectedPageProvider = StateProvider.autoDispose((ref) => 0);
 
 void main() {
-  runApp(ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends ConsumerWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   final List<BottomNavigationBarItem> _tabItems = const [
     BottomNavigationBarItem(
@@ -45,6 +45,7 @@ class MyApp extends ConsumerWidget {
       const ListPage(),
       const SettingPage()
     ];
+
     return MaterialApp(
         localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
