@@ -7,13 +7,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final selectedColorProvider = StateProvider.autoDispose((ref) => Colors.black);
-final selectedIconProvider =
-    StateProvider.autoDispose((ref) => Icons.restaurant);
-final categoryProvider = StateProvider.autoDispose((ref) => "");
+class categoryEditPage extends ConsumerWidget {
+  categoryEditPage({super.key, this.id, this.category, this.icon, this.color}) {
+    categoryTextEditingController.text = category!;
+  }
 
-class categoryAddPage extends ConsumerWidget {
-  categoryAddPage({super.key});
+  late final selectedColorProvider = StateProvider.autoDispose((ref) => color);
+  late final selectedIconProvider = StateProvider.autoDispose((ref) => icon);
+  late final categoryProvider = StateProvider.autoDispose((ref) => category);
 
   final List<Color> colorList = [
     Colors.black,
@@ -82,22 +83,22 @@ class categoryAddPage extends ConsumerWidget {
     Icons.content_cut_outlined,
     Icons.local_fire_department
   ];
-
+  int? id;
   String? category;
   Color? color;
   IconData? icon;
+  TextEditingController categoryTextEditingController = TextEditingController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final cupertinoSlidingValue = ref.watch(cupertinoSlidingValueProvider);
     color = ref.watch(selectedColorProvider);
     icon = ref.watch(selectedIconProvider);
     category = ref.watch(categoryProvider);
-    final cupertinoSlidingValue = ref.watch(cupertinoSlidingValueProvider);
-
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: const Text("新規カテゴリー"),
+        title: const Text("編集"),
         actions: [
           _saveCategoryButtom(
               cupertinoSlidingValue, category!, icon!, color!, ref, context),
@@ -137,6 +138,7 @@ class categoryAddPage extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(left: 20),
             child: TextField(
+              controller: categoryTextEditingController,
               decoration: const InputDecoration(
                   enabledBorder: InputBorder.none,
                   focusedBorder: InputBorder.none,

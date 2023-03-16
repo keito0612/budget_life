@@ -1,5 +1,3 @@
-import 'package:budget/page/expense/expense_page.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class HpGauge3Color extends StatelessWidget {
@@ -17,8 +15,6 @@ class HpGauge3Color extends StatelessWidget {
   Widget build(BuildContext context) {
     if (maxAmount < currentAmount) {
       maxAmount = currentAmount;
-      print("最大金額 :$maxAmount");
-      print("残高: $currentAmount");
     }
     if (maxAmount == 0 && currentAmount == 0) {
       return zeroAmountGauge(title, currentAmount, maxAmount);

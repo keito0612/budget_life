@@ -1,7 +1,9 @@
+import 'package:budget/model/category.dart';
 import 'package:budget/model/expense.dart';
 import 'package:budget/page/expense/expense_page.dart';
+import 'package:budget/viewModels/category_expense_model.dart';
 import 'package:budget/viewModels/expense_model.dart';
-import 'package:budget/widgets/bottom_sheet_dar.dart';
+import 'package:budget/widgets/category_bottom_sheet_dar.dart';
 import 'package:budget/widgets/dateBar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,15 +23,15 @@ class ExpenseEditPage extends ConsumerWidget {
     amountTextEditingController.text = amount!;
     memoTextEditingController.text = memo!;
   }
-  List<String> categoryList = ["交際費", "衣服"];
+  Category? category;
   int? id;
   String? amount;
-  String? category;
   String? memo;
   TextEditingController amountTextEditingController = TextEditingController();
   TextEditingController memoTextEditingController = TextEditingController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final categorys = ref.watch(categoryExpenseModelProvider);
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
@@ -60,7 +62,7 @@ class ExpenseEditPage extends ConsumerWidget {
                   ),
                   child: Column(children: [
                     amountTextField(ref, "支出"),
-                    categoryBar(context, ref, "カテゴリー"),
+                    categoryBar(context, ref, "カテゴリー", categorys.categorys),
                     memoTextField("メモ", ref),
                     editButton(ref, context)
                   ])),
@@ -141,9 +143,10 @@ class ExpenseEditPage extends ConsumerWidget {
   }
 
   //カテゴリ欄
-  Widget categoryBar(BuildContext context, WidgetRef ref, String itemName) {
+  Widget categoryBar(BuildContext context, WidgetRef ref, String itemName,
+      List<Category> categorys) {
     final categoryIndex = ref.watch(categoryIndexProvider);
-    category = categoryList[categoryIndex];
+    category = categorys[categoryIndex];
     return Padding(
       padding: const EdgeInsets.only(top: 40),
       child: Column(
@@ -168,21 +171,7 @@ class ExpenseEditPage extends ConsumerWidget {
                 const SizedBox(width: 15),
                 const Icon(Icons.category),
                 const SizedBox(width: 20),
-                Expanded(
-                  flex: 8,
-                  child: Text(categoryList[categoryIndex],
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: IconButton(
-                      onPressed: () {
-                        bottomSheetBar.showModalPicker(
-                            categoryList, context, ref);
-                      },
-                      icon: const Icon(Icons.arrow_downward)),
-                )
+                categoryBottomSheetBarButtom()
               ])),
         ],
       ),
@@ -276,7 +265,11 @@ class ExpenseEditPage extends ConsumerWidget {
     final expenseViewModel = ref.read(expenseViewModelProvider.notifier);
     final date = ref.watch(dateProvider);
     final expenseEditData = Expense(
-        id: id, amount: amount!, date: date, memo: memo!, category: category!);
+        id: id,
+        amount: amount!,
+        date: date,
+        memo: memo!,
+        category: category!.category);
     try {
       await expenseViewModel.updateExpense(expenseEditData);
       await dialogResult(context, expenseViewModel);
