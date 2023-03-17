@@ -175,7 +175,19 @@ class categorySettingPage extends ConsumerWidget {
                               foregroundColor: Colors.white,
                               icon: Icons.edit,
                               label: '編集',
-                              onPressed: (context) async {},
+                              onPressed: (context) async {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => categoryEditPage(
+                                            id: category.id,
+                                            category: category.category,
+                                            icon: IconData(category.icon!,
+                                                fontFamily: 'MaterialIcons'),
+                                            color: Color(category.color!),
+                                          )),
+                                );
+                              },
                             ),
                             SlidableAction(
                                 backgroundColor: Colors.red,
