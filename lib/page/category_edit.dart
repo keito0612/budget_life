@@ -380,11 +380,15 @@ class categoryEditPage extends ConsumerWidget {
         ref.read(categoryExpenseModelProvider.notifier);
     final categoryIncomeModel = ref.watch(categoryIncomeModelProvider.notifier);
     final categoryData = Category(
-        category: category!, color: color!.value, icon: icon!.codePoint);
+        id: id,
+        category: category!,
+        color: color!.value,
+        icon: icon!.codePoint);
+
     try {
       cupertinoSliderValue == 0
-          ? await categoryExpenseModel.addCategory(categoryData)
-          : await categoryIncomeModel.addCategory(categoryData);
+          ? await categoryExpenseModel.updateCategory(categoryData)
+          : await categoryIncomeModel.updateCategory(categoryData);
       await dialogResult(context);
     } on Exception catch (e) {
       await dialogError(e.toString(), context);
