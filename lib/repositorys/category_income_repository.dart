@@ -1,5 +1,5 @@
 import 'package:budget/datebases/category_income_database.dart';
-import 'package:budget/model/category.dart';
+import 'package:budget/model/category/category.dart';
 
 class CategoryIncomeRepository {
   final CategoryIncomeDatabase _categoryIncomeDatabase;

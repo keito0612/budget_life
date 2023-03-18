@@ -1,6 +1,5 @@
-import 'package:budget/datebases/category_expense_database.dart';
 import 'package:budget/datebases/category_income_database.dart';
-import 'package:budget/model/category.dart';
+import 'package:budget/model/category/category.dart';
 import 'package:budget/repositorys/category_income_repository.dart';
 import 'package:budget/states/category_income_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
