@@ -1,4 +1,4 @@
-import 'package:budget/model/category.dart';
+import 'package:budget/model/category/category.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'category_income_state.freezed.dart';
 
