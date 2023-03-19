@@ -1,6 +1,8 @@
-import 'package:budget/model/expense.dart';
+import 'package:budget/model/category/category.dart';
+import 'package:budget/model/expense/expense.dart';
+import 'package:budget/viewModels/category_expense_model.dart';
 import 'package:budget/viewModels/expense_model.dart';
-import 'package:budget/widgets/bottom_sheet_dar.dart';
+import 'package:budget/widgets/category_bottom_sheet_dar.dart';
 import 'package:budget/widgets/dateBar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,15 +11,27 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final amountProvider = StateProvider.autoDispose((ref) => "");
 final memoProvider = StateProvider.autoDispose((ref) => "");
+final categoryProvider = StateProvider.autoDispose((ref) => Category(
+    category: "衣服",
+    icon: Icons.restaurant.codePoint,
+    color: Colors.orange.value));
+
+final categorysProvider = StateProvider((ref) {
+  final categoryExpenseModel =
+      ref.read(categoryExpenseModelProvider.notifier).getCategorys();
+  return categoryExpenseModel;
+});
 
 class ExpensePage extends ConsumerWidget {
   ExpensePage({super.key});
-  List<String> categoryList = ["交際費", "衣服"];
   String amount = "";
-  String category = "";
+  Category? category;
   String memo = "";
+  List<Category> categorys = [];
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final categorys = ref.watch(categoryExpenseModelProvider);
+
     return SingleChildScrollView(
       child: Container(
         child: Column(children: <Widget>[
@@ -42,7 +56,7 @@ class ExpensePage extends ConsumerWidget {
                 ),
                 child: Column(children: [
                   amountTextField(ref, "支出"),
-                  categoryBar(context, ref, "カテゴリー"),
+                  categoryBar(context, ref, "カテゴリー", categorys.categorys),
                   memoTextField("メモ", ref),
                   addButton(ref, context)
                 ])),
@@ -100,13 +114,13 @@ class ExpensePage extends ConsumerWidget {
                 Expanded(
                   flex: 5,
                   child: TextField(
-                    style: TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20),
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     onChanged: (amountText) {
                       amountController.state = amountText;
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: "支出",
                     ),
@@ -121,9 +135,11 @@ class ExpensePage extends ConsumerWidget {
   }
 
   //カテゴリ欄
-  Widget categoryBar(BuildContext context, WidgetRef ref, String itemName) {
+  Widget categoryBar(BuildContext context, WidgetRef ref, String itemName,
+      List<Category> categoryList) {
     final categoryIndex = ref.watch(categoryIndexProvider);
     category = categoryList[categoryIndex];
+
     return Padding(
       padding: const EdgeInsets.only(top: 40),
       child: Column(
@@ -146,22 +162,17 @@ class ExpensePage extends ConsumerWidget {
               ),
               child: Row(children: <Widget>[
                 const SizedBox(width: 15),
-                const Icon(Icons.category),
+                Icon(IconData(category!.icon!, fontFamily: 'MaterialIcons'),
+                    color: Color(category!.color!)),
                 const SizedBox(width: 20),
                 Expanded(
                   flex: 8,
-                  child: Text(categoryList[categoryIndex],
+                  child: Text(category!.category,
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                 ),
-                Expanded(
-                  flex: 3,
-                  child: IconButton(
-                      onPressed: () {
-                        bottomSheetBar.showModalPicker(
-                            categoryList, context, ref);
-                      },
-                      icon: const Icon(Icons.arrow_downward)),
+                categoryBottomSheetBarButtom(
+                  categorys: categorys,
                 )
               ])),
         ],
@@ -254,8 +265,8 @@ class ExpensePage extends ConsumerWidget {
   Future addDialog(BuildContext context, WidgetRef ref) async {
     final expenseViewModel = ref.read(expenseViewModelProvider.notifier);
     final date = ref.watch(dateProvider);
-    final expenseAddData =
-        Expense(amount: amount, date: date, memo: memo, category: category);
+    final expenseAddData = Expense(
+        amount: amount, date: date, memo: memo, category: category!.category);
     try {
       await expenseViewModel.addExpense(expenseAddData);
       await expenseViewModel.getExpenses();

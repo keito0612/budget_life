@@ -1,6 +1,6 @@
 import 'package:budget/main.dart';
 import 'package:budget/model.dart';
-import 'package:budget/model/balance_with_saving.dart';
+import 'package:budget/model/balance_with_saving/balance_with_saving.dart';
 
 import 'package:budget/page/balance_savingings_settings_page.dart';
 

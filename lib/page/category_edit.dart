@@ -1,4 +1,4 @@
-import 'package:budget/model/category.dart';
+import 'package:budget/model/category/category.dart';
 import 'package:budget/page/input_page.dart';
 import 'package:budget/viewModels/category_expense_model.dart';
 import 'package:budget/viewModels/category_income_model.dart';

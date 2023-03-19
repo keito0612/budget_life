@@ -1,4 +1,4 @@
-import 'package:budget/model/expense.dart';
+import 'package:budget/model/expense/expense.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 part 'expense_state.freezed.dart';
 
