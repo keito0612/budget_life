@@ -1,5 +1,5 @@
 import 'package:budget/datebases/income_database.dart';
-import 'package:budget/model/income.dart';
+import 'package:budget/model/income/income.dart';
 import 'package:budget/repositorys/income_repository.dart';
 import 'package:budget/states/income_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

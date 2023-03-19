@@ -1,4 +1,4 @@
-import 'package:budget/model/income.dart';
+import 'package:budget/model/income/income.dart';
 import 'package:budget/widgets/category_bottom_sheet_dar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

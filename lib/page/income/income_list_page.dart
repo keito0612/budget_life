@@ -1,4 +1,4 @@
-import 'package:budget/model/income.dart';
+import 'package:budget/model/income/income.dart';
 import 'package:budget/page/income/income_edit_page.dart';
 import 'package:budget/utils/util.dart';
 import 'package:budget/viewModels/income_model.dart';

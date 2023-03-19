@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:budget/model/balance_with_saving.dart';
+import 'package:budget/model/balance_with_saving/balance_with_saving.dart';
 import 'package:budget/viewModels/balance_with_saving_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

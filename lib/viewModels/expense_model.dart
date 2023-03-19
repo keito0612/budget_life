@@ -1,5 +1,5 @@
 import 'package:budget/datebases/expense_database.dart';
-import 'package:budget/model/expense.dart';
+import 'package:budget/model/expense/expense.dart';
 import 'package:budget/repositorys/expense_repository.dart';
 import 'package:budget/states/expense_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

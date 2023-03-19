@@ -1,5 +1,5 @@
 import 'package:budget/datebases/datebase_helper.dart';
-import 'package:budget/model/category.dart';
+import 'package:budget/model/category/category.dart';
 import 'package:sqflite/sqflite.dart';
 
 class CategoryIncomeDatabase {

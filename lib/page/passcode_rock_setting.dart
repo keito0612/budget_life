@@ -1,7 +1,8 @@
 import 'package:budget/widgets/cupertino_switch_tile.dart';
+import 'package:budget/widgets/passcode/passcode_lock_setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:passcode_screen/passcode_screen.dart';
+import 'package:flutter_screen_lock/flutter_screen_lock.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final passcodeProvider =
@@ -92,6 +93,10 @@ class PassCodeRockSetting extends ConsumerWidget {
                       value: passcode,
                       onChanged: (bool value) {
                         passcodeController.setPasscode(value);
+                        if (value == true) {
+                          PasscodeLockSettingScreen.passcodeLockSettingScreen(
+                              context, ref);
+                        }
                       }),
                 ),
               ),

@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:budget/model/category.dart';
+import 'package:budget/model/category/category.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';

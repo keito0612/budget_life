@@ -1,5 +1,5 @@
 import 'package:budget/datebases/expense_database.dart';
-import 'package:budget/model/expense.dart';
+import 'package:budget/model/expense/expense.dart';
 
 class ExpenseRepository {
   final ExpenseDatabase _expenseDatabase;
