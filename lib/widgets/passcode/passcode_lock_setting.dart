@@ -1,12 +1,10 @@
-import 'dart:math';
-
 import 'package:budget/main.dart';
+import 'package:budget/page/passcode_rock_setting.dart';
+import 'package:budget/provider/local_auth_controller_provider.dart';
 import 'package:budget/provider/shared_preferences_provider.dart';
-import 'package:budget/widgets/dateBar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screen_lock/flutter_screen_lock.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 final passcodePassWordProvider = StateProvider((ref) {
   final prefs = ref.watch(sharedPreferencesProvider);
@@ -20,10 +18,19 @@ class PasscodeLockScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final lockController = ref.read(lockProvider.notifier);
     final passcodePassword = ref.watch(passcodePassWordProvider);
-    print(passcodePassword);
+    final auch = ref.read(authControllerProvider);
+    final faceId = ref.watch(faceProvider);
     return ScreenLock(
       onUnlocked: () {
         lockController.unlock();
+      },
+      onOpened: () async {
+        if (faceId == true) {
+          final didAuthenticate = await auch.didAuthenticate();
+          if (didAuthenticate) {
+            lockController.unlock();
+          }
+        }
       },
       correctString: passcodePassword!,
       title: const Text("パスワードを入力してください"),
