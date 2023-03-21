@@ -30,6 +30,8 @@
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+    <key>NSFaceIDUsageDescription</key>
+    <string>生体認証機能を使うために、許可しますか？</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>
