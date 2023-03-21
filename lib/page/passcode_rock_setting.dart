@@ -1,45 +1,51 @@
+import 'package:budget/provider/shared_preferences_provider.dart';
 import 'package:budget/widgets/cupertino_switch_tile.dart';
 import 'package:budget/widgets/passcode/passcode_lock_setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screen_lock/flutter_screen_lock.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final passcodeProvider =
-    StateNotifierProvider.autoDispose<PasscodeNotifier, bool>(
-        (ref) => PasscodeNotifier());
-final faceProvider = StateNotifierProvider.autoDispose<FaceIdNotifier, bool>(
-    (ref) => FaceIdNotifier());
+    StateNotifierProvider.autoDispose<PasscodeNotifier, bool>((ref) {
+  final prefs = ref.watch(sharedPreferencesProvider);
+  return PasscodeNotifier(prefs);
+});
+final faceProvider =
+    StateNotifierProvider.autoDispose<FaceIdNotifier, bool>((ref) {
+  final prefs = ref.watch(sharedPreferencesProvider);
+  return FaceIdNotifier(prefs);
+});
 
 class PasscodeNotifier extends StateNotifier<bool> {
-  PasscodeNotifier() : super(false) {
+  PasscodeNotifier(this._prefs) : super(false) {
     getPasscode();
   }
-  Future setPasscode(bool isOn) async {
+
+  final SharedPreferences _prefs;
+
+  void setPasscode(bool isOn) {
     state = isOn;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("passcode", state);
+
+    _prefs.setBool("passcode", state);
   }
 
-  Future getPasscode() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    state = prefs.getBool("passcode") ?? false;
+  void getPasscode() {
+    state = _prefs.getBool("passcode") ?? false;
   }
 }
 
 class FaceIdNotifier extends StateNotifier<bool> {
-  FaceIdNotifier() : super(false) {
+  FaceIdNotifier(this._prefs) : super(false) {
     getFaceId();
   }
-  Future setFaceId(bool isOn) async {
+  final SharedPreferences _prefs;
+  void setFaceId(bool isOn) {
     state = isOn;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool("faceId", state);
+    _prefs.setBool("faceId", state);
   }
 
-  Future getFaceId() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    state = prefs.getBool("faceId") ?? false;
+  void getFaceId() {
+    state = _prefs.getBool("faceId") ?? false;
   }
 }
 
