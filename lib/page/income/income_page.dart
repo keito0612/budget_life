@@ -1,19 +1,24 @@
-import 'package:budget/model/income.dart';
+import 'package:budget/model/category/category.dart';
+import 'package:budget/model/income/income.dart';
 import 'package:budget/page/expense/expense_page.dart';
+import 'package:budget/viewModels/category_expense_model.dart';
 import 'package:budget/viewModels/income_model.dart';
-import 'package:budget/widgets/bottom_sheet_dar.dart';
+import 'package:budget/widgets/category_bottom_sheet_dar.dart';
 import 'package:budget/widgets/dateBar_widget.dart';
 import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class IncomePage extends ConsumerWidget {
   IncomePage({super.key});
-  List<String> categoryList = ["交際費", "衣服"];
   String amount = "";
-  String category = "";
   String memo = "";
+  Category category = Category(
+      category: "衣服",
+      icon: Icons.restaurant.codePoint,
+      color: Colors.orange.value);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
@@ -121,7 +126,8 @@ class IncomePage extends ConsumerWidget {
   //カテゴリ欄
   Widget categoryBar(BuildContext context, WidgetRef ref, String itemName) {
     final categoryIndex = ref.watch(categoryIndexProvider);
-    category = categoryList[categoryIndex];
+    final categorys = ref.watch(categoryExpenseModelProvider);
+    category = categorys.categorys[categoryIndex];
     return Padding(
       padding: const EdgeInsets.only(top: 40),
       child: Column(
@@ -144,23 +150,16 @@ class IncomePage extends ConsumerWidget {
               ),
               child: Row(children: <Widget>[
                 const SizedBox(width: 15),
-                const Icon(Icons.category),
+                Icon(IconData(category.icon!, fontFamily: 'MaterialIcons'),
+                    color: Color(category.color!)),
                 const SizedBox(width: 20),
                 Expanded(
                   flex: 8,
-                  child: Text(categoryList[categoryIndex],
+                  child: Text(category.category,
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                 ),
-                Expanded(
-                  flex: 3,
-                  child: IconButton(
-                      onPressed: () {
-                        bottomSheetBar.showModalPicker(
-                            categoryList, context, ref);
-                      },
-                      icon: Icon(Icons.arrow_downward)),
-                )
+                categoryBottomSheetBarButtom(categorys: categorys.categorys),
               ])),
         ],
       ),
@@ -249,7 +248,7 @@ class IncomePage extends ConsumerWidget {
     final expenseViewModel = ref.read(incomeViewModelProvider.notifier);
     final date = ref.watch(dateProvider);
     final expenseAddData =
-        Income(amount: amount, date: date, memo: memo, category: category);
+        Income(amount: amount, date: date, memo: memo, category: "");
     try {
       await expenseViewModel.addIncomes(expenseAddData);
       await dialogResult(context, expenseViewModel);
