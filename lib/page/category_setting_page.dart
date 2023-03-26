@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class categorySettingPage extends ConsumerWidget {
-  const categorySettingPage({super.key});
+class CategorySettingPage extends ConsumerWidget {
+  const CategorySettingPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,7 +31,7 @@ class categorySettingPage extends ConsumerWidget {
               const EdgeInsets.only(left: 10, right: 8, top: 30, bottom: 8),
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 height: 40,
                 width: 320,
                 child: ElevatedButton(
@@ -53,13 +53,13 @@ class categorySettingPage extends ConsumerWidget {
                         context,
                         MaterialPageRoute(
                             fullscreenDialog: true,
-                            builder: (context) => categoryAddPage()));
+                            builder: (context) => CategoryAddPage()));
                   },
                 ),
               ),
               const SizedBox(height: 30),
               const Padding(
-                padding: const EdgeInsets.only(right: 300),
+                padding: EdgeInsets.only(right: 300),
                 child: Text(
                   "支出",
                   style: TextStyle(
@@ -93,7 +93,7 @@ class categorySettingPage extends ConsumerWidget {
   Widget _categoryExpenseListWidget(
       List<Category> list, CategoryExpenseModel model) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(10),
       child: Container(
         width: 350,
         decoration: const BoxDecoration(
@@ -101,43 +101,43 @@ class categorySettingPage extends ConsumerWidget {
           color: Colors.white,
         ),
         child: ListView(
+            padding: EdgeInsets.zero,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             children: list
                 .map((category) => Slidable(
-                    endActionPane: ActionPane(
-                      motion: const ScrollMotion(),
-                      children: [
-                        SlidableAction(
-                          backgroundColor: Colors.black38,
-                          foregroundColor: Colors.white,
-                          icon: Icons.edit,
-                          label: '編集',
-                          onPressed: (context) async {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => categoryEditPage(
-                                        id: category.id,
-                                        category: category.category,
-                                        icon: IconData(category.icon!,
-                                            fontFamily: 'MaterialIcons'),
-                                        color: Color(category.color!),
-                                      )),
-                            );
-                          },
-                        ),
-                        SlidableAction(
-                            backgroundColor: Colors.red,
+                      endActionPane: ActionPane(
+                        motion: const ScrollMotion(),
+                        children: [
+                          SlidableAction(
+                            backgroundColor: Colors.black38,
                             foregroundColor: Colors.white,
-                            icon: Icons.error_sharp,
-                            label: '消去',
+                            icon: Icons.edit,
+                            label: '編集',
                             onPressed: (context) async {
-                              await model.deleteCategory(category.id!);
-                            }),
-                      ],
-                    ),
-                    child: Container(
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => categoryEditPage(
+                                          id: category.id,
+                                          category: category.category,
+                                          icon: IconData(category.icon!,
+                                              fontFamily: 'MaterialIcons'),
+                                          color: Color(category.color!),
+                                        )),
+                              );
+                            },
+                          ),
+                          SlidableAction(
+                              backgroundColor: Colors.red,
+                              foregroundColor: Colors.white,
+                              icon: Icons.error_sharp,
+                              label: '消去',
+                              onPressed: (context) async {
+                                await model.deleteCategory(category.id!);
+                              }),
+                        ],
+                      ),
                       child: ListTile(
                           leading: Icon(
                             IconData(category.icon!,
@@ -146,7 +146,7 @@ class categorySettingPage extends ConsumerWidget {
                           ),
                           title: Text(category.category),
                           trailing: const Icon(Icons.arrow_left_sharp)),
-                    )))
+                    ))
                 .toList()),
       ),
     );
@@ -163,6 +163,7 @@ class categorySettingPage extends ConsumerWidget {
             color: Colors.white,
           ),
           child: ListView(
+              padding: EdgeInsets.zero,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: list
