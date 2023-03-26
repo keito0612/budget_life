@@ -108,7 +108,7 @@ class IncomeListPage extends ConsumerWidget {
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(income.category),
+                Text(income.category!),
                 Text("金額: ${income.amount}円"),
                 Text("メモ: ${income.memo}"),
               ],

@@ -112,10 +112,14 @@ class ExpenseListPage extends ConsumerWidget {
           child: ListTile(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+            leading: Icon(
+              IconData(expense.icon!, fontFamily: 'MaterialIcons'),
+              color: Color(expense.color!),
+            ),
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(expense.category),
+                Text(expense.category!),
                 Text("金額: ${expense.amount}円"),
                 Text("メモ: ${expense.memo}"),
               ],
