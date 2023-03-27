@@ -1,7 +1,7 @@
 import 'package:budget/model/category/category.dart';
 import 'package:budget/model/income/income.dart';
 import 'package:budget/page/expense/expense_page.dart';
-import 'package:budget/viewModels/category_expense_model.dart';
+import 'package:budget/viewModels/category_income_model.dart';
 import 'package:budget/viewModels/income_model.dart';
 import 'package:budget/widgets/category_bottom_sheet_dar.dart';
 import 'package:budget/widgets/dateBar_widget.dart';
@@ -126,8 +126,8 @@ class IncomePage extends ConsumerWidget {
   //カテゴリ欄
   Widget categoryBar(BuildContext context, WidgetRef ref, String itemName) {
     final categoryIndex = ref.watch(categoryIndexProvider);
-    final categorys = ref.watch(categoryExpenseModelProvider);
-    category = categorys.categorys[categoryIndex];
+    final categorys = ref.watch(categoryIncomeModelProvider);
+    category = categorys.categoryIncomes[categoryIndex];
     return Padding(
       padding: const EdgeInsets.only(top: 40),
       child: Column(
@@ -159,7 +159,8 @@ class IncomePage extends ConsumerWidget {
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                 ),
-                categoryBottomSheetBarButtom(categorys: categorys.categorys),
+                categoryBottomSheetBarButtom(
+                    categorys: categorys.categoryIncomes),
               ])),
         ],
       ),
