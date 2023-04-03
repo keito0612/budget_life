@@ -8,7 +8,6 @@ import 'package:budget/page/setting/setting_page.dart';
 import 'package:budget/provider/shared_preferences_provider.dart';
 import 'package:budget/repositorys/category_expense_repository.dart';
 import 'package:budget/repositorys/category_income_repository.dart';
-import 'package:budget/repositorys/expense_repository.dart';
 import 'package:budget/viewModels/category_expense_model.dart';
 import 'package:budget/viewModels/category_income_model.dart';
 import 'package:budget/widgets/passcode/passcode_lock_screen.dart';

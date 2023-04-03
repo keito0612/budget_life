@@ -1,5 +1,7 @@
 import 'package:budget/model/category/category.dart';
 import 'package:budget/model/expense/expense.dart';
+import 'package:budget/provider/shared_preferences_provider.dart';
+import 'package:budget/utils/util.dart';
 import 'package:budget/viewModels/category_expense_model.dart';
 import 'package:budget/viewModels/expense_model.dart';
 import 'package:budget/widgets/category_bottom_sheet_dar.dart';
@@ -12,13 +14,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class ExpenseEditPage extends ConsumerWidget {
   late final amountEditProvider = StateProvider.autoDispose((ref) => amount);
   late final memoEditProvider = StateProvider.autoDispose((ref) => memo);
+  late final categoryEditIndexProvider =
+      StateProvider.autoDispose((ref) => categoryIndex);
 
   ExpenseEditPage(
       {super.key,
       required this.id,
       required this.amount,
       required this.category,
-      required this.memo}) {
+      required this.memo,
+      required this.categoryIndex}) {
     amountTextEditingController.text = amount!;
     memoTextEditingController.text = memo!;
   }
@@ -26,6 +31,7 @@ class ExpenseEditPage extends ConsumerWidget {
   int? id;
   String? amount;
   String? memo;
+  int? categoryIndex;
   TextEditingController amountTextEditingController = TextEditingController();
   TextEditingController memoTextEditingController = TextEditingController();
   @override
@@ -121,13 +127,13 @@ class ExpenseEditPage extends ConsumerWidget {
                   flex: 5,
                   child: TextField(
                     controller: amountTextEditingController,
-                    style: TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20),
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     onChanged: (amountText) {
                       amountController.state = amountText;
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: "支出",
                     ),
@@ -144,8 +150,8 @@ class ExpenseEditPage extends ConsumerWidget {
   //カテゴリ欄
   Widget categoryBar(BuildContext context, WidgetRef ref, String itemName,
       List<Category> categorys) {
-    final categoryIndex = ref.watch(categoryIndexProvider);
-    category = categorys[categoryIndex];
+    categoryIndex = ref.watch(categoryEditIndexProvider);
+    category = categorys[categoryIndex!];
     return Padding(
       padding: const EdgeInsets.only(top: 40),
       child: Column(
@@ -168,9 +174,21 @@ class ExpenseEditPage extends ConsumerWidget {
               ),
               child: Row(children: <Widget>[
                 const SizedBox(width: 15),
-                const Icon(Icons.category),
+                Icon(IconData(category!.icon!, fontFamily: 'MaterialIcons'),
+                    color: Color(category!.color!)),
                 const SizedBox(width: 20),
-                categoryBottomSheetBarButtom()
+                Expanded(
+                  flex: 8,
+                  child: Text(category!.category,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20)),
+                ),
+                categoryBottomSheetBarButtom(
+                  categorys: categorys,
+                  onSelectedItemChanged: (int index) {
+                    ref.read(categoryEditIndexProvider.notifier).state = index;
+                  },
+                )
               ])),
         ],
       ),
@@ -268,10 +286,13 @@ class ExpenseEditPage extends ConsumerWidget {
         amount: amount!,
         date: date,
         memo: memo!,
-        category: category!.category);
+        category: category!.category,
+        icon: category!.icon!,
+        color: category!.color,
+        categoryIndex: categoryIndex);
     try {
       await expenseViewModel.updateExpense(expenseEditData);
-      await dialogResult(context, expenseViewModel);
+      await dialogResult(context, expenseViewModel, ref);
     } on Exception catch (e) {
       await dialogError(e.toString(), context);
     } catch (e) {
@@ -280,7 +301,9 @@ class ExpenseEditPage extends ConsumerWidget {
   }
 
   //成功した時のダイアログー
-  Future dialogResult(BuildContext context, ExpenseViewModel model) async {
+  Future dialogResult(
+      BuildContext context, ExpenseViewModel model, WidgetRef ref) async {
+    final prefs = ref.watch(sharedPreferencesProvider);
     await showCupertinoDialog(
       context: context,
       builder: (context) {
@@ -291,6 +314,8 @@ class ExpenseEditPage extends ConsumerWidget {
             TextButton(
               child: const Text('OK'),
               onPressed: () async {
+                final addedDay = DateTime.now();
+                prefs.setString("added_day", Util.toDate(addedDay));
                 model.getExpenses();
                 Navigator.of(context).pop();
               },

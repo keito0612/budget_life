@@ -1,6 +1,8 @@
 import 'package:budget/model/category/category.dart';
 import 'package:budget/model/income/income.dart';
 import 'package:budget/page/expense/expense_page.dart';
+import 'package:budget/provider/shared_preferences_provider.dart';
+import 'package:budget/utils/util.dart';
 import 'package:budget/viewModels/category_income_model.dart';
 import 'package:budget/viewModels/income_model.dart';
 import 'package:budget/widgets/category_bottom_sheet_dar.dart';
@@ -15,10 +17,8 @@ class IncomePage extends ConsumerWidget {
   IncomePage({super.key});
   String amount = "";
   String memo = "";
-  Category category = Category(
-      category: "衣服",
-      icon: Icons.restaurant.codePoint,
-      color: Colors.orange.value);
+  int categoryIncomeIndex = 0;
+  Category? category;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SingleChildScrollView(
@@ -125,9 +125,9 @@ class IncomePage extends ConsumerWidget {
 
   //カテゴリ欄
   Widget categoryBar(BuildContext context, WidgetRef ref, String itemName) {
-    final categoryIndex = ref.watch(categoryIndexProvider);
+    categoryIncomeIndex = ref.watch(categoryIncomeIndexProvider);
     final categorys = ref.watch(categoryIncomeModelProvider);
-    category = categorys.categoryIncomes[categoryIndex];
+    category = categorys.categoryIncomes[categoryIncomeIndex];
     return Padding(
       padding: const EdgeInsets.only(top: 40),
       child: Column(
@@ -150,17 +150,22 @@ class IncomePage extends ConsumerWidget {
               ),
               child: Row(children: <Widget>[
                 const SizedBox(width: 15),
-                Icon(IconData(category.icon!, fontFamily: 'MaterialIcons'),
-                    color: Color(category.color!)),
+                Icon(IconData(category!.icon!, fontFamily: 'MaterialIcons'),
+                    color: Color(category!.color!)),
                 const SizedBox(width: 20),
                 Expanded(
                   flex: 8,
-                  child: Text(category.category,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                  child: Text(category!.category,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20)),
                 ),
                 categoryBottomSheetBarButtom(
-                    categorys: categorys.categoryIncomes),
+                  categorys: categorys.categoryIncomes,
+                  onSelectedItemChanged: (int index) {
+                    ref.read(categoryIncomeIndexProvider.notifier).state =
+                        index;
+                  },
+                ),
               ])),
         ],
       ),
@@ -246,13 +251,19 @@ class IncomePage extends ConsumerWidget {
 
   //追加ダイアログ
   Future addDialog(BuildContext context, WidgetRef ref) async {
-    final expenseViewModel = ref.read(incomeViewModelProvider.notifier);
+    final incomeViewModel = ref.read(incomeViewModelProvider.notifier);
     final date = ref.watch(dateProvider);
-    final expenseAddData =
-        Income(amount: amount, date: date, memo: memo, category: "");
+    final incomeAddData = Income(
+        amount: amount,
+        date: date,
+        memo: memo,
+        category: category!.category,
+        icon: category!.icon,
+        color: category!.color,
+        categoryIndex: categoryIncomeIndex);
     try {
-      await expenseViewModel.addIncomes(expenseAddData);
-      await dialogResult(context, expenseViewModel);
+      await incomeViewModel.addIncomes(incomeAddData);
+      await dialogResult(context, incomeViewModel, ref);
     } on Exception catch (e) {
       await dialogError(e.toString(), context);
     } catch (e) {
@@ -261,7 +272,9 @@ class IncomePage extends ConsumerWidget {
   }
 
   //成功した時のダイアログー
-  Future dialogResult(BuildContext context, IncomeViewModel model) async {
+  Future dialogResult(
+      BuildContext context, IncomeViewModel model, WidgetRef ref) async {
+    final prefs = ref.watch(sharedPreferencesProvider);
     await showCupertinoDialog(
       context: context,
       builder: (context) {
@@ -272,6 +285,8 @@ class IncomePage extends ConsumerWidget {
             TextButton(
               child: const Text('OK'),
               onPressed: () async {
+                final addedDay = DateTime.now();
+                prefs.setString("added_day", Util.toDate(addedDay));
                 Navigator.of(context).pop();
               },
             )

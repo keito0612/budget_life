@@ -8,9 +8,21 @@ class Util {
     return time;
   }
 
+  static String toTime(DateTime dateTime) {
+    initializeDateFormatting('jp');
+    final time = DateFormat.Hm('ja').format(dateTime);
+    return time;
+  }
+
   static DateTime convartDate(String date) {
     initializeDateFormatting('jp');
     final time = DateFormat.yMMMMEEEEd('ja').parse(date);
+    return time;
+  }
+
+  static DateTime convartDateToTime(String date) {
+    initializeDateFormatting('jp');
+    final time = DateFormat.Hm('ja').parse(date);
     return time;
   }
 }

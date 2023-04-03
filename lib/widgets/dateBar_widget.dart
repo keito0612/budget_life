@@ -15,7 +15,10 @@ final dateProvider = StateProvider.autoDispose((ref) {
 });
 
 class dateBarWidget extends ConsumerWidget {
-  dateBarWidget({super.key});
+  dateBarWidget({
+    super.key,
+  });
+
   DateTime _toDay = DateTime.now();
   //翌日
   void _incrementDate(WidgetRef ref) {

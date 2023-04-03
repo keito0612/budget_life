@@ -1,3 +1,4 @@
+import 'package:budget/model/category/category.dart';
 import 'package:budget/model/income/income.dart';
 import 'package:budget/page/income/income_edit_page.dart';
 import 'package:budget/utils/util.dart';
@@ -60,7 +61,7 @@ class IncomeListPage extends ConsumerWidget {
     );
   }
 
-  Widget _getExpenseItem(BuildContext context, Income income, WidgetRef ref) {
+  Widget _getExpenseItem(BuildContext context, Income income, ref) {
     final model = ref.read(incomeViewModelProvider.notifier);
     return Card(
       shape: RoundedRectangleBorder(
@@ -86,8 +87,12 @@ class IncomeListPage extends ConsumerWidget {
                         builder: (context) => IncomeEditPage(
                               id: income.id,
                               amount: income.amount,
-                              category: income.category,
+                              category: Category(
+                                  category: income.category!,
+                                  icon: income.icon,
+                                  color: income.color),
                               memo: income.memo,
+                              categoryIndex: income.categoryIndex,
                             )),
                   );
                 },
@@ -103,13 +108,22 @@ class IncomeListPage extends ConsumerWidget {
             ],
           ),
           child: ListTile(
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(income.category!),
-                Text("金額: ${income.amount}円"),
+                Row(
+                  children: [
+                    Icon(
+                      IconData(income.icon!, fontFamily: 'MaterialIcons'),
+                      color: Color(income.color!),
+                    ),
+                    const SizedBox(width: 5),
+                    Text(income.category!),
+                  ],
+                ),
+                Text(
+                  "金額: ${income.amount}円",
+                ),
                 Text("メモ: ${income.memo}"),
               ],
             ),

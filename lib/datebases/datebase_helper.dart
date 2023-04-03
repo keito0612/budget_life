@@ -18,7 +18,6 @@ class DateBaseHelper {
   static const tableCategoryIncome = 'category_income';
   static const tableAccounts = 'accounts';
   static const tableUsers = 'users';
-
   static const columnId = 'id';
   static const columnAmount = 'amount';
   static const columnDate = 'date';
@@ -36,7 +35,9 @@ class DateBaseHelper {
   static const columnPassword = 'password';
   static const columnIcon = 'icon';
   static const columnColor = 'color';
+  static const columnCategoryIndex = 'categoryIndex';
   static Database? _database;
+
   final List<Category> initializeCategoryExpenses = [
     Category(
         category: "食費",
@@ -98,9 +99,9 @@ class DateBaseHelper {
       onCreate: (db, version) async {
         await db.execute(
             // テーブルの作成
-            "CREATE TABLE $tableExpense ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnAmount TEXT , $columnDate TEXT,$columnMemo TEXT, $columnCategory  TEXT)");
+            "CREATE TABLE $tableExpense ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnAmount TEXT , $columnDate TEXT,$columnMemo TEXT, $columnCategory  TEXT, $columnIcon INTEGER , $columnColor INTEGER , $columnCategoryIndex  INTEGER  )");
         await db.execute(
-            "CREATE TABLE $tableIncome ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnAmount TEXT , $columnDate TEXT,$columnMemo TEXT, $columnCategory  TEXT)");
+            "CREATE TABLE $tableIncome ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnAmount TEXT , $columnDate TEXT,$columnMemo TEXT, $columnCategory  TEXT, $columnIcon INTEGER, $columnColor INTEGER , $columnCategoryIndex INTEGER  )");
         await db.execute(
             "CREATE TABLE $tableCategoryExpense ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnCategory TEXT , $columnIcon INTEGER,$columnColor INTEGER )");
         await db.execute(

@@ -24,7 +24,10 @@ mixin _$Expense {
   String get amount => throw _privateConstructorUsedError;
   String get date => throw _privateConstructorUsedError;
   String get memo => throw _privateConstructorUsedError;
-  String get category => throw _privateConstructorUsedError;
+  String? get category => throw _privateConstructorUsedError;
+  int? get icon => throw _privateConstructorUsedError;
+  int? get color => throw _privateConstructorUsedError;
+  int? get categoryIndex => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,7 +40,14 @@ abstract class $ExpenseCopyWith<$Res> {
       _$ExpenseCopyWithImpl<$Res, Expense>;
   @useResult
   $Res call(
-      {int? id, String amount, String date, String memo, String category});
+      {int? id,
+      String amount,
+      String date,
+      String memo,
+      String? category,
+      int? icon,
+      int? color,
+      int? categoryIndex});
 }
 
 /// @nodoc
@@ -57,7 +67,10 @@ class _$ExpenseCopyWithImpl<$Res, $Val extends Expense>
     Object? amount = null,
     Object? date = null,
     Object? memo = null,
-    Object? category = null,
+    Object? category = freezed,
+    Object? icon = freezed,
+    Object? color = freezed,
+    Object? categoryIndex = freezed,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -76,10 +89,22 @@ class _$ExpenseCopyWithImpl<$Res, $Val extends Expense>
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
               as String,
-      category: null == category
+      category: freezed == category
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      icon: freezed == icon
+          ? _value.icon
+          : icon // ignore: cast_nullable_to_non_nullable
+              as int?,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as int?,
+      categoryIndex: freezed == categoryIndex
+          ? _value.categoryIndex
+          : categoryIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -92,7 +117,14 @@ abstract class _$$_ExpenseCopyWith<$Res> implements $ExpenseCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int? id, String amount, String date, String memo, String category});
+      {int? id,
+      String amount,
+      String date,
+      String memo,
+      String? category,
+      int? icon,
+      int? color,
+      int? categoryIndex});
 }
 
 /// @nodoc
@@ -109,7 +141,10 @@ class __$$_ExpenseCopyWithImpl<$Res>
     Object? amount = null,
     Object? date = null,
     Object? memo = null,
-    Object? category = null,
+    Object? category = freezed,
+    Object? icon = freezed,
+    Object? color = freezed,
+    Object? categoryIndex = freezed,
   }) {
     return _then(_$_Expense(
       id: freezed == id
@@ -128,10 +163,22 @@ class __$$_ExpenseCopyWithImpl<$Res>
           ? _value.memo
           : memo // ignore: cast_nullable_to_non_nullable
               as String,
-      category: null == category
+      category: freezed == category
           ? _value.category
           : category // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      icon: freezed == icon
+          ? _value.icon
+          : icon // ignore: cast_nullable_to_non_nullable
+              as int?,
+      color: freezed == color
+          ? _value.color
+          : color // ignore: cast_nullable_to_non_nullable
+              as int?,
+      categoryIndex: freezed == categoryIndex
+          ? _value.categoryIndex
+          : categoryIndex // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -144,7 +191,10 @@ class _$_Expense with DiagnosticableTreeMixin implements _Expense {
       this.amount = "",
       this.date = "",
       this.memo = "",
-      this.category = "衣服"});
+      this.category,
+      this.icon,
+      this.color,
+      this.categoryIndex});
 
   factory _$_Expense.fromJson(Map<String, dynamic> json) =>
       _$$_ExpenseFromJson(json);
@@ -161,12 +211,17 @@ class _$_Expense with DiagnosticableTreeMixin implements _Expense {
   @JsonKey()
   final String memo;
   @override
-  @JsonKey()
-  final String category;
+  final String? category;
+  @override
+  final int? icon;
+  @override
+  final int? color;
+  @override
+  final int? categoryIndex;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Expense(id: $id, amount: $amount, date: $date, memo: $memo, category: $category)';
+    return 'Expense(id: $id, amount: $amount, date: $date, memo: $memo, category: $category, icon: $icon, color: $color, categoryIndex: $categoryIndex)';
   }
 
   @override
@@ -178,7 +233,10 @@ class _$_Expense with DiagnosticableTreeMixin implements _Expense {
       ..add(DiagnosticsProperty('amount', amount))
       ..add(DiagnosticsProperty('date', date))
       ..add(DiagnosticsProperty('memo', memo))
-      ..add(DiagnosticsProperty('category', category));
+      ..add(DiagnosticsProperty('category', category))
+      ..add(DiagnosticsProperty('icon', icon))
+      ..add(DiagnosticsProperty('color', color))
+      ..add(DiagnosticsProperty('categoryIndex', categoryIndex));
   }
 
   @override
@@ -191,13 +249,17 @@ class _$_Expense with DiagnosticableTreeMixin implements _Expense {
             (identical(other.date, date) || other.date == date) &&
             (identical(other.memo, memo) || other.memo == memo) &&
             (identical(other.category, category) ||
-                other.category == category));
+                other.category == category) &&
+            (identical(other.icon, icon) || other.icon == icon) &&
+            (identical(other.color, color) || other.color == color) &&
+            (identical(other.categoryIndex, categoryIndex) ||
+                other.categoryIndex == categoryIndex));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, amount, date, memo, category);
+  int get hashCode => Object.hash(runtimeType, id, amount, date, memo, category,
+      icon, color, categoryIndex);
 
   @JsonKey(ignore: true)
   @override
@@ -219,7 +281,10 @@ abstract class _Expense implements Expense {
       final String amount,
       final String date,
       final String memo,
-      final String category}) = _$_Expense;
+      final String? category,
+      final int? icon,
+      final int? color,
+      final int? categoryIndex}) = _$_Expense;
 
   factory _Expense.fromJson(Map<String, dynamic> json) = _$_Expense.fromJson;
 
@@ -232,7 +297,13 @@ abstract class _Expense implements Expense {
   @override
   String get memo;
   @override
-  String get category;
+  String? get category;
+  @override
+  int? get icon;
+  @override
+  int? get color;
+  @override
+  int? get categoryIndex;
   @override
   @JsonKey(ignore: true)
   _$$_ExpenseCopyWith<_$_Expense> get copyWith =>
