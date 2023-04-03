@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final cupertinoSlidingListValueProvider = StateProvider.autoDispose((ref) => 0);
 
 class ListPage extends ConsumerWidget {
-  const ListPage({super.key});
+  const ListPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cupertinoSliderValue = ref.watch(cupertinoSlidingListValueProvider);

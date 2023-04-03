@@ -6,10 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final categoryIncomeModelProvider =
     StateNotifierProvider<CategoryIncomeModel, CategoryIncomeState>(
-  (ref) => CategoryIncomeModel(
-    CategoryIncomeRepository(CategoryIncomeDatabase()),
-  ),
-);
+        (ref) => CategoryIncomeModel(
+              CategoryIncomeRepository(CategoryIncomeDatabase()),
+            ));
 
 class CategoryIncomeModel extends StateNotifier<CategoryIncomeState> {
   CategoryIncomeModel(this._categoryIncomeRepository)

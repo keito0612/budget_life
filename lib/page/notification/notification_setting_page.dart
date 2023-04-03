@@ -1,5 +1,7 @@
 import 'package:budget/notifications/notification_service.dart';
 import 'package:budget/provider/notification_provider.dart';
+import 'package:budget/provider/notification_time_provider.dart';
+import 'package:budget/provider/shared_preferences_provider.dart';
 import 'package:budget/widgets/cupertino_switch_tile.dart';
 import 'package:budget/widgets/cupertino_time_piker_tile.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +14,10 @@ class NotificationSettingPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final notification = ref.watch(notificationProvider);
     final notificationController = ref.read(notificationProvider.notifier);
-    final time = ref.watch(timeProvider);
-    final timeController = ref.read(timeProvider.notifier);
+    final notificationTime = ref.watch(notificationTimeProvider);
+    final notificationTimeController =
+        ref.read(notificationTimeProvider.notifier);
+    final prefs = ref.watch(sharedPreferencesProvider);
 
     return Scaffold(
       backgroundColor: Colors.grey,
@@ -57,6 +61,7 @@ class NotificationSettingPage extends ConsumerWidget {
                       onChanged: (bool value) async {
                         notificationController.setNotification(value);
                         if (notification == false) {
+                          prefs.remove("notification_time");
                           NotificationService().cancelAllNotification();
                         }
                       }),
@@ -80,10 +85,11 @@ class NotificationSettingPage extends ConsumerWidget {
                         ),
                         child: CupertinoTimePikerTile(
                             title: "時刻",
-                            time: time,
+                            time: notificationTime,
                             onDateTimeChanged: (DateTime dateTime) async {
                               NotificationService().cancelAllNotification();
-                              timeController.state = dateTime;
+                              notificationTimeController
+                                  .setNotificationTime(dateTime);
                             }),
                       ),
                     )

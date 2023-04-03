@@ -3,22 +3,20 @@ import 'package:budget/model/category/category.dart';
 import 'package:budget/states/category_expense_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../repositorys/category_repository.dart';
+import '../repositorys/category_expense_repository.dart';
 
 final categoryExpenseModelProvider =
     StateNotifierProvider<CategoryExpenseModel, CategoryExpenseState>(
   (ref) => CategoryExpenseModel(
-    ref,
     CategoryExpenseRepository(CategoryExpenseDatabase()),
   ),
 );
 
 class CategoryExpenseModel extends StateNotifier<CategoryExpenseState> {
-  CategoryExpenseModel(this._ref, this._categoryExpenseRepository)
+  CategoryExpenseModel(this._categoryExpenseRepository)
       : super(const CategoryExpenseState()) {
     getCategorys();
   }
-  final Ref _ref;
   final CategoryExpenseRepository _categoryExpenseRepository;
 
   Future<void> addCategory(Category category) async {

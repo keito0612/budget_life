@@ -12,11 +12,6 @@ final notificationProvider =
   return NotificationNotifier(prefs);
 });
 
-final timeProvider = StateProvider((ref) {
-  final toTime = DateTime.now();
-  return toTime;
-});
-
 class NotificationNotifier extends StateNotifier<bool> {
   NotificationNotifier(
     this._prefs,

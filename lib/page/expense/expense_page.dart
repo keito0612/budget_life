@@ -1,5 +1,7 @@
 import 'package:budget/model/category/category.dart';
 import 'package:budget/model/expense/expense.dart';
+import 'package:budget/provider/shared_preferences_provider.dart';
+import 'package:budget/utils/util.dart';
 import 'package:budget/viewModels/category_expense_model.dart';
 import 'package:budget/viewModels/expense_model.dart';
 import 'package:budget/widgets/category_bottom_sheet_dar.dart';
@@ -17,6 +19,7 @@ class ExpensePage extends ConsumerWidget {
   String amount = "";
   Category? category;
   String memo = "";
+  int categoryExpenseIndex = 0;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categoryExoenseModel = ref.watch(categoryExpenseModelProvider);
@@ -126,8 +129,8 @@ class ExpensePage extends ConsumerWidget {
   //カテゴリ欄
   Widget categoryBar(BuildContext context, WidgetRef ref, String itemName,
       List<Category> categorys) {
-    final categoryIndex = ref.watch(categoryIndexProvider);
-    category = categorys[categoryIndex];
+    categoryExpenseIndex = ref.watch(categoryExpenseIndexProvider);
+    category = categorys[categoryExpenseIndex];
 
     return Padding(
       padding: const EdgeInsets.only(top: 40),
@@ -157,11 +160,15 @@ class ExpensePage extends ConsumerWidget {
                 Expanded(
                   flex: 8,
                   child: Text(category!.category,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20)),
                 ),
                 categoryBottomSheetBarButtom(
                   categorys: categorys,
+                  onSelectedItemChanged: (index) {
+                    ref.read(categoryExpenseIndexProvider.notifier).state =
+                        index;
+                  },
                 )
               ])),
         ],
@@ -260,11 +267,12 @@ class ExpensePage extends ConsumerWidget {
         memo: memo,
         category: category!.category,
         color: category!.color!,
-        icon: category!.icon!);
+        icon: category!.icon!,
+        categoryIndex: categoryExpenseIndex);
     try {
       await expenseViewModel.addExpense(expenseAddData);
       await expenseViewModel.getExpenses();
-      await dialogResult(context, expenseViewModel);
+      await dialogResult(context, expenseViewModel, ref);
     } on Exception catch (e) {
       await dialogError(e.toString(), context);
     } catch (e) {
@@ -273,7 +281,9 @@ class ExpensePage extends ConsumerWidget {
   }
 
   //成功した時のダイアログー
-  Future dialogResult(BuildContext context, ExpenseViewModel model) async {
+  Future dialogResult(
+      BuildContext context, ExpenseViewModel model, WidgetRef ref) async {
+    final prefs = ref.watch(sharedPreferencesProvider);
     await showCupertinoDialog(
       context: context,
       builder: (context) {
@@ -284,7 +294,8 @@ class ExpensePage extends ConsumerWidget {
             TextButton(
               child: const Text('OK'),
               onPressed: () async {
-                model.getExpenses();
+                final addedDay = DateTime.now();
+                prefs.setString("added_day", Util.toDate(addedDay));
                 Navigator.of(context).pop();
               },
             )
