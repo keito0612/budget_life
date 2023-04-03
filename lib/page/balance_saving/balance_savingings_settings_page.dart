@@ -112,7 +112,7 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
                     },
                     decoration: const InputDecoration(
                       border: InputBorder.none,
-                      hintText: "支出",
+                      hintText: "手取り",
                     ),
                   ),
                 ),
@@ -165,7 +165,7 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
                     },
                     decoration: const InputDecoration(
                       border: InputBorder.none,
-                      hintText: "支出",
+                      hintText: "貯金",
                     ),
                   ),
                 ),
