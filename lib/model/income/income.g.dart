@@ -1,4 +1,3 @@
-
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'income.dart';
@@ -12,7 +11,10 @@ _$_Income _$$_IncomeFromJson(Map<String, dynamic> json) => _$_Income(
       amount: json['amount'] as String? ?? "",
       date: json['date'] as String? ?? "",
       memo: json['memo'] as String? ?? "",
-      category: json['category'] as String? ?? "衣服",
+      category: json['category'] as String?,
+      icon: json['icon'] as int?,
+      color: json['color'] as int?,
+      categoryIndex: json['categoryIndex'] as int?,
     );
 
 Map<String, dynamic> _$$_IncomeToJson(_$_Income instance) => <String, dynamic>{
@@ -21,4 +23,7 @@ Map<String, dynamic> _$$_IncomeToJson(_$_Income instance) => <String, dynamic>{
       'date': instance.date,
       'memo': instance.memo,
       'category': instance.category,
+      'icon': instance.icon,
+      'color': instance.color,
+      'categoryIndex': instance.categoryIndex,
     };
