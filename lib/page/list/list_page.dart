@@ -3,8 +3,8 @@ import 'package:budget/page/income/income_list_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 final cupertinoSlidingListValueProvider = StateProvider.autoDispose((ref) => 0);
+
 
 class ListPage extends ConsumerWidget {
   const ListPage({Key? key}) : super(key: key);
