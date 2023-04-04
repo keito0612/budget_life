@@ -1,4 +1,4 @@
-import 'package:budget/page/passcode_rock_setting.dart';
+import 'package:budget/page/passcode/passcode_rock_setting.dart';
 import 'package:budget/provider/shared_preferences_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

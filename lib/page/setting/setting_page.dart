@@ -2,8 +2,9 @@ import 'package:budget/notifications/notification_service.dart';
 import 'package:budget/page/category/category_setting_page.dart';
 import 'package:budget/page/notification/notification_setting_page.dart';
 import 'package:budget/page/passcode/passcode_rock_setting.dart';
-import 'package:budget/provider/notification_provider.dart';
+import 'package:budget/provider/notification_time_provider.dart';
 import 'package:budget/provider/shared_preferences_provider.dart';
+import 'package:budget/utils/util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -107,7 +108,9 @@ class SettingPage extends ConsumerWidget {
                             .watch(sharedPreferencesProvider)
                             .getBool("notification");
                         if (notification == true) {
-                          final time = ref.watch(timeProvider);
+                          final notificationTime =
+                              ref.watch(notificationTimeProvider);
+                          final time = Util.convartDateToTime(notificationTime);
                           NotificationService().scheduledNotification(
                               hour: time.hour, minutes: time.minute, id: 0);
                         }
