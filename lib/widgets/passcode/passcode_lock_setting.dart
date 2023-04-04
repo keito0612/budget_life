@@ -1,5 +1,5 @@
 import 'package:budget/main.dart';
-import 'package:budget/page/passcode_rock_setting.dart';
+import 'package:budget/page/passcode/passcode_rock_setting.dart';
 import 'package:budget/provider/local_auth_controller_provider.dart';
 import 'package:budget/provider/shared_preferences_provider.dart';
 import 'package:flutter/material.dart';
