@@ -20,8 +20,10 @@ class CategoryIncomeModel extends StateNotifier<CategoryIncomeState> {
 
   Future<void> addCategory(Category category) async {
     final categoryData = await _categoryIncomeRepository.addCategorys(category);
-    state = state
-        .copyWith(categoryIncomes: [categoryData, ...state.categoryIncomes]);
+    state = state.copyWith(categoryIncomes: [
+      ...state.categoryIncomes,
+      categoryData,
+    ]);
   }
 
   Future<void> getCategorys() async {
