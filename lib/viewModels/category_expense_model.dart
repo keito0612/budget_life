@@ -22,7 +22,10 @@ class CategoryExpenseModel extends StateNotifier<CategoryExpenseState> {
   Future<void> addCategory(Category category) async {
     final categoryData =
         await _categoryExpenseRepository.addCategorys(category);
-    state = state.copyWith(categorys: [categoryData, ...state.categorys]);
+    state = state.copyWith(categorys: [
+      ...state.categorys,
+      categoryData,
+    ]);
   }
 
   Future<void> getCategorys() async {
