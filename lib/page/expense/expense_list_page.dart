@@ -11,43 +11,43 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final sortTypeProvider = StateProvider((ref) {
-  return SortExpenseType.newType;
+final sortTypeProvider = StateProvider.autoDispose((ref) {
+  return SortType.newType;
 });
-final selectedSortTypeTextProvider = StateProvider((ref) {
+final selectedSortTypeTextProvider = StateProvider.autoDispose((ref) {
   final sortType = ref.watch(sortTypeProvider);
   switch (sortType) {
-    case SortExpenseType.newType:
+    case SortType.newType:
       return "日付が新しい順";
-    case SortExpenseType.oldType:
+    case SortType.oldType:
       return "日付が古い順";
   }
 });
 
-final serchTextProvider = StateProvider.autoDispose((ref) {
+final serchExpenseTextProvider = StateProvider.autoDispose((ref) {
   return "";
 });
 
-final orderExpenseProvoder = StateProvider((ref) {
+final orderExpenseProvoder = StateProvider.autoDispose((ref) {
   final sortType = ref.watch(sortTypeProvider);
   switch (sortType) {
-    case SortExpenseType.newType:
+    case SortType.newType:
       return GroupedListOrder.ASC;
-    case SortExpenseType.oldType:
+    case SortType.oldType:
       return GroupedListOrder.DESC;
   }
 });
 
-final expenseListProvider = StateProvider<List<Expense>>((ref) {
+final expenseListProvider = StateProvider.autoDispose<List<Expense>>((ref) {
   final model = ref.watch(expenseViewModelProvider);
   final sortType = ref.watch(sortTypeProvider);
 
   List<Expense> mutableExpenses = List.from(model.expenses);
   switch (sortType) {
-    case SortExpenseType.newType:
+    case SortType.newType:
       return List<Expense>.unmodifiable(
           mutableExpenses..sort((a, b) => b.id!.compareTo(a.id!)));
-    case SortExpenseType.oldType:
+    case SortType.oldType:
       return List<Expense>.unmodifiable(
           mutableExpenses..sort((a, b) => b.id!.compareTo(a.id!)));
   }
@@ -55,7 +55,7 @@ final expenseListProvider = StateProvider<List<Expense>>((ref) {
 
 final serchExpenseListProvider = StateProvider.autoDispose((ref) {
   final expenseList = ref.watch(expenseListProvider);
-  final serchText = ref.watch(serchTextProvider);
+  final serchText = ref.watch(serchExpenseTextProvider);
   return expenseList
       .where((expense) =>
           expense.category!.toLowerCase().contains(serchText.toLowerCase()) ||
@@ -63,7 +63,7 @@ final serchExpenseListProvider = StateProvider.autoDispose((ref) {
       .toList();
 });
 
-enum SortExpenseType { oldType, newType }
+enum SortType { oldType, newType }
 
 class ExpenseListPage extends ConsumerWidget {
   const ExpenseListPage({super.key});
@@ -71,8 +71,8 @@ class ExpenseListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final expenses = ref.watch(expenseListProvider);
     final order = ref.watch(orderExpenseProvoder);
-    final serchText = ref.watch(serchTextProvider);
-    final serchController = ref.read(serchTextProvider.notifier);
+    final serchText = ref.watch(serchExpenseTextProvider);
+    final serchController = ref.read(serchExpenseTextProvider.notifier);
     final serchExpenseList = ref.watch(serchExpenseListProvider);
 
     return SingleChildScrollView(
@@ -106,34 +106,14 @@ class ExpenseListPage extends ConsumerWidget {
               groupSeparatorBuilder: (dateTime) {
                 final date =
                     "${dateTime.year}年 ${dateTime.month}月${dateTime.day}日";
-                final monthTotalAmount = _monthTotalAmount(expenses, date);
-                return _getGroupExpenseSeparator(date, monthTotalAmount);
+
+                return _getGroupExpenseSeparator(date);
               },
               itemBuilder: (context, expense) {
                 return _getExpenseItem(context, expense, ref);
               }),
         ],
       ),
-    );
-  }
-
-  int _monthTotalAmount(List<Expense> expenses, String date) {
-    var monthTotalAmount = <String, int>{};
-    for (final expense in expenses) {
-      if (monthTotalAmount.containsKey(date)) {
-        monthTotalAmount[date] =
-            monthTotalAmount[date]! + int.parse(expense.amount);
-      } else {
-        monthTotalAmount[date] = int.parse(expense.amount);
-      }
-    }
-
-    return monthTotalAmount[date]!;
-  }
-
-  Widget _serchTextField() {
-    return CupertinoSearchTextField(
-      onChanged: (value) {},
     );
   }
 
@@ -165,7 +145,7 @@ class ExpenseListPage extends ConsumerWidget {
     );
   }
 
-  Widget _getGroupExpenseSeparator(String date, int amount) {
+  Widget _getGroupExpenseSeparator(String date) {
     return SizedBox(
       height: 50,
       child: Align(
@@ -187,11 +167,6 @@ class ExpenseListPage extends ConsumerWidget {
                 Text(
                   date,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
-                ),
-                const SizedBox(width: 10),
-                Text(
-                  "合計金額：$amount",
                   style: const TextStyle(color: Colors.white),
                 ),
               ],
@@ -281,14 +256,14 @@ class ExpenseListPage extends ConsumerWidget {
         actions: <CupertinoActionSheetAction>[
           CupertinoActionSheetAction(
             onPressed: () {
-              sortTypeController.state = SortExpenseType.newType;
+              sortTypeController.state = SortType.newType;
               Navigator.pop(context);
             },
             child: const Text('日付が新しい順'),
           ),
           CupertinoActionSheetAction(
             onPressed: () {
-              sortTypeController.state = SortExpenseType.oldType;
+              sortTypeController.state = SortType.oldType;
               Navigator.pop(context);
             },
             child: const Text('日付が古い順'),
