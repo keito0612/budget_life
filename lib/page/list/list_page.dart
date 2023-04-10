@@ -16,21 +16,21 @@ class ListPage extends ConsumerWidget {
         backgroundColor: Colors.grey,
         appBar: AppBar(
           backgroundColor: Colors.green,
-          title: cupertinoListSlidingWidget(ref),
+          title: _cupertinoListSlidingWidget(ref),
         ),
         body: pageList[cupertinoSliderValue]);
   }
 
-  Widget cupertinoListSlidingWidget(WidgetRef ref) {
+  Widget _cupertinoListSlidingWidget(WidgetRef ref) {
     final cupertinoSlidingValue = ref.watch(cupertinoSlidingListValueProvider);
     final cupertinoSlidingValueController =
         ref.read(cupertinoSlidingListValueProvider.notifier);
     return CupertinoSlidingSegmentedControl(
-      children: {
+      children: const {
         0: Text(
           "支出",
           style: TextStyle(
-            color: cupertinoSlidingValue == 0 ? Colors.black : Colors.white,
+            color: Colors.white,
             fontSize: 15,
             fontWeight: FontWeight.w400,
             fontFamily: "SFProRounded",
@@ -40,7 +40,7 @@ class ListPage extends ConsumerWidget {
         1: Text(
           "収入",
           style: TextStyle(
-            color: cupertinoSlidingValue == 1 ? Colors.black : Colors.white,
+            color: Colors.white,
             fontSize: 15,
             fontWeight: FontWeight.w400,
             fontFamily: "SFProRounded",
