@@ -1,5 +1,6 @@
 import 'package:budget/notifications/notification_service.dart';
 import 'package:budget/page/category/category_setting_page.dart';
+import 'package:budget/page/fixed_expense_with_recurring_income/fixed_expense_with_recurring_income.page.dart';
 import 'package:budget/page/notification/notification_setting_page.dart';
 import 'package:budget/page/passcode/passcode_rock_setting.dart';
 import 'package:budget/provider/notification_time_provider.dart';
@@ -124,7 +125,15 @@ class SettingPage extends ConsumerWidget {
                     indent: 0,
                     endIndent: 0,
                   ),
-                  const ListTile(title: Text("パスワードロック"))
+                  ListTile(
+                      title: const Text("月の固定値•定期入力"),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const FixedExpenseWithRecurringIncomePage()));
+                      }),
                 ],
               ),
             )
