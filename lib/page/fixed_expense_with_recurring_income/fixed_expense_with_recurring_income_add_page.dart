@@ -1,4 +1,5 @@
 import 'package:budget/page/fixed_expense/fixed_expense_page.dart';
+import 'package:budget/page/recurring_income/recurring_income_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,11 +14,13 @@ class fixedExpenseWithRecurringIncomeAddPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pageValue = ref.watch(pageValueProvider);
-    final pageWidgets = [FixedExpensePage()];
+    final pageWidgets = [FixedExpensePage(), RecurringIncomePage()];
     return Scaffold(
         backgroundColor: Colors.grey,
         appBar: AppBar(title: _cupertinoListSlidingWidget(ref, pageValue)),
-        body: pageWidgets[pageValue]);
+        body: GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            child: pageWidgets[pageValue]));
   }
 
   Widget _cupertinoListSlidingWidget(WidgetRef ref, int pageValue) {
