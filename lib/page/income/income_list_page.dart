@@ -194,9 +194,9 @@ class IncomeListPage extends ConsumerWidget {
                   ],
                 ),
                 Text(
-                  "金額: ${income.amount}円",
+                  "金額：${income.amount}円",
                 ),
-                Text("メモ: ${income.memo}"),
+                Text("メモ：${income.memo}"),
               ],
             ),
           ),
