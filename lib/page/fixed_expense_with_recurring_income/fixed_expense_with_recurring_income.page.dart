@@ -1,5 +1,5 @@
 import 'package:budget/model/fixed_expense/fixed_expense.dart';
-import 'package:budget/model/income/income.dart';
+import 'package:budget/model/recurring_income/recurring_income.dart';
 import 'package:budget/page/fixed_expense_with_recurring_income/fixed_expense_with_recurring_income_add_page.dart';
 import 'package:budget/viewModels/fixed_expense_model.dart';
 import 'package:budget/viewModels/recurringI_income_model.dart';
@@ -138,8 +138,8 @@ class FixedExpenseWithRecurringIncomePage extends ConsumerWidget {
                 Text(
                   "金額：${fixedExpnese.amount}円",
                 ),
-                Text("自動入力:${fixedExpnese.autoMaticInputDate}"),
-                Text("メモ: ${fixedExpnese.memo}"),
+                Text("自動入力：${fixedExpnese.autoMaticInputDate}"),
+                Text("メモ：${fixedExpnese.memo}"),
               ],
             ),
           ),
@@ -167,7 +167,7 @@ class FixedExpenseWithRecurringIncomePage extends ConsumerWidget {
     );
   }
 
-  Widget _recurringIncomeList(List<Income> recurringIncomes,
+  Widget _recurringIncomeList(List<RecurringIncome> recurringIncomes,
       RecurringIncomeModel recurringIncomeModel, BuildContext context) {
     return ListView(
         padding: EdgeInsets.zero,
@@ -179,7 +179,7 @@ class FixedExpenseWithRecurringIncomePage extends ConsumerWidget {
             .toList());
   }
 
-  Widget _recurringIncomeItem(Income recurringIncome,
+  Widget _recurringIncomeItem(RecurringIncome recurringIncome,
       RecurringIncomeModel recurringIncomeModel, BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(
@@ -227,7 +227,8 @@ class FixedExpenseWithRecurringIncomePage extends ConsumerWidget {
                 Text(
                   "金額：${recurringIncome.amount}円",
                 ),
-                Text("メモ: ${recurringIncome.memo}"),
+                Text("自動入力：${recurringIncome.autoMaticInputDate}"),
+                Text("メモ：${recurringIncome.memo}"),
               ],
             ),
           ),

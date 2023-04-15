@@ -240,7 +240,7 @@ class ExpenseListPage extends ConsumerWidget {
                 Text(
                   "金額：${expense.amount}円",
                 ),
-                Text("メモ: ${expense.memo}"),
+                Text("メモ：${expense.memo}"),
               ],
             ),
           ),
