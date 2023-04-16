@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'fixed_expense.dart';
+part of 'recurring_income.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,17 +14,17 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-FixedExpense _$FixedExpenseFromJson(Map<String, dynamic> json) {
-  return _FixedExpense.fromJson(json);
+RecurringIncome _$RecurringIncomeFromJson(Map<String, dynamic> json) {
+  return _RecurringIncome.fromJson(json);
 }
 
 /// @nodoc
-mixin _$FixedExpense {
+mixin _$RecurringIncome {
   int? get id => throw _privateConstructorUsedError;
   String get amount => throw _privateConstructorUsedError;
   String get autoMaticInputDate => throw _privateConstructorUsedError;
   int get autoMaticInputDay => throw _privateConstructorUsedError;
-  int get autoMaticInuputDateIndex => throw _privateConstructorUsedError;
+  int get autoMaticInputIndex => throw _privateConstructorUsedError;
   String get memo => throw _privateConstructorUsedError;
   String? get category => throw _privateConstructorUsedError;
   int? get icon => throw _privateConstructorUsedError;
@@ -33,22 +33,22 @@ mixin _$FixedExpense {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $FixedExpenseCopyWith<FixedExpense> get copyWith =>
+  $RecurringIncomeCopyWith<RecurringIncome> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $FixedExpenseCopyWith<$Res> {
-  factory $FixedExpenseCopyWith(
-          FixedExpense value, $Res Function(FixedExpense) then) =
-      _$FixedExpenseCopyWithImpl<$Res, FixedExpense>;
+abstract class $RecurringIncomeCopyWith<$Res> {
+  factory $RecurringIncomeCopyWith(
+          RecurringIncome value, $Res Function(RecurringIncome) then) =
+      _$RecurringIncomeCopyWithImpl<$Res, RecurringIncome>;
   @useResult
   $Res call(
       {int? id,
       String amount,
       String autoMaticInputDate,
       int autoMaticInputDay,
-      int autoMaticInuputDateIndex,
+      int autoMaticInputIndex,
       String memo,
       String? category,
       int? icon,
@@ -57,9 +57,9 @@ abstract class $FixedExpenseCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$FixedExpenseCopyWithImpl<$Res, $Val extends FixedExpense>
-    implements $FixedExpenseCopyWith<$Res> {
-  _$FixedExpenseCopyWithImpl(this._value, this._then);
+class _$RecurringIncomeCopyWithImpl<$Res, $Val extends RecurringIncome>
+    implements $RecurringIncomeCopyWith<$Res> {
+  _$RecurringIncomeCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -73,7 +73,7 @@ class _$FixedExpenseCopyWithImpl<$Res, $Val extends FixedExpense>
     Object? amount = null,
     Object? autoMaticInputDate = null,
     Object? autoMaticInputDay = null,
-    Object? autoMaticInuputDateIndex = null,
+    Object? autoMaticInputIndex = null,
     Object? memo = null,
     Object? category = freezed,
     Object? icon = freezed,
@@ -97,9 +97,9 @@ class _$FixedExpenseCopyWithImpl<$Res, $Val extends FixedExpense>
           ? _value.autoMaticInputDay
           : autoMaticInputDay // ignore: cast_nullable_to_non_nullable
               as int,
-      autoMaticInuputDateIndex: null == autoMaticInuputDateIndex
-          ? _value.autoMaticInuputDateIndex
-          : autoMaticInuputDateIndex // ignore: cast_nullable_to_non_nullable
+      autoMaticInputIndex: null == autoMaticInputIndex
+          ? _value.autoMaticInputIndex
+          : autoMaticInputIndex // ignore: cast_nullable_to_non_nullable
               as int,
       memo: null == memo
           ? _value.memo
@@ -126,11 +126,11 @@ class _$FixedExpenseCopyWithImpl<$Res, $Val extends FixedExpense>
 }
 
 /// @nodoc
-abstract class _$$_FixedExpenseCopyWith<$Res>
-    implements $FixedExpenseCopyWith<$Res> {
-  factory _$$_FixedExpenseCopyWith(
-          _$_FixedExpense value, $Res Function(_$_FixedExpense) then) =
-      __$$_FixedExpenseCopyWithImpl<$Res>;
+abstract class _$$_RecurringIncomeCopyWith<$Res>
+    implements $RecurringIncomeCopyWith<$Res> {
+  factory _$$_RecurringIncomeCopyWith(
+          _$_RecurringIncome value, $Res Function(_$_RecurringIncome) then) =
+      __$$_RecurringIncomeCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -138,7 +138,7 @@ abstract class _$$_FixedExpenseCopyWith<$Res>
       String amount,
       String autoMaticInputDate,
       int autoMaticInputDay,
-      int autoMaticInuputDateIndex,
+      int autoMaticInputIndex,
       String memo,
       String? category,
       int? icon,
@@ -147,11 +147,11 @@ abstract class _$$_FixedExpenseCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_FixedExpenseCopyWithImpl<$Res>
-    extends _$FixedExpenseCopyWithImpl<$Res, _$_FixedExpense>
-    implements _$$_FixedExpenseCopyWith<$Res> {
-  __$$_FixedExpenseCopyWithImpl(
-      _$_FixedExpense _value, $Res Function(_$_FixedExpense) _then)
+class __$$_RecurringIncomeCopyWithImpl<$Res>
+    extends _$RecurringIncomeCopyWithImpl<$Res, _$_RecurringIncome>
+    implements _$$_RecurringIncomeCopyWith<$Res> {
+  __$$_RecurringIncomeCopyWithImpl(
+      _$_RecurringIncome _value, $Res Function(_$_RecurringIncome) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -161,14 +161,14 @@ class __$$_FixedExpenseCopyWithImpl<$Res>
     Object? amount = null,
     Object? autoMaticInputDate = null,
     Object? autoMaticInputDay = null,
-    Object? autoMaticInuputDateIndex = null,
+    Object? autoMaticInputIndex = null,
     Object? memo = null,
     Object? category = freezed,
     Object? icon = freezed,
     Object? color = freezed,
     Object? categoryIndex = freezed,
   }) {
-    return _then(_$_FixedExpense(
+    return _then(_$_RecurringIncome(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -185,9 +185,9 @@ class __$$_FixedExpenseCopyWithImpl<$Res>
           ? _value.autoMaticInputDay
           : autoMaticInputDay // ignore: cast_nullable_to_non_nullable
               as int,
-      autoMaticInuputDateIndex: null == autoMaticInuputDateIndex
-          ? _value.autoMaticInuputDateIndex
-          : autoMaticInuputDateIndex // ignore: cast_nullable_to_non_nullable
+      autoMaticInputIndex: null == autoMaticInputIndex
+          ? _value.autoMaticInputIndex
+          : autoMaticInputIndex // ignore: cast_nullable_to_non_nullable
               as int,
       memo: null == memo
           ? _value.memo
@@ -215,21 +215,21 @@ class __$$_FixedExpenseCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_FixedExpense implements _FixedExpense {
-  const _$_FixedExpense(
+class _$_RecurringIncome implements _RecurringIncome {
+  const _$_RecurringIncome(
       {this.id,
       this.amount = "",
       this.autoMaticInputDate = "",
       this.autoMaticInputDay = 1,
-      this.autoMaticInuputDateIndex = 0,
+      this.autoMaticInputIndex = 1,
       this.memo = "",
       this.category,
       this.icon,
       this.color,
       this.categoryIndex});
 
-  factory _$_FixedExpense.fromJson(Map<String, dynamic> json) =>
-      _$$_FixedExpenseFromJson(json);
+  factory _$_RecurringIncome.fromJson(Map<String, dynamic> json) =>
+      _$$_RecurringIncomeFromJson(json);
 
   @override
   final int? id;
@@ -244,7 +244,7 @@ class _$_FixedExpense implements _FixedExpense {
   final int autoMaticInputDay;
   @override
   @JsonKey()
-  final int autoMaticInuputDateIndex;
+  final int autoMaticInputIndex;
   @override
   @JsonKey()
   final String memo;
@@ -259,23 +259,22 @@ class _$_FixedExpense implements _FixedExpense {
 
   @override
   String toString() {
-    return 'FixedExpense(id: $id, amount: $amount, autoMaticInputDate: $autoMaticInputDate, autoMaticInputDay: $autoMaticInputDay, autoMaticInuputDateIndex: $autoMaticInuputDateIndex, memo: $memo, category: $category, icon: $icon, color: $color, categoryIndex: $categoryIndex)';
+    return 'RecurringIncome(id: $id, amount: $amount, autoMaticInputDate: $autoMaticInputDate, autoMaticInputDay: $autoMaticInputDay, autoMaticInputIndex: $autoMaticInputIndex, memo: $memo, category: $category, icon: $icon, color: $color, categoryIndex: $categoryIndex)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_FixedExpense &&
+            other is _$_RecurringIncome &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.autoMaticInputDate, autoMaticInputDate) ||
                 other.autoMaticInputDate == autoMaticInputDate) &&
             (identical(other.autoMaticInputDay, autoMaticInputDay) ||
                 other.autoMaticInputDay == autoMaticInputDay) &&
-            (identical(
-                    other.autoMaticInuputDateIndex, autoMaticInuputDateIndex) ||
-                other.autoMaticInuputDateIndex == autoMaticInuputDateIndex) &&
+            (identical(other.autoMaticInputIndex, autoMaticInputIndex) ||
+                other.autoMaticInputIndex == autoMaticInputIndex) &&
             (identical(other.memo, memo) || other.memo == memo) &&
             (identical(other.category, category) ||
                 other.category == category) &&
@@ -293,7 +292,7 @@ class _$_FixedExpense implements _FixedExpense {
       amount,
       autoMaticInputDate,
       autoMaticInputDay,
-      autoMaticInuputDateIndex,
+      autoMaticInputIndex,
       memo,
       category,
       icon,
@@ -303,32 +302,32 @@ class _$_FixedExpense implements _FixedExpense {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_FixedExpenseCopyWith<_$_FixedExpense> get copyWith =>
-      __$$_FixedExpenseCopyWithImpl<_$_FixedExpense>(this, _$identity);
+  _$$_RecurringIncomeCopyWith<_$_RecurringIncome> get copyWith =>
+      __$$_RecurringIncomeCopyWithImpl<_$_RecurringIncome>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_FixedExpenseToJson(
+    return _$$_RecurringIncomeToJson(
       this,
     );
   }
 }
 
-abstract class _FixedExpense implements FixedExpense {
-  const factory _FixedExpense(
+abstract class _RecurringIncome implements RecurringIncome {
+  const factory _RecurringIncome(
       {final int? id,
       final String amount,
       final String autoMaticInputDate,
       final int autoMaticInputDay,
-      final int autoMaticInuputDateIndex,
+      final int autoMaticInputIndex,
       final String memo,
       final String? category,
       final int? icon,
       final int? color,
-      final int? categoryIndex}) = _$_FixedExpense;
+      final int? categoryIndex}) = _$_RecurringIncome;
 
-  factory _FixedExpense.fromJson(Map<String, dynamic> json) =
-      _$_FixedExpense.fromJson;
+  factory _RecurringIncome.fromJson(Map<String, dynamic> json) =
+      _$_RecurringIncome.fromJson;
 
   @override
   int? get id;
@@ -339,7 +338,7 @@ abstract class _FixedExpense implements FixedExpense {
   @override
   int get autoMaticInputDay;
   @override
-  int get autoMaticInuputDateIndex;
+  int get autoMaticInputIndex;
   @override
   String get memo;
   @override
@@ -352,6 +351,6 @@ abstract class _FixedExpense implements FixedExpense {
   int? get categoryIndex;
   @override
   @JsonKey(ignore: true)
-  _$$_FixedExpenseCopyWith<_$_FixedExpense> get copyWith =>
+  _$$_RecurringIncomeCopyWith<_$_RecurringIncome> get copyWith =>
       throw _privateConstructorUsedError;
 }

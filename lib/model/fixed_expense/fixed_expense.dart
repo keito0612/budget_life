@@ -9,6 +9,7 @@ abstract class FixedExpense with _$FixedExpense {
     @Default("") String amount,
     @Default("") String autoMaticInputDate,
     @Default(1) int autoMaticInputDay,
+    @Default(0) int autoMaticInuputDateIndex,
     @Default("") String memo,
     String? category,
     int? icon,
