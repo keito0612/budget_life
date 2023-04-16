@@ -11,7 +11,8 @@ import '../../widgets/category_bottom_sheet_dar.dart';
 
 final amountProvider = StateProvider.autoDispose((ref) => "");
 final memoProvider = StateProvider.autoDispose((ref) => "");
-final autoMaticInputdateProvider = StateProvider.autoDispose((ref) => "月の始まり");
+final automaticInputdateProvider = StateProvider.autoDispose((ref) => "月の始まり");
+final automaticInputDateIndex = StateProvider.autoDispose((ref) => 0);
 
 class FixedExpensePage extends ConsumerWidget {
   FixedExpensePage({super.key});
@@ -92,9 +93,9 @@ class FixedExpensePage extends ConsumerWidget {
 
   Widget automaticInputDate(
       BuildContext context, WidgetRef ref, String itemName) {
-    autoMaticInputDate = ref.watch(autoMaticInputdateProvider);
+    autoMaticInputDate = ref.watch(automaticInputdateProvider);
     final automaticInputDateController =
-        ref.read(autoMaticInputdateProvider.notifier);
+        ref.read(automaticInputdateProvider.notifier);
     return Padding(
       padding: const EdgeInsets.only(top: 40),
       child: Column(
