@@ -12,7 +12,6 @@ final authControllerProvider = Provider<AuthControllerProvider>(
 
 class AuthControllerProvider {
   AuthControllerProvider(this._ref);
-
   final Ref _ref;
 
   LocalAuthentication get _auth => _ref.read(localAuthenticationProvider);
