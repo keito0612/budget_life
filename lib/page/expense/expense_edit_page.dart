@@ -34,6 +34,7 @@ class ExpenseEditPage extends ConsumerWidget {
   int? categoryIndex;
   TextEditingController amountTextEditingController = TextEditingController();
   TextEditingController memoTextEditingController = TextEditingController();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categorys = ref.watch(categoryExpenseModelProvider);
@@ -43,36 +44,39 @@ class ExpenseEditPage extends ConsumerWidget {
         backgroundColor: Colors.green,
         title: const Text("編集"),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(children: <Widget>[
-            dateBarWidget(),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Container(
-                  width: 380,
-                  height: 500,
-                  decoration: const BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black38,
-                        offset: Offset(2.0, 2.0),
-                        blurRadius: 4.0,
-                        spreadRadius: 4.0,
-                      ),
-                    ],
-                  ),
-                  child: Column(children: [
-                    amountTextField(ref, "支出"),
-                    categoryBar(context, ref, "カテゴリー", categorys.categorys),
-                    memoTextField("メモ", ref),
-                    editButton(ref, context)
-                  ])),
-            )
-          ]),
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SingleChildScrollView(
+          child: Container(
+            child: Column(children: <Widget>[
+              dateBarWidget(),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                    width: 380,
+                    height: 500,
+                    decoration: const BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black38,
+                          offset: Offset(2.0, 2.0),
+                          blurRadius: 4.0,
+                          spreadRadius: 4.0,
+                        ),
+                      ],
+                    ),
+                    child: Column(children: [
+                      amountTextField(ref, "支出"),
+                      categoryBar(context, ref, "カテゴリー", categorys.categorys),
+                      memoTextField("メモ", ref),
+                      editButton(ref, context)
+                    ])),
+              )
+            ]),
+          ),
         ),
       ),
     );
@@ -135,7 +139,7 @@ class ExpenseEditPage extends ConsumerWidget {
                     },
                     decoration: const InputDecoration(
                       border: InputBorder.none,
-                      hintText: "支出",
+                      hintText: "金額",
                     ),
                   ),
                 ),
