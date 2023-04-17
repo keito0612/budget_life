@@ -8,18 +8,21 @@ import 'package:path_provider/path_provider.dart';
 class DateBaseHelper {
   DateBaseHelper._();
   static final DateBaseHelper db = DateBaseHelper._();
-
   static const _databaseName = "budget.db";
   static const _databaseVersion = 1;
-
   static const tableExpense = 'expense';
   static const tableIncome = 'income';
+  static const tableRecurringIncome = 'recurring_income';
+  static const tableFixedExpense = 'fixed_expense';
   static const tableCategoryExpense = 'category_expense';
   static const tableCategoryIncome = 'category_income';
   static const tableAccounts = 'accounts';
   static const tableUsers = 'users';
   static const columnId = 'id';
   static const columnAmount = 'amount';
+  static const columnAutoMaticInputDate = "autoMaticInputDate";
+  static const columnAutoMaticInputDay = "autoMaticInputDay";
+  static const columnAutoMaticInputDateIndex = "autoMaticInuputDateIndex";
   static const columnDate = 'date';
   static const columnMemo = 'memo';
   static const columnDestination = 'destination';
@@ -106,6 +109,10 @@ class DateBaseHelper {
             "CREATE TABLE $tableCategoryExpense ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnCategory TEXT , $columnIcon INTEGER,$columnColor INTEGER )");
         await db.execute(
             "CREATE TABLE $tableCategoryIncome ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnCategory TEXT , $columnIcon INTEGER,$columnColor INTEGER )");
+        await db.execute(
+            "CREATE TABLE $tableFixedExpense ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnAmount TEXT , $columnAutoMaticInputDate TEXT,$columnAutoMaticInputDay INTEGER , $columnAutoMaticInputDateIndex INTEGER ,  $columnMemo TEXT, $columnCategory  TEXT, $columnIcon INTEGER , $columnColor INTEGER , $columnCategoryIndex  INTEGER  )");
+        await db.execute(
+            "CREATE TABLE $tableRecurringIncome  ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnAmount TEXT , $columnAutoMaticInputDate TEXT,$columnAutoMaticInputDay INTEGER , $columnAutoMaticInputDateIndex INTEGER , $columnMemo TEXT, $columnCategory  TEXT, $columnIcon INTEGER , $columnColor INTEGER , $columnCategoryIndex  INTEGER  )");
         for (var category in initializeCategoryExpenses) {
           await db.insert(tableCategoryExpense, category.toJson());
         }
