@@ -9,7 +9,7 @@ abstract class RecurringIncome with _$RecurringIncome {
     @Default("") String amount,
     @Default("") String autoMaticInputDate,
     @Default(1) int autoMaticInputDay,
-    @Default(1) int autoMaticInputIndex,
+    @Default(1) int autoMaticInuputDateIndex,
     @Default("") String memo,
     String? category,
     int? icon,

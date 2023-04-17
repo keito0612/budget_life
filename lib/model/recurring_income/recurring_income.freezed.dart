@@ -24,7 +24,7 @@ mixin _$RecurringIncome {
   String get amount => throw _privateConstructorUsedError;
   String get autoMaticInputDate => throw _privateConstructorUsedError;
   int get autoMaticInputDay => throw _privateConstructorUsedError;
-  int get autoMaticInputIndex => throw _privateConstructorUsedError;
+  int get autoMaticInuputDateIndex => throw _privateConstructorUsedError;
   String get memo => throw _privateConstructorUsedError;
   String? get category => throw _privateConstructorUsedError;
   int? get icon => throw _privateConstructorUsedError;
@@ -48,7 +48,7 @@ abstract class $RecurringIncomeCopyWith<$Res> {
       String amount,
       String autoMaticInputDate,
       int autoMaticInputDay,
-      int autoMaticInputIndex,
+      int autoMaticInuputDateIndex,
       String memo,
       String? category,
       int? icon,
@@ -73,7 +73,7 @@ class _$RecurringIncomeCopyWithImpl<$Res, $Val extends RecurringIncome>
     Object? amount = null,
     Object? autoMaticInputDate = null,
     Object? autoMaticInputDay = null,
-    Object? autoMaticInputIndex = null,
+    Object? autoMaticInuputDateIndex = null,
     Object? memo = null,
     Object? category = freezed,
     Object? icon = freezed,
@@ -97,9 +97,9 @@ class _$RecurringIncomeCopyWithImpl<$Res, $Val extends RecurringIncome>
           ? _value.autoMaticInputDay
           : autoMaticInputDay // ignore: cast_nullable_to_non_nullable
               as int,
-      autoMaticInputIndex: null == autoMaticInputIndex
-          ? _value.autoMaticInputIndex
-          : autoMaticInputIndex // ignore: cast_nullable_to_non_nullable
+      autoMaticInuputDateIndex: null == autoMaticInuputDateIndex
+          ? _value.autoMaticInuputDateIndex
+          : autoMaticInuputDateIndex // ignore: cast_nullable_to_non_nullable
               as int,
       memo: null == memo
           ? _value.memo
@@ -138,7 +138,7 @@ abstract class _$$_RecurringIncomeCopyWith<$Res>
       String amount,
       String autoMaticInputDate,
       int autoMaticInputDay,
-      int autoMaticInputIndex,
+      int autoMaticInuputDateIndex,
       String memo,
       String? category,
       int? icon,
@@ -161,7 +161,7 @@ class __$$_RecurringIncomeCopyWithImpl<$Res>
     Object? amount = null,
     Object? autoMaticInputDate = null,
     Object? autoMaticInputDay = null,
-    Object? autoMaticInputIndex = null,
+    Object? autoMaticInuputDateIndex = null,
     Object? memo = null,
     Object? category = freezed,
     Object? icon = freezed,
@@ -185,9 +185,9 @@ class __$$_RecurringIncomeCopyWithImpl<$Res>
           ? _value.autoMaticInputDay
           : autoMaticInputDay // ignore: cast_nullable_to_non_nullable
               as int,
-      autoMaticInputIndex: null == autoMaticInputIndex
-          ? _value.autoMaticInputIndex
-          : autoMaticInputIndex // ignore: cast_nullable_to_non_nullable
+      autoMaticInuputDateIndex: null == autoMaticInuputDateIndex
+          ? _value.autoMaticInuputDateIndex
+          : autoMaticInuputDateIndex // ignore: cast_nullable_to_non_nullable
               as int,
       memo: null == memo
           ? _value.memo
@@ -221,7 +221,7 @@ class _$_RecurringIncome implements _RecurringIncome {
       this.amount = "",
       this.autoMaticInputDate = "",
       this.autoMaticInputDay = 1,
-      this.autoMaticInputIndex = 1,
+      this.autoMaticInuputDateIndex = 1,
       this.memo = "",
       this.category,
       this.icon,
@@ -244,7 +244,7 @@ class _$_RecurringIncome implements _RecurringIncome {
   final int autoMaticInputDay;
   @override
   @JsonKey()
-  final int autoMaticInputIndex;
+  final int autoMaticInuputDateIndex;
   @override
   @JsonKey()
   final String memo;
@@ -259,7 +259,7 @@ class _$_RecurringIncome implements _RecurringIncome {
 
   @override
   String toString() {
-    return 'RecurringIncome(id: $id, amount: $amount, autoMaticInputDate: $autoMaticInputDate, autoMaticInputDay: $autoMaticInputDay, autoMaticInputIndex: $autoMaticInputIndex, memo: $memo, category: $category, icon: $icon, color: $color, categoryIndex: $categoryIndex)';
+    return 'RecurringIncome(id: $id, amount: $amount, autoMaticInputDate: $autoMaticInputDate, autoMaticInputDay: $autoMaticInputDay, autoMaticInuputDateIndex: $autoMaticInuputDateIndex, memo: $memo, category: $category, icon: $icon, color: $color, categoryIndex: $categoryIndex)';
   }
 
   @override
@@ -273,8 +273,9 @@ class _$_RecurringIncome implements _RecurringIncome {
                 other.autoMaticInputDate == autoMaticInputDate) &&
             (identical(other.autoMaticInputDay, autoMaticInputDay) ||
                 other.autoMaticInputDay == autoMaticInputDay) &&
-            (identical(other.autoMaticInputIndex, autoMaticInputIndex) ||
-                other.autoMaticInputIndex == autoMaticInputIndex) &&
+            (identical(
+                    other.autoMaticInuputDateIndex, autoMaticInuputDateIndex) ||
+                other.autoMaticInuputDateIndex == autoMaticInuputDateIndex) &&
             (identical(other.memo, memo) || other.memo == memo) &&
             (identical(other.category, category) ||
                 other.category == category) &&
@@ -292,7 +293,7 @@ class _$_RecurringIncome implements _RecurringIncome {
       amount,
       autoMaticInputDate,
       autoMaticInputDay,
-      autoMaticInputIndex,
+      autoMaticInuputDateIndex,
       memo,
       category,
       icon,
@@ -319,7 +320,7 @@ abstract class _RecurringIncome implements RecurringIncome {
       final String amount,
       final String autoMaticInputDate,
       final int autoMaticInputDay,
-      final int autoMaticInputIndex,
+      final int autoMaticInuputDateIndex,
       final String memo,
       final String? category,
       final int? icon,
@@ -338,7 +339,7 @@ abstract class _RecurringIncome implements RecurringIncome {
   @override
   int get autoMaticInputDay;
   @override
-  int get autoMaticInputIndex;
+  int get autoMaticInuputDateIndex;
   @override
   String get memo;
   @override
