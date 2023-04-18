@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class AutomaticInputDatePicker {
   static void showModalPicker(
-      BuildContext context, Function(String) selectedItem) {
+      BuildContext context, Function(String, int) selectedItem) {
     final List<String> items = [
       '月の始まり',
       '月の終わり',
@@ -66,7 +66,7 @@ class AutomaticInputDatePicker {
                 Expanded(
                   child: CupertinoPicker(
                     onSelectedItemChanged: (index) {
-                      selectedItem(items[index]);
+                      selectedItem(items[index], index);
                     },
                     itemExtent: 40,
                     children: items.map((item) => Text(item)).toList(),
