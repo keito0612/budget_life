@@ -3,7 +3,7 @@ import 'package:budget/model/recurring_income/recurring_income.dart';
 import 'package:budget/viewModels/category_expense_model.dart';
 import 'package:budget/viewModels/recurringI_income_model.dart';
 import 'package:budget/widgets/automatic_input_date_picker.dart';
-import 'package:budget/widgets/category_bottom_sheet_dar.dart';
+import 'package:budget/widgets/category_bottom_sheet_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -240,7 +240,7 @@ class RecurringIncomePage extends ConsumerWidget {
                 categoryBottomSheetBarButtom(
                   categorys: categorys,
                   onSelectedItemChanged: (index) {
-                    ref.read(categoryExpenseIndexProvider.notifier).state =
+                    ref.read(categoryIncomeIndexProvider.notifier).state =
                         index;
                   },
                 )
