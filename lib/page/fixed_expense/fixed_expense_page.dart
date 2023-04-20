@@ -1,5 +1,6 @@
 import 'package:budget/model/category/category.dart';
 import 'package:budget/model/fixed_expense/fixed_expense.dart';
+import 'package:budget/page/recurring_income/recurring_income_page.dart';
 import 'package:budget/viewModels/category_expense_model.dart';
 import 'package:budget/viewModels/fixed_expense_model.dart';
 import 'package:budget/widgets/automatic_input_date_picker.dart';
@@ -7,7 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../widgets/category_bottom_sheet_dar.dart';
+import '../../widgets/category_bottom_sheet_bar.dart';
 
 final amountProvider = StateProvider.autoDispose((ref) => "");
 final memoProvider = StateProvider.autoDispose((ref) => "");
@@ -21,6 +22,7 @@ class FixedExpensePage extends ConsumerWidget {
   String memo = "";
   String date = "";
   String autoMaticInputDate = "";
+  int autoMaticInputDateIndex = 0;
   int autoMaticInputDay = 1;
   int categoryExpenseIndex = 0;
   @override
@@ -96,6 +98,9 @@ class FixedExpensePage extends ConsumerWidget {
     autoMaticInputDate = ref.watch(automaticInputdateProvider);
     final automaticInputDateController =
         ref.read(automaticInputdateProvider.notifier);
+    autoMaticInputDateIndex = ref.watch(automaticInputDateIndexProvider);
+    final automaticInputDateIndexController =
+        ref.watch(automaticInputDateIndexProvider.notifier);
     return Padding(
       padding: const EdgeInsets.only(top: 40),
       child: Column(
@@ -131,7 +136,8 @@ class FixedExpensePage extends ConsumerWidget {
                     icon: const Icon(Icons.arrow_downward),
                     onPressed: () {
                       AutomaticInputDatePicker.showModalPicker(context,
-                          (selectedItem) {
+                          (selectedItem, index) {
+                        automaticInputDateIndexController.state = index;
                         automaticInputDateController.state = selectedItem;
                       });
                     },
@@ -184,7 +190,7 @@ class FixedExpensePage extends ConsumerWidget {
                     },
                     decoration: const InputDecoration(
                       border: InputBorder.none,
-                      hintText: "支出",
+                      hintText: "金額",
                     ),
                   ),
                 ),
@@ -334,6 +340,7 @@ class FixedExpensePage extends ConsumerWidget {
         amount: amount,
         autoMaticInputDate: autoMaticInputDate,
         autoMaticInputDay: autoMaticInputDay,
+        autoMaticInuputDateIndex: autoMaticInputDateIndex,
         memo: memo,
         category: category!.category,
         color: category!.color!,
