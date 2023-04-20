@@ -3,8 +3,8 @@ import 'package:budget/page/income/income_list_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-final cupertinoSlidingListValueProvider = StateProvider.autoDispose((ref) => 0);
 
+final cupertinoSlidingListValueProvider = StateProvider.autoDispose((ref) => 0);
 
 class ListPage extends ConsumerWidget {
   const ListPage({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class ListPage extends ConsumerWidget {
           backgroundColor: Colors.green,
           title: _cupertinoListSlidingWidget(ref),
         ),
-        body: pageList[cupertinoSliderValue]);
+        body: SingleChildScrollView(child: pageList[cupertinoSliderValue]));
   }
 
   Widget _cupertinoListSlidingWidget(WidgetRef ref) {
@@ -26,11 +26,11 @@ class ListPage extends ConsumerWidget {
     final cupertinoSlidingValueController =
         ref.read(cupertinoSlidingListValueProvider.notifier);
     return CupertinoSlidingSegmentedControl(
-      children: const {
+      children: {
         0: Text(
           "支出",
           style: TextStyle(
-            color: Colors.white,
+            color: cupertinoSlidingValue == 0 ? Colors.green : Colors.white,
             fontSize: 15,
             fontWeight: FontWeight.w400,
             fontFamily: "SFProRounded",
@@ -40,7 +40,7 @@ class ListPage extends ConsumerWidget {
         1: Text(
           "収入",
           style: TextStyle(
-            color: Colors.white,
+            color: cupertinoSlidingValue == 1 ? Colors.green : Colors.white,
             fontSize: 15,
             fontWeight: FontWeight.w400,
             fontFamily: "SFProRounded",
@@ -52,8 +52,8 @@ class ListPage extends ConsumerWidget {
       onValueChanged: (index) {
         cupertinoSlidingValueController.state = index!;
       },
-      thumbColor: Colors.green,
-      backgroundColor: Colors.white,
+      thumbColor: Colors.white,
+      backgroundColor: Colors.green,
     );
   }
 }
