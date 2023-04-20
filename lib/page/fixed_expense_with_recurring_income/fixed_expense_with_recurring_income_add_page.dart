@@ -9,8 +9,6 @@ final pageValueProvider = StateProvider.autoDispose((ref) => 0);
 class fixedExpenseWithRecurringIncomeAddPage extends ConsumerWidget {
   const fixedExpenseWithRecurringIncomeAddPage({super.key});
 
-  final pageValse = 0;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pageValue = ref.watch(pageValueProvider);
@@ -24,13 +22,15 @@ class fixedExpenseWithRecurringIncomeAddPage extends ConsumerWidget {
   }
 
   Widget _cupertinoListSlidingWidget(WidgetRef ref, int pageValue) {
+    final pageValue = ref.watch(pageValueProvider);
     final pageValueController = ref.read(pageValueProvider.notifier);
+
     return CupertinoSlidingSegmentedControl(
-      children: const {
+      children: {
         0: Text(
           "支出",
           style: TextStyle(
-            color: Colors.white,
+            color: pageValue == 0 ? Colors.green : Colors.white,
             fontSize: 15,
             fontWeight: FontWeight.w400,
             fontFamily: "SFProRounded",
@@ -40,7 +40,7 @@ class fixedExpenseWithRecurringIncomeAddPage extends ConsumerWidget {
         1: Text(
           "収入",
           style: TextStyle(
-            color: Colors.white,
+            color: pageValue == 1 ? Colors.green : Colors.white,
             fontSize: 15,
             fontWeight: FontWeight.w400,
             fontFamily: "SFProRounded",
@@ -52,8 +52,8 @@ class fixedExpenseWithRecurringIncomeAddPage extends ConsumerWidget {
       onValueChanged: (index) {
         pageValueController.state = index!;
       },
-      thumbColor: Colors.green,
-      backgroundColor: Colors.white,
+      thumbColor: Colors.white,
+      backgroundColor: Colors.green,
     );
   }
 }
