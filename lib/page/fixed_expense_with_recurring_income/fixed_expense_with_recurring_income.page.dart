@@ -1,6 +1,9 @@
+import 'package:budget/model/category/category.dart';
 import 'package:budget/model/fixed_expense/fixed_expense.dart';
 import 'package:budget/model/recurring_income/recurring_income.dart';
+import 'package:budget/page/fixed_expense/fixed_expense_edit_page.dart';
 import 'package:budget/page/fixed_expense_with_recurring_income/fixed_expense_with_recurring_income_add_page.dart';
+import 'package:budget/page/recurring_income/recurring_income_edit_page.dart';
 import 'package:budget/viewModels/fixed_expense_model.dart';
 import 'package:budget/viewModels/recurringI_income_model.dart';
 import 'package:flutter/material.dart';
@@ -110,7 +113,27 @@ class FixedExpenseWithRecurringIncomePage extends ConsumerWidget {
                   foregroundColor: Colors.white,
                   icon: Icons.edit,
                   label: '編集',
-                  onPressed: (context) {}),
+                  onPressed: (context) async {
+                    await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FixedExpenseEditPage(
+                                id: fixedExpnese.id!,
+                                amount: fixedExpnese.amount,
+                                category: Category(
+                                    category: fixedExpnese.category!,
+                                    icon: fixedExpnese.icon,
+                                    color: fixedExpnese.color),
+                                memo: fixedExpnese.memo,
+                                autoMaticInputDate:
+                                    fixedExpnese.autoMaticInputDate,
+                                autoMaticInputDateIndex:
+                                    fixedExpnese.autoMaticInuputDateIndex,
+                                autoMaticInputDay:
+                                    fixedExpnese.autoMaticInputDay,
+                                categoryExpenseIndex:
+                                    fixedExpnese.categoryIndex)));
+                  }),
               SlidableAction(
                   backgroundColor: Colors.red,
                   foregroundColor: Colors.white,
@@ -197,7 +220,27 @@ class FixedExpenseWithRecurringIncomePage extends ConsumerWidget {
                   foregroundColor: Colors.white,
                   icon: Icons.edit,
                   label: '編集',
-                  onPressed: (context) {}),
+                  onPressed: (context) async {
+                    await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => RecurringIncomeEditPage(
+                                id: recurringIncome.id!,
+                                amount: recurringIncome.amount,
+                                category: Category(
+                                    category: recurringIncome.category!,
+                                    icon: recurringIncome.icon,
+                                    color: recurringIncome.color),
+                                memo: recurringIncome.memo,
+                                autoMaticInputDate:
+                                    recurringIncome.autoMaticInputDate,
+                                autoMaticInputDateIndex:
+                                    recurringIncome.autoMaticInuputDateIndex,
+                                autoMaticInputDay:
+                                    recurringIncome.autoMaticInputDay,
+                                categoryIncomeIndex:
+                                    recurringIncome.categoryIndex)));
+                  }),
               SlidableAction(
                   backgroundColor: Colors.red,
                   foregroundColor: Colors.white,
