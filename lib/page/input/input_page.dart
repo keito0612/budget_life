@@ -27,7 +27,8 @@ class InputPage extends ConsumerWidget {
             backgroundColor: Colors.green,
             title: cupertinoSlidingWidget(ref),
           ),
-          body: pageWidget[cupertinoSlidingValue]),
+          body:
+              SingleChildScrollView(child: pageWidget[cupertinoSlidingValue])),
     );
   }
 
@@ -40,8 +41,7 @@ class InputPage extends ConsumerWidget {
         0: Text(
           "支出",
           style: TextStyle(
-            color:
-                cupertinoSlidingValue == 0 ? Colors.lightGreen : Colors.white,
+            color: cupertinoSlidingValue == 0 ? Colors.green : Colors.white,
             fontSize: 15,
             fontWeight: FontWeight.w400,
             fontFamily: "SFProRounded",
@@ -51,8 +51,7 @@ class InputPage extends ConsumerWidget {
         1: Text(
           "収入",
           style: TextStyle(
-            color:
-                cupertinoSlidingValue == 1 ? Colors.lightGreen : Colors.white,
+            color: cupertinoSlidingValue == 1 ? Colors.green : Colors.white,
             fontSize: 15,
             fontWeight: FontWeight.w400,
             fontFamily: "SFProRounded",
@@ -65,7 +64,7 @@ class InputPage extends ConsumerWidget {
         cupertinoSlidingValueController.state = index!;
       },
       thumbColor: Colors.white,
-      backgroundColor: Colors.lightGreen,
+      backgroundColor: Colors.green,
     );
   }
 }
