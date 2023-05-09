@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:background_fetch/background_fetch.dart';
 import 'package:budget/background/background_task_manager.dart';
 import 'package:budget/datebases/category_expense_database.dart';
 import 'package:budget/datebases/category_income_database.dart';
@@ -18,6 +17,7 @@ import 'package:budget/repositorys/category_income_repository.dart';
 import 'package:budget/utils/util.dart';
 import 'package:budget/viewModels/category_expense_model.dart';
 import 'package:budget/viewModels/category_income_model.dart';
+import 'package:budget/widgets/loading_widget.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,6 +26,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'widgets/passcode/passcode_lock_Screen.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 final selectedPageProvider = StateProvider.autoDispose((ref) => 0);
 
@@ -107,6 +108,7 @@ Future _automaticInputIncome() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  LoadingWidget.configLoading();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -118,11 +120,18 @@ void main() async {
     DeviceOrientation.portraitUp,
   ]);
 
-  BackgroundTaskManager.initBackgroundFech((String taskId) async {
+  await BackgroundTaskManager.initBackgroundFech(
+      onFetch: (String taskId) async {
+    Timer.periodic(
+      const Duration(hours: 10),
+      (Timer timer) async {
+        await _automaticInputExpense();
+        await _automaticInputIncome();
+      },
+    );
     print('[BackgroundFetch] received task: $taskId');
-    BackgroundFetch.finish(taskId);
   });
-  BackgroundTaskManager.backgroundFechStart(
+  await BackgroundTaskManager.backgroundFechStart(
     fetch: (int status) async {
       print('[BackgroundFetch] start success: $status');
       Timer.periodic(
@@ -160,6 +169,7 @@ void main() async {
           theme: ThemeData(
             primarySwatch: Colors.green,
           ),
+          builder: EasyLoading.init(),
           home: const MyApp())));
 }
 
