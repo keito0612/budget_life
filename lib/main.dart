@@ -3,6 +3,8 @@ import 'package:budget/background/background_task_manager.dart';
 import 'package:budget/datebases/category_expense_database.dart';
 import 'package:budget/datebases/category_income_database.dart';
 import 'package:budget/datebases/datebase_helper.dart';
+import 'package:budget/datebases/fixed_expense_database.dart';
+import 'package:budget/datebases/recurring_income_database.dart';
 import 'package:budget/firebase_options.dart';
 import 'package:budget/model/fixed_expense/fixed_expense.dart';
 import 'package:budget/model/recurring_income/recurring_income.dart';
@@ -14,9 +16,13 @@ import 'package:budget/page/setting/setting_page.dart';
 import 'package:budget/provider/shared_preferences_provider.dart';
 import 'package:budget/repositorys/category_expense_repository.dart';
 import 'package:budget/repositorys/category_income_repository.dart';
+import 'package:budget/repositorys/fixed_expense_repository.dart';
+import 'package:budget/states/fixed_expense_state.dart';
 import 'package:budget/utils/util.dart';
 import 'package:budget/viewModels/category_expense_model.dart';
 import 'package:budget/viewModels/category_income_model.dart';
+import 'package:budget/viewModels/fixed_expense_model.dart';
+import 'package:budget/viewModels/recurringI_income_model.dart';
 import 'package:budget/widgets/loading_widget.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +31,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'repositorys/recurring_income_repository.dart';
 import 'widgets/passcode/passcode_lock_Screen.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -116,6 +123,11 @@ void main() async {
       CategoryExpenseRepository(CategoryExpenseDatabase()));
   final categoryIncomeModel =
       CategoryIncomeModel(CategoryIncomeRepository(CategoryIncomeDatabase()));
+  final fixedExpenseModel =
+      FixedExpenseModel(FixedExpenseRepository(FixedExpenseDatabase()));
+  final recurringIncomeViewModel = RecurringIncomeModel(
+      RecurringIncomeRepository(RecurringIncomeDatabase()));
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
@@ -156,7 +168,10 @@ void main() async {
             .overrideWithValue(await SharedPreferences.getInstance()),
         categoryExpenseModelProvider
             .overrideWith((ref) => categoryExoenseModel),
-        categoryIncomeModelProvider.overrideWith((ref) => categoryIncomeModel)
+        categoryIncomeModelProvider.overrideWith((ref) => categoryIncomeModel),
+        fixedExpenseViewModelProvider.overrideWith((ref) => fixedExpenseModel),
+        recurringIncomeViewModelProvider
+            .overrideWith((ref) => recurringIncomeViewModel)
       ],
       child: MaterialApp(
           localizationsDelegates: const [
