@@ -20,8 +20,9 @@ class AccountCreatePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     _password = ref.watch(passwordProvider);
     _email = ref.watch(emailProvider);
+    final user = ref.watch(authRepositoryImplProvider)..currentUser;
     return Scaffold(
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.grey,
       appBar: AppBar(title: const Text("アカウント作成")),
       body: Center(
         child: Column(
@@ -37,10 +38,18 @@ class AccountCreatePage extends ConsumerWidget {
       child: Container(
         width: 350,
         height: 300,
-        decoration: BoxDecoration(
-            color: Colors.green,
-            border: Border.all(width: 5, color: Colors.white),
-            borderRadius: BorderRadius.circular(20)),
+        decoration: const BoxDecoration(
+          color: Colors.green,
+          borderRadius: BorderRadius.all(Radius.circular(50)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black38,
+              offset: Offset(2.0, 2.0),
+              blurRadius: 4.0,
+              spreadRadius: 4.0,
+            ),
+          ],
+        ),
         child: Column(
           children: [
             const SizedBox(height: 50),
@@ -149,22 +158,22 @@ class AccountCreatePage extends ConsumerWidget {
 
   Future _createDialog(BuildContext context, WidgetRef ref) async {
     final authRepository = ref.watch(authRepositoryImplProvider);
-    LoadingWidget.easyLoadingShow();
+    await LoadingWidget.easyLoadingShow();
     try {
       await authRepository.signUp(email: _email, password: _password);
-      LoadingWidget.easyLoadingDismiss();
+      await LoadingWidget.easyLoadingDismiss();
       await _dialogSuccess(context);
       if (context.mounted) {
         Navigator.of(context).pop();
       }
     } on FirebaseAuthException catch (e) {
-      LoadingWidget.easyLoadingDismiss();
+      await LoadingWidget.easyLoadingDismiss();
       final result = FirebaseAuthExceptionHandler.handleException(e);
       final errorMessage =
           FirebaseAuthExceptionHandler.exceptionMessage(result);
       await _dialogError(errorMessage, context);
     } catch (e) {
-      LoadingWidget.easyLoadingDismiss();
+      await LoadingWidget.easyLoadingDismiss();
       await _dialogError(e.toString(), context);
     }
   }
