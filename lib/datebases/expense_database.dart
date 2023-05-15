@@ -47,6 +47,10 @@ class ExpenseDatabase {
     }
   }
 
+  Future rawDalete() async {
+    await DateBaseHelper.rawDelete(tableName: _tableName);
+  }
+
   Future delete(int id) async {
     final db = await DateBaseHelper.db.database;
     return await db.delete(
