@@ -1,6 +1,5 @@
 import 'package:budget/main.dart';
 import 'package:budget/model/balance_with_saving/balance_with_saving.dart';
-
 import 'package:budget/page/balance_saving/balance_savingings_settings_page.dart';
 import 'package:budget/viewModels/balance_with_saving_model.dart';
 import 'package:budget/widgets/hp_gauge3_color.dart';
@@ -52,63 +51,70 @@ class HomePage extends ConsumerWidget {
               ),
               balanseWithSaving(ref, model),
               //メニューボタン
-              Padding(
-                padding: const EdgeInsets.only(top: 40, left: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        selectedPageCotroller.state = 1;
-                      },
-                      child: const Text(
-                        '入力',
-                        style: TextStyle(
-                            color: Colors.green, fontWeight: FontWeight.bold),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        minimumSize: Size(80, 80),
-                        shape: const CircleBorder(),
-                      ),
+              Container(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 40, left: 45),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            selectedPageCotroller.state = 1;
+                          },
+                          child: const Text(
+                            '入力',
+                            style: TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            minimumSize: const Size(80, 80),
+                            shape: const CircleBorder(),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              selectedPageCotroller.state = 2;
+                            },
+                            child: const Text(
+                              'リスト',
+                              style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              minimumSize: const Size(80, 80),
+                              shape: const CircleBorder(),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              selectedPageCotroller.state = 3;
+                            },
+                            child: const Text(
+                              '設定',
+                              style: TextStyle(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              minimumSize: const Size(80, 80),
+                              shape: const CircleBorder(),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          selectedPageCotroller.state = 2;
-                        },
-                        child: const Text(
-                          'リスト',
-                          style: const TextStyle(
-                              color: Colors.green, fontWeight: FontWeight.bold),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          minimumSize: const Size(80, 80),
-                          shape: const CircleBorder(),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          selectedPageCotroller.state = 3;
-                        },
-                        child: const Text(
-                          '設定',
-                          style: TextStyle(
-                              color: Colors.green, fontWeight: FontWeight.bold),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          minimumSize: const Size(80, 80),
-                          shape: const CircleBorder(),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ],

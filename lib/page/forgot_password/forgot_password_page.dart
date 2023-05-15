@@ -1,4 +1,5 @@
 import 'package:budget/firebase_auth/firebase_auth_excption_handler.dart';
+import 'package:budget/page/account/account_create_page.dart';
 import 'package:budget/repositorys/auth_repository.dart';
 import 'package:budget/widgets/loading_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,41 +7,33 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final isObscureProvider = StateProvider.autoDispose((ref) => false);
-final passwordProvider = StateProvider.autoDispose((ref) => "");
-final emailProvider = StateProvider.autoDispose((ref) => "");
-
-
-
-
-class AccountCreatePage extends ConsumerWidget {
-  AccountCreatePage({super.key});
-
+class forgotPasswordPage extends ConsumerWidget {
+  forgotPasswordPage({super.key});
   String _email = "";
-  String _password = "";
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    _password = ref.watch(passwordProvider);
     _email = ref.watch(emailProvider);
-    final user = ref.watch(authRepositoryImplProvider)..currentUser;
     return Scaffold(
+      appBar: AppBar(title: const Text("パスワード再登録")),
       backgroundColor: Colors.grey,
-      appBar: AppBar(title: const Text("アカウント作成")),
       body: Center(
         child: Column(
-          children: [_mailAddressAndPasswordWidget(context, ref)],
+          children: [
+            _emailAndPasswordResetButtomWidget(context, ref),
+          ],
         ),
       ),
     );
   }
 
-  Widget _mailAddressAndPasswordWidget(BuildContext context, WidgetRef ref) {
+  Widget _emailAndPasswordResetButtomWidget(
+      BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.only(top: 100),
       child: Container(
         width: 350,
-        height: 300,
+        height: 200,
         decoration: const BoxDecoration(
           color: Colors.green,
           borderRadius: BorderRadius.all(Radius.circular(50)),
@@ -56,17 +49,15 @@ class AccountCreatePage extends ConsumerWidget {
         child: Column(
           children: [
             const SizedBox(height: 50),
-            _mailAddressTextField(ref),
-            const SizedBox(height: 50),
-            _passwordTextField(ref),
-            _createButton(context, ref)
+            _emailTextField(ref),
+            _passwordResetButtom(context, ref)
           ],
         ),
       ),
     );
   }
 
-  Widget _mailAddressTextField(WidgetRef ref) {
+  Widget _emailTextField(WidgetRef ref) {
     final emailController = ref.read(emailProvider.notifier);
     return Container(
       height: 50,
@@ -85,46 +76,8 @@ class AccountCreatePage extends ConsumerWidget {
               border: InputBorder.none,
               hintText: "メールアドレス",
             ),
-            onChanged: (mailAddress) {
-              emailController.state = mailAddress;
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _passwordTextField(WidgetRef ref) {
-    final isObscure = ref.watch(isObscureProvider);
-    final isObscureController = ref.read(isObscureProvider.notifier);
-    final passwordController = ref.read(passwordProvider.notifier);
-
-    return Container(
-      height: 50,
-      width: 320,
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(
-          Radius.circular(20),
-        ),
-      ),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 20),
-          child: TextField(
-            obscureText: isObscure,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: "パスワード",
-              suffixIcon: IconButton(
-                icon: Icon(isObscure ? Icons.visibility_off : Icons.visibility),
-                onPressed: () {
-                  isObscureController.state = !isObscureController.state;
-                },
-              ),
-            ),
             onChanged: (password) {
-              passwordController.state = password;
+              emailController.state = password;
             },
           ),
         ),
@@ -132,12 +85,12 @@ class AccountCreatePage extends ConsumerWidget {
     );
   }
 
-  Widget _createButton(BuildContext context, WidgetRef ref) {
+  Widget _passwordResetButtom(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: const EdgeInsets.only(top: 30),
       child: Container(
         height: 50,
-        width: 100,
+        width: 250,
         color: Colors.green,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
@@ -149,34 +102,34 @@ class AccountCreatePage extends ConsumerWidget {
               borderRadius: BorderRadius.circular(30),
             ),
           ),
-          child:
-              const Text("作成", style: TextStyle(fontWeight: FontWeight.bold)),
+          child: const Text("パスワード再設定メールを送る",
+              style: TextStyle(fontWeight: FontWeight.bold)),
           onPressed: () async {
-            await _createDialog(context, ref);
+            await _passwordResetDialog(context, ref);
           },
         ),
       ),
     );
   }
 
-  Future _createDialog(BuildContext context, WidgetRef ref) async {
+  Future _passwordResetDialog(BuildContext context, WidgetRef ref) async {
     final authRepository = ref.watch(authRepositoryImplProvider);
-    await LoadingWidget.easyLoadingShow();
+    LoadingWidget.easyLoadingShow();
     try {
-      await authRepository.signUp(email: _email, password: _password);
-      await LoadingWidget.easyLoadingDismiss();
+      await authRepository.sendPasswordResetEmail(email: _email);
+      LoadingWidget.easyLoadingDismiss();
       await _dialogSuccess(context);
       if (context.mounted) {
         Navigator.of(context).pop();
       }
     } on FirebaseAuthException catch (e) {
-      await LoadingWidget.easyLoadingDismiss();
+      LoadingWidget.easyLoadingDismiss();
       final result = FirebaseAuthExceptionHandler.handleException(e);
       final errorMessage =
           FirebaseAuthExceptionHandler.exceptionMessage(result);
       await _dialogError(errorMessage, context);
     } catch (e) {
-      await LoadingWidget.easyLoadingDismiss();
+      LoadingWidget.easyLoadingDismiss();
       await _dialogError(e.toString(), context);
     }
   }
@@ -186,12 +139,12 @@ class AccountCreatePage extends ConsumerWidget {
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: const Text('作成しました。'),
+          title: const Text('パスワード再設定メールを送りました。'),
           content: const Text(''),
           actions: <Widget>[
             TextButton(
               child: const Text('OK'),
-              onPressed: () {
+              onPressed: () async {
                 Navigator.of(context).pop();
               },
             )
