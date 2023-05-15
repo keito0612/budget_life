@@ -93,6 +93,13 @@ class DateBaseHelper {
     }
   }
 
+  static Future rawDelete({String? tableName}) async {
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path, _databaseName);
+    final datebase = await openDatabase(path);
+    await datebase.rawDelete('DELETE FROM $tableName');
+  }
+
   Future<Database> initDB() async {
     //データベースを作成
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
