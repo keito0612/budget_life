@@ -33,7 +33,7 @@ class PasscodeLockScreen extends ConsumerWidget {
         }
       },
       correctString: passcodePassword!,
-      title: const Text("パスワードを入力してください"),
+      title: const Text("パスコードを入力してください"),
       config: const ScreenLockConfig(
         textStyle: TextStyle(color: Colors.white),
         backgroundColor: Colors.green,
