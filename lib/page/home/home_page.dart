@@ -54,9 +54,9 @@ class HomePage extends ConsumerWidget {
               Container(
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 40, left: 45),
+                    padding: const EdgeInsets.only(top: 40),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton(
                           onPressed: () {
@@ -82,7 +82,7 @@ class HomePage extends ConsumerWidget {
                             },
                             child: const Text(
                               'リスト',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold),
                             ),
