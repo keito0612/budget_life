@@ -21,4 +21,8 @@ class ExpenseRepository {
   Future<void> deleteExpense(int id) async {
     return _expenseDatabase.delete(id);
   }
+
+  Future<void> rawDalete() {
+    return _expenseDatabase.rawDalete();
+  }
 }
