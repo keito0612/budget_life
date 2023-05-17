@@ -1,3 +1,4 @@
+import 'package:budget/page/account/account_page.dart';
 import 'package:budget/notifications/notification_service.dart';
 import 'package:budget/page/category/category_setting_page.dart';
 import 'package:budget/page/fixed_expense_with_recurring_income/fixed_expense_with_recurring_income.page.dart';
@@ -6,8 +7,12 @@ import 'package:budget/page/passcode/passcode_rock_setting.dart';
 import 'package:budget/provider/notification_time_provider.dart';
 import 'package:budget/provider/shared_preferences_provider.dart';
 import 'package:budget/utils/util.dart';
+import 'package:budget/viewModels/expense_model.dart';
+import 'package:budget/viewModels/income_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sqflite/sqflite.dart';
 
 class SettingPage extends ConsumerWidget {
   const SettingPage({super.key});
@@ -93,9 +98,6 @@ class SettingPage extends ConsumerWidget {
                   Ink(
                     decoration: const BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(10),
-                          bottomRight: Radius.circular(10)),
                     ),
                     child: ListTile(
                       title: const Text("通知"),
@@ -125,21 +127,203 @@ class SettingPage extends ConsumerWidget {
                     indent: 0,
                     endIndent: 0,
                   ),
-                  ListTile(
-                      title: const Text("月の固定値•定期入力"),
-                      onTap: () {
-                        Navigator.push(
+                  Ink(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: ListTile(
+                        title: const Text("月の固定値•定期入力"),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const FixedExpenseWithRecurringIncomePage()));
+                        }),
+                  ),
+                  const Divider(
+                    color: Colors.grey,
+                    thickness: 2,
+                    height: 1,
+                    indent: 0,
+                    endIndent: 0,
+                  ),
+                  Ink(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: ListTile(
+                      title: const Text(
+                        "収支をリセットする。",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      onTap: () async {
+                        await _resetExpenseAndIncomeDialog(context, ref);
+                      },
+                    ),
+                  ),
+                  const Divider(
+                    color: Colors.grey,
+                    thickness: 2,
+                    height: 1,
+                    indent: 0,
+                    endIndent: 0,
+                  ),
+                  Ink(
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(10),
+                          bottomRight: Radius.circular(10)),
+                    ),
+                    child: ListTile(
+                      title: const Text(
+                        "アカウント",
+                      ),
+                      onTap: () async {
+                        await Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    const FixedExpenseWithRecurringIncomePage()));
-                      }),
+                                builder: (context) => const AccountPage()));
+                      },
+                    ),
+                  ),
                 ],
               ),
             )
           ],
         ),
       ),
+    );
+  }
+
+  Future _resetExpenseAndIncomeDialog(
+      BuildContext context, WidgetRef ref) async {
+    await showCupertinoDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: const Text('全ての収支を削除しますか?'),
+          content: const Text(
+            '削除した収支は復元できません。\n(カテゴリーは削除されません)',
+            textAlign: TextAlign.center,
+          ),
+          actions: <Widget>[
+            TextButton(
+                child: const Text('キョンセル'),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                }),
+            TextButton(
+              child: const Text(
+                '削除する',
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () async {
+                _lastConfirmation(context, ref);
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  Future _lastConfirmation(BuildContext context, WidgetRef ref) async {
+    await showCupertinoDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: const Text('最終確認'),
+          content: const Text(
+            '全ての収支を削除して宜しいでしょうか?',
+            textAlign: TextAlign.left,
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('キョンセル'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text(
+                '削除する',
+                style: TextStyle(color: Colors.red),
+              ),
+              onPressed: () async {
+                try {
+                  await ref
+                      .read(expenseViewModelProvider.notifier)
+                      .expenseAllDelete();
+                  await ref
+                      .read(incomeViewModelProvider.notifier)
+                      .incomeAllDelete();
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                    await _successDiarog(context);
+                  }
+                } catch (e) {
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  }
+                  _errorDiarog(context, e.toString());
+                }
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  Future _successDiarog(BuildContext context) async {
+    await showCupertinoDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: const Text('削除しました。'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'OK',
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  Future _errorDiarog(BuildContext context, String error) async {
+    await showCupertinoDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: const Text('エラーが発生しました。'),
+          content: Text(error),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                'OK',
+              ),
+              onPressed: () {
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                }
+              },
+            )
+          ],
+        );
+      },
     );
   }
 }
