@@ -50,7 +50,7 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
     ///残りの残高
     int remainingBalanse = balanse;
     //残りの貯金額
-    int remainingSaving = _prefs.getInt("remainingSaving") ?? saving;
+    int remainingSaving = saving;
     //追加した日にち
     final addedDay =
         Util.convartDate(_prefs.getString("added_day") ?? Util.toDate(today));
@@ -112,7 +112,7 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
     if (addedDay.year != today.year || addedDay.month != today.month) {
       if (remainingBalanse > 0) {
         remainingSaving = remainingSaving + remainingBalanse;
-        _prefs.setInt("remainingSaving", remainingSaving);
+        _prefs.setInt("saving", remainingSaving);
         _prefs.setString("addedDay", Util.toDate(today));
       }
     }
