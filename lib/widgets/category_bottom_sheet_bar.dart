@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final categoryExpenseIndexProvide = StateProvider.autoDispose((ref) {
+final categoryExpenseIndexProvider = StateProvider.autoDispose((ref) {
   return 0;
 });
 final categoryIncomeIndexProvider = StateProvider.autoDispose((ref) => 0);
