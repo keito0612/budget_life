@@ -21,4 +21,8 @@ class IncomeRepository {
   Future<void> deleteIncome(int id) async {
     return _incomeDatabase.delete(id);
   }
+
+  Future<void> rawDalete() async {
+    return _incomeDatabase.rawDalete();
+  }
 }
