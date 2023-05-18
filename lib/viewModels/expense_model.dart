@@ -49,4 +49,9 @@ class ExpenseViewModel extends StateNotifier<ExpenseState> {
       expenses: expenses,
     );
   }
+
+  Future<void> expenseAllDelete() async {
+    await _ExpenseRepository.rawDalete();
+    getExpenses();
+  }
 }
