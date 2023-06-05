@@ -1,6 +1,7 @@
 import 'package:budget/page/account/account_create_page.dart';
 import 'package:budget/page/account/account_login_page.dart';
 import 'package:budget/provider/firebase_provider.dart';
+import 'package:budget/provider/reward_ad._provider.dart';
 import 'package:budget/repositorys/accunt_repository.dart';
 import 'package:budget/repositorys/auth_repository.dart';
 import 'package:budget/widgets/loading_widget.dart';
@@ -8,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AccountPage extends ConsumerWidget {
   const AccountPage({super.key});
@@ -17,7 +19,9 @@ class AccountPage extends ConsumerWidget {
     final userState = ref.watch(userStateProvider);
     return Scaffold(
         backgroundColor: Colors.grey,
-        appBar: AppBar(title: const Text("アカウント")),
+        appBar: AppBar(
+          title: const Text("アカウント"),
+        ),
         body: userState.when(
           data: (user) {
             if (user != null) {
@@ -38,11 +42,9 @@ class AccountPage extends ConsumerWidget {
     return Center(
         child: Column(
       children: [
-        _userEmailWidget(user),
+        _userEmailWidget(user, context),
         Container(
           width: double.infinity,
-          height: 491,
-          color: Colors.green,
           child: Column(
             children: [
               _dateSyncButton(context, ref),
@@ -58,44 +60,44 @@ class AccountPage extends ConsumerWidget {
   Widget _sinInScreen(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.0.r),
         child: Column(
           children: [
-            const Icon(
+            Icon(
               Icons.cloud_rounded,
               color: Colors.white,
-              size: 100,
+              size: 100.sp,
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 10),
+            Padding(
+              padding: EdgeInsets.only(top: 10.h),
               child: Text(
                 "データをバックアップ",
-                style: TextStyle(fontSize: 30, color: Colors.white),
+                style: TextStyle(fontSize: 30.sp, color: Colors.white),
               ),
             ),
-            const SizedBox(height: 50),
+            SizedBox(height: 50.h),
             Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: Colors.green,
-                borderRadius: BorderRadius.all(Radius.circular(50)),
+                borderRadius: BorderRadius.all(Radius.circular(50.r)),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black38,
-                    offset: Offset(2.0, 2.0),
-                    blurRadius: 4.0,
-                    spreadRadius: 4.0,
+                    offset: Offset(2.0.r, 2.0.r),
+                    blurRadius: 4.0.r,
+                    spreadRadius: 4.0.r,
                   ),
                 ],
               ),
-              width: 300,
-              height: 250,
+              width: 300.w,
+              height: 250.h,
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 50, bottom: 50),
+                    padding: EdgeInsets.only(top: 50.h, bottom: 50.h),
                     child: SizedBox(
-                      width: 200,
-                      height: 50,
+                      width: 250.w,
+                      height: 50.h,
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(
@@ -105,23 +107,24 @@ class AccountPage extends ConsumerWidget {
                         },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(10.r),
                           ),
-                          side: const BorderSide(
+                          side: BorderSide(
                             color: Colors.white, //色
-                            width: 3, //太さ
+                            width: 3.w, //太さ
                           ),
                         ),
-                        child: const Text(
+                        child: Text(
                           "アカウント作成",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20.sp),
                         ),
                       ),
                     ),
                   ),
                   SizedBox(
-                    width: 200,
-                    height: 50,
+                    width: 250.w,
+                    height: 50.h,
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.push(
@@ -131,16 +134,17 @@ class AccountPage extends ConsumerWidget {
                       },
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(10.r),
                         ),
-                        side: const BorderSide(
+                        side: BorderSide(
                           color: Colors.white,
-                          width: 3,
+                          width: 3.w,
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         "ログイン",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20.sp),
                       ),
                     ),
                   ),
@@ -155,26 +159,26 @@ class AccountPage extends ConsumerWidget {
 
   Widget _dateSyncButton(BuildContext context, WidgetRef ref) {
     return Padding(
-        padding: const EdgeInsets.only(top: 50),
+        padding: EdgeInsets.only(top: 50.h),
         child: SizedBox(
-          width: 300,
-          height: 50,
+          width: 300.w,
+          height: 50.h,
           child: ElevatedButton(
             onPressed: () async {
               _syncDialog(context, ref);
             },
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10.r),
               ),
-              side: const BorderSide(
+              side: BorderSide(
                 color: Colors.white, //色
-                width: 3, //太さ
+                width: 3.w, //太さ
               ),
             ),
-            child: const Text(
+            child: Text(
               "データを同期する",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
             ),
           ),
         ));
@@ -182,28 +186,28 @@ class AccountPage extends ConsumerWidget {
 
   Widget _signOutButton(WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.only(
-        top: 30,
+      padding: EdgeInsets.only(
+        top: 30.h,
       ),
       child: SizedBox(
-        width: 300,
-        height: 50,
+        width: 300.w,
+        height: 50.h,
         child: ElevatedButton(
           onPressed: () async {
             await ref.watch(authRepositoryImplProvider).signOut();
           },
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10.r),
             ),
-            side: const BorderSide(
+            side: BorderSide(
               color: Colors.white, //色
-              width: 3, //太さ
+              width: 3.w, //太さ
             ),
           ),
-          child: const Text(
+          child: Text(
             "サインアウト",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
           ),
         ),
       ),
@@ -212,28 +216,28 @@ class AccountPage extends ConsumerWidget {
 
   Widget _unsubscribeButton(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.only(
-        top: 30,
+      padding: EdgeInsets.only(
+        top: 30.h,
       ),
       child: SizedBox(
-        width: 300,
-        height: 50,
+        width: 300.w,
+        height: 50.h,
         child: ElevatedButton(
           onPressed: () async {
             await _unsubscribeDialog(context, ref);
           },
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10.r),
             ),
-            side: const BorderSide(
+            side: BorderSide(
               color: Colors.white, //色
-              width: 3, //太さ
+              width: 3.w, //太さ
             ),
           ),
-          child: const Text(
+          child: Text(
             "退会",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
           ),
         ),
       ),
@@ -242,9 +246,17 @@ class AccountPage extends ConsumerWidget {
 
   //追加ダイアログ
   Future _syncDialog(BuildContext context, WidgetRef ref) async {
+    final rewardNotifier = ref.watch(rewardAdProvider.notifier)..loadRewardAd();
+    final isLoaded = ref.read(rewardAdProvider).isLoaded;
     try {
       await LoadingWidget.easyDataSyncLoadingShow();
-      await AccountRepository().dateSync(ref);
+      if (!isLoaded) {
+        await AccountRepository().dateSync(ref);
+      } else {
+        await rewardNotifier.showRewardAd(() async {
+          await AccountRepository().dateSync(ref);
+        });
+      }
       await LoadingWidget.easyLoadingDismiss();
       await _dialogResult(context);
     } on Exception catch (e) {
@@ -270,6 +282,7 @@ class AccountPage extends ConsumerWidget {
               child: const Text('OK'),
               onPressed: () async {
                 Navigator.of(context).pop();
+                Navigator.of(context).pop();
               },
             )
           ],
@@ -281,50 +294,51 @@ class AccountPage extends ConsumerWidget {
   //エラーダイアログ
   Future _dialogError(String error, BuildContext context) async {
     await showCupertinoDialog(
-      context: context,
-      builder: (context) {
-        return CupertinoAlertDialog(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: const [
-              Icon(
-                Icons.error_outline_rounded,
-                color: Colors.red,
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("エラーが発生しました"),
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: const [
+                Icon(
+                  Icons.error_outline_rounded,
+                  color: Colors.red,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text("エラーが発生しました"),
+                )
+              ],
+            ),
+            content: Column(
+              children: [
+                Text(error),
+              ],
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
               )
             ],
-          ),
-          content: Column(
-            children: [
-              Text(error),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        );
-      },
-    );
+          );
+        });
   }
 
-  Widget _userEmailWidget(User user) {
+  Widget _userEmailWidget(User user, BuildContext context) {
     return Container(
         width: double.infinity,
-        height: 250,
+        height: MediaQuery.of(context).size.height / 3,
         color: Colors.white,
         child: Center(
           child: Text(
             "メールアドレス：${user.email}",
-            style: const TextStyle(
-                color: Colors.green, fontWeight: FontWeight.bold, fontSize: 18),
+            style: TextStyle(
+                color: Colors.green,
+                fontWeight: FontWeight.bold,
+                fontSize: 20.sp),
           ),
         ));
   }

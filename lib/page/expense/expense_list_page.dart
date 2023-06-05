@@ -1,13 +1,13 @@
 import 'package:budget/model/category/category.dart';
 import 'package:budget/model/expense/expense.dart';
 import 'package:budget/page/expense/expense_edit_page.dart';
-import 'package:budget/model/category/category.dart';
 import 'package:budget/utils/util.dart';
 import 'package:budget/viewModels/expense_model.dart';
 import 'package:budget/widgets/serch_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -80,7 +80,7 @@ class ExpenseListPage extends ConsumerWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0.r),
             child: SerchBar(
                 hintText: "カテゴリー,メモを検索",
                 onChanged: (text) {
@@ -121,7 +121,7 @@ class ExpenseListPage extends ConsumerWidget {
   Widget _sortButton(BuildContext context, WidgetRef ref) {
     final selectedSortTypeText = ref.watch(selectedSortTypeTextProvider);
     return Padding(
-      padding: const EdgeInsets.only(left: 5, bottom: 8.0),
+      padding: EdgeInsets.only(left: 5.w, bottom: 8.0.h),
       child: Row(
         children: [
           TextButton(
@@ -130,13 +130,14 @@ class ExpenseListPage extends ConsumerWidget {
             },
             child: Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.arrow_downward_rounded,
                   color: Colors.white,
+                  size: 25.sp,
                 ),
                 Text(
                   selectedSortTypeText,
-                  style: const TextStyle(color: Colors.white, fontSize: 15),
+                  style: TextStyle(color: Colors.white, fontSize: 15.sp),
                 ),
               ],
             ),
@@ -148,17 +149,14 @@ class ExpenseListPage extends ConsumerWidget {
 
   Widget _getGroupExpenseSeparator(String date) {
     return SizedBox(
-      height: 50,
+      height: 50.h,
       child: Align(
         alignment: Alignment.center,
         child: Container(
-          width: 350,
+          width: 350.w,
           decoration: BoxDecoration(
             color: Colors.green,
-            border: Border.all(
-              color: Colors.blue[300]!,
-            ),
-            borderRadius: const BorderRadius.all(Radius.circular(20.0)),
+            borderRadius: BorderRadius.all(Radius.circular(20.0.r)),
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -168,7 +166,7 @@ class ExpenseListPage extends ConsumerWidget {
                 Text(
                   date,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontSize: 15.sp),
                 ),
               ],
             ),
@@ -182,10 +180,10 @@ class ExpenseListPage extends ConsumerWidget {
     final model = ref.read(expenseViewModelProvider.notifier);
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(6.0),
+        borderRadius: BorderRadius.circular(6.0.r),
       ),
       elevation: 8.0,
-      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+      margin: EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 6.0.h),
       child: SizedBox(
         child: Slidable(
           endActionPane: ActionPane(
@@ -216,6 +214,9 @@ class ExpenseListPage extends ConsumerWidget {
               SlidableAction(
                   backgroundColor: Colors.red,
                   foregroundColor: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(5.r),
+                      bottomRight: Radius.circular(5.r)),
                   icon: Icons.error_sharp,
                   label: '消去',
                   onPressed: (context) async {
@@ -230,17 +231,28 @@ class ExpenseListPage extends ConsumerWidget {
                 Row(
                   children: [
                     Icon(
-                      IconData(expense.icon!, fontFamily: 'MaterialIcons'),
+                      IconData(
+                        expense.icon!,
+                        fontFamily: 'MaterialIcons',
+                      ),
                       color: Color(expense.color!),
+                      size: 25.sp,
                     ),
-                    const SizedBox(width: 5),
-                    Text(expense.category!),
+                    SizedBox(width: 5.w),
+                    Text(
+                      expense.category!,
+                      style: TextStyle(fontSize: 20.sp),
+                    ),
                   ],
                 ),
                 Text(
                   "金額：${expense.amount}円",
+                  style: TextStyle(fontSize: 20.sp),
                 ),
-                Text("メモ：${expense.memo}"),
+                Text(
+                  "メモ：${expense.memo}",
+                  style: TextStyle(fontSize: 20.sp),
+                ),
               ],
             ),
           ),
@@ -271,9 +283,9 @@ class ExpenseListPage extends ConsumerWidget {
           ),
         ],
         cancelButton: TextButton(
-            child: const Text(
+            child: Text(
               "キャンセル",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
             ),
             onPressed: () {
               Navigator.pop(context);

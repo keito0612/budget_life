@@ -3,6 +3,7 @@ import 'package:budget/page/recurring_income/recurring_income_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final pageValueProvider = StateProvider.autoDispose((ref) => 0);
 
@@ -25,35 +26,38 @@ class fixedExpenseWithRecurringIncomeAddPage extends ConsumerWidget {
     final pageValue = ref.watch(pageValueProvider);
     final pageValueController = ref.read(pageValueProvider.notifier);
 
-    return CupertinoSlidingSegmentedControl(
-      children: {
-        0: Text(
-          "支出",
-          style: TextStyle(
-            color: pageValue == 0 ? Colors.green : Colors.white,
-            fontSize: 15,
-            fontWeight: FontWeight.w400,
-            fontFamily: "SFProRounded",
+    return SizedBox(
+      width: 200.sp,
+      child: CupertinoSlidingSegmentedControl(
+        children: {
+          0: Text(
+            "支出",
+            style: TextStyle(
+              color: pageValue == 0 ? Colors.green : Colors.white,
+              fontSize: 15.sp,
+              fontWeight: FontWeight.w400,
+              fontFamily: "SFProRounded",
+            ),
+            textAlign: TextAlign.center,
           ),
-          textAlign: TextAlign.center,
-        ),
-        1: Text(
-          "収入",
-          style: TextStyle(
-            color: pageValue == 1 ? Colors.green : Colors.white,
-            fontSize: 15,
-            fontWeight: FontWeight.w400,
-            fontFamily: "SFProRounded",
+          1: Text(
+            "収入",
+            style: TextStyle(
+              color: pageValue == 1 ? Colors.green : Colors.white,
+              fontSize: 15.sp,
+              fontWeight: FontWeight.w400,
+              fontFamily: "SFProRounded",
+            ),
+            textAlign: TextAlign.center,
           ),
-          textAlign: TextAlign.center,
-        ),
-      },
-      groupValue: pageValue,
-      onValueChanged: (index) {
-        pageValueController.state = index!;
-      },
-      thumbColor: Colors.white,
-      backgroundColor: Colors.green,
+        },
+        groupValue: pageValue,
+        onValueChanged: (index) {
+          pageValueController.state = index!;
+        },
+        thumbColor: Colors.white,
+        backgroundColor: Colors.green,
+      ),
     );
   }
 }

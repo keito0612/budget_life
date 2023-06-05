@@ -48,4 +48,9 @@ class IncomeViewModel extends StateNotifier<IncomeState> {
       incomes: incomes,
     );
   }
+
+  Future<void> incomeAllDelete() async {
+    await _IncomeRepository.rawDalete();
+    getIncomes();
+  }
 }

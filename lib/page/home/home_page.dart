@@ -5,6 +5,7 @@ import 'package:budget/viewModels/balance_with_saving_model.dart';
 import 'package:budget/widgets/hp_gauge3_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
@@ -20,7 +21,10 @@ class HomePage extends ConsumerWidget {
           title: const Text("ホーム"),
           actions: [
             IconButton(
-              icon: const Icon(Icons.settings),
+              icon: Icon(
+                Icons.settings,
+                size: 30.sp,
+              ),
               onPressed: () {
                 Navigator.push(
                     context,
@@ -33,14 +37,14 @@ class HomePage extends ConsumerWidget {
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 100),
+            padding: EdgeInsets.only(top: 100.h),
             child: Container(
-                height: 545,
+                height: 630.h,
                 width: double.infinity,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: Colors.green,
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(700),
+                    topLeft: Radius.circular(700.r),
                   ),
                 )),
           ),
@@ -51,72 +55,6 @@ class HomePage extends ConsumerWidget {
               ),
               balanseWithSaving(ref, model),
               //メニューボタン
-              Container(
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 40),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {
-                            selectedPageCotroller.state = 1;
-                          },
-                          child: const Text(
-                            '入力',
-                            style: TextStyle(
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            minimumSize: const Size(80, 80),
-                            shape: const CircleBorder(),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              selectedPageCotroller.state = 2;
-                            },
-                            child: const Text(
-                              'リスト',
-                              style: const TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              minimumSize: const Size(80, 80),
-                              shape: const CircleBorder(),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 30),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              selectedPageCotroller.state = 3;
-                            },
-                            child: const Text(
-                              '設定',
-                              style: TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              minimumSize: const Size(80, 80),
-                              shape: const CircleBorder(),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
             ],
           ),
         ],
@@ -132,12 +70,14 @@ class HomePage extends ConsumerWidget {
           color: Colors.green,
           borderRadius: BorderRadius.circular(10),
         ),
-        height: 50,
+        height: 50.h,
         child: Center(
           child: Text(
             date,
-            style: const TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 30, color: Colors.white),
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 30.sp,
+                color: Colors.white),
           ),
         ),
       ),
@@ -146,26 +86,28 @@ class HomePage extends ConsumerWidget {
 
   Widget balanseWithSaving(WidgetRef ref, BalanceWithSaving model) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(right: 250, top: 30),
+          padding: EdgeInsets.only(top: 30.h),
           child: itemLabel('残高ゲージ'),
         ),
         //残高ゲージ
         Padding(
-          padding: const EdgeInsets.only(top: 5.0),
+          padding: EdgeInsets.only(top: 5.0.h),
           child: HpGauge3Color(
               title: "残高",
               currentAmount: model.remainingBalance,
               maxAmount: model.balance),
         ),
         Padding(
-          padding: const EdgeInsets.only(right: 250, top: 30),
+          padding: EdgeInsets.only(right: 0.w, top: 30.h),
           child: itemLabel('貯金ゲージ'),
         ),
         //貯金ゲージ
         Padding(
-          padding: const EdgeInsets.only(top: 5.0),
+          padding: EdgeInsets.only(top: 5.0.h),
           child: HpGauge3Color(
               title: "貯金",
               currentAmount: model.remainingSaving,
@@ -177,9 +119,9 @@ class HomePage extends ConsumerWidget {
 
   Widget itemLabel(String item) {
     return Text(item,
-        style: const TextStyle(
+        style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 20,
+            fontSize: 25.sp,
             color: Colors.lightGreen));
   }
 }

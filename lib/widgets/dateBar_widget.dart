@@ -2,6 +2,7 @@ import 'package:budget/utils/util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
@@ -41,35 +42,43 @@ class dateBarWidget extends ConsumerWidget {
     final date = ref.watch(dateProvider);
     final dateController = ref.read(dateProvider.notifier);
     return Padding(
-      padding: const EdgeInsets.only(top: 25, bottom: 12, right: 12, left: 12),
+      padding:
+          EdgeInsets.only(top: 25.h, bottom: 12.h, right: 12.w, left: 12.w),
       child: Container(
+        width: 380.w,
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(25.0),
+          borderRadius: BorderRadius.circular(25.0.r),
           color: Colors.green,
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
               color: Colors.black38,
-              offset: Offset(2.0, 2.0),
-              blurRadius: 4.0,
-              spreadRadius: 4.0,
+              offset: Offset(2.0.r, 2.0.r),
+              blurRadius: 4.0.r,
+              spreadRadius: 4.0.r,
             ),
           ],
         ),
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 1),
+              padding: EdgeInsets.only(bottom: 1.h),
               child: Container(
-                child: const Text(
+                child: Text(
                   "日付",
-                  style: TextStyle(fontSize: 20, color: Colors.white),
+                  style: TextStyle(
+                      fontSize: 25.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
                 ),
               ),
             ),
             TextButton(
                 child: Text(date,
-                    style: const TextStyle(fontSize: 25, color: Colors.white)),
+                    style: TextStyle(
+                        fontSize: 30.sp,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold)),
                 onPressed: () async {
                   await showModalBottomSheet<void>(
                       context: context,
@@ -84,22 +93,32 @@ class dateBarWidget extends ConsumerWidget {
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
-                                      child: const Text(
+                                      child: Text(
                                         '閉じる',
                                         style: TextStyle(
-                                            fontSize: 20, color: Colors.green),
+                                            fontSize: 20.sp,
+                                            color: Colors.green),
                                       )),
                                 ),
                                 Expanded(
-                                  child: CupertinoDatePicker(
-                                    backgroundColor: Colors.white,
-                                    initialDateTime: _toDay,
-                                    mode: CupertinoDatePickerMode.date,
-                                    minimumDate: _toDay,
-                                    maximumDate: DateTime.utc(2100, 12, 30),
-                                    onDateTimeChanged: (value) {
-                                      dateController.state = Util.toDate(value);
-                                    },
+                                  child: CupertinoTheme(
+                                    data: CupertinoThemeData(
+                                        textTheme: CupertinoTextThemeData(
+                                            dateTimePickerTextStyle:
+                                                TextStyle(fontSize: 20.sp))),
+                                    child: SizedBox(
+                                      width: 300.w,
+                                      child: CupertinoDatePicker(
+                                        initialDateTime: _toDay,
+                                        mode: CupertinoDatePickerMode.date,
+                                        minimumDate: _toDay,
+                                        maximumDate: DateTime.utc(2100, 12, 30),
+                                        onDateTimeChanged: (value) {
+                                          dateController.state =
+                                              Util.toDate(value);
+                                        },
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],
@@ -110,40 +129,56 @@ class dateBarWidget extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 220),
-                  child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 10,
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                        side: const BorderSide(color: Colors.white, width: 3),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
+                  padding:
+                      EdgeInsets.only(left: 15.w, right: 200.w, bottom: 10.h),
+                  child: SizedBox(
+                    width: 70.w,
+                    height: 40.h,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 10,
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          side: BorderSide(color: Colors.white, width: 3.w),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.r),
+                          ),
                         ),
-                      ),
-                      onPressed: () {
-                        _decrementDate(ref);
-                      },
-                      child: const Text("昨日",
-                          style: TextStyle(fontSize: 15, color: Colors.white))),
+                        onPressed: () {
+                          _decrementDate(ref);
+                        },
+                        child: Text("昨日",
+                            style: TextStyle(
+                                fontSize: 16.sp,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold))),
+                  ),
                 ),
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor: Colors.white,
-                      side: const BorderSide(color: Colors.white, width: 3),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    onPressed: () {
-                      _incrementDate(ref);
-                    },
-                    child: const Text("翌日",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Colors.white,
-                        ))),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10.h),
+                  child: SizedBox(
+                    width: 70.w,
+                    height: 40.h,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 10,
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          side: BorderSide(color: Colors.white, width: 3.w),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.r),
+                          ),
+                        ),
+                        onPressed: () {
+                          _incrementDate(ref);
+                        },
+                        child: Text("翌日",
+                            style: TextStyle(
+                                fontSize: 16.sp,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold))),
+                  ),
+                ),
               ],
             ),
           ],

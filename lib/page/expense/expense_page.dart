@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final amountProvider = StateProvider.autoDispose((ref) => "");
 final memoProvider = StateProvider.autoDispose((ref) => "");
@@ -26,21 +27,21 @@ class ExpensePage extends ConsumerWidget {
     return Container(
       child: Column(children: <Widget>[
         dateBarWidget(),
-        const SizedBox(height: 10),
+        SizedBox(height: 10.h),
         Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(10.0.r),
           child: Container(
-              width: 380,
-              height: 500,
-              decoration: const BoxDecoration(
+              width: 380.w,
+              height: 500.h,
+              decoration: BoxDecoration(
                 color: Colors.green,
-                borderRadius: BorderRadius.all(Radius.circular(50)),
+                borderRadius: BorderRadius.all(Radius.circular(50.r)),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black38,
-                    offset: Offset(2.0, 2.0),
-                    blurRadius: 4.0,
-                    spreadRadius: 4.0,
+                    offset: Offset(2.0.r, 2.0.r),
+                    blurRadius: 4.0.r,
+                    spreadRadius: 4.0.r,
                   ),
                 ],
               ),
@@ -58,15 +59,15 @@ class ExpensePage extends ConsumerWidget {
 
   Widget itemLabel(String itemName) {
     return Padding(
-      padding: const EdgeInsets.only(left: 30),
+      padding: EdgeInsets.only(left: 20.w),
       child: Container(
         width: double.infinity,
         child: Text(itemName,
             textAlign: TextAlign.left,
-            style: const TextStyle(
+            style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 20)),
+                fontSize: 20.sp)),
       ),
     );
   }
@@ -75,51 +76,58 @@ class ExpensePage extends ConsumerWidget {
   Widget amountTextField(WidgetRef ref, String itemName) {
     amount = ref.watch(amountProvider);
     final amountController = ref.read(amountProvider.notifier);
-    return Padding(
-      padding: const EdgeInsets.only(top: 40),
-      child: Column(
-        children: [
-          itemLabel(itemName),
-          Container(
-            height: 60,
-            width: 320,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(
-                Radius.circular(20),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black38,
-                  offset: Offset(2.0, 2.0),
-                  blurRadius: 4.0,
-                  spreadRadius: 4.0,
+    return SizedBox(
+      child: Padding(
+        padding: EdgeInsets.only(top: 40.h),
+        child: Column(
+          children: [
+            itemLabel(itemName),
+            Container(
+              height: 60.h,
+              width: 320.w,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20.r),
                 ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const Expanded(flex: 1, child: Icon(Icons.currency_yen)),
-                Expanded(
-                  flex: 5,
-                  child: TextField(
-                    style: const TextStyle(fontSize: 20),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    onChanged: (amountText) {
-                      amountController.state = amountText;
-                    },
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "金額",
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black38,
+                    offset: Offset(2.0.r, 2.0.r),
+                    blurRadius: 4.0.r,
+                    spreadRadius: 4.0.r,
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                      flex: 1,
+                      child: Icon(
+                        Icons.currency_yen,
+                        size: 30.sp,
+                      )),
+                  Expanded(
+                    flex: 5,
+                    child: TextField(
+                      style: TextStyle(fontSize: 20.sp),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      onChanged: (amountText) {
+                        amountController.state = amountText;
+                      },
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "金額",
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -131,35 +139,35 @@ class ExpensePage extends ConsumerWidget {
     category = categorys[categoryExpenseIndex];
 
     return Padding(
-      padding: const EdgeInsets.only(top: 40),
+      padding: EdgeInsets.only(top: 40.h),
       child: Column(
         children: [
           itemLabel(itemName),
           Container(
-              height: 60,
-              width: 320,
-              decoration: const BoxDecoration(
+              height: 60.h,
+              width: 320.w,
+              decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(20)),
+                borderRadius: BorderRadius.all(Radius.circular(20.r)),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black38,
-                    offset: Offset(2.0, 2.0),
-                    blurRadius: 4.0,
-                    spreadRadius: 4.0,
+                    offset: Offset(2.0.r, 2.0.r),
+                    blurRadius: 4.0.r,
+                    spreadRadius: 4.0.r,
                   ),
                 ],
               ),
               child: Row(children: <Widget>[
-                const SizedBox(width: 15),
+                SizedBox(width: 15.w),
                 Icon(IconData(category!.icon!, fontFamily: 'MaterialIcons'),
-                    color: Color(category!.color!)),
-                const SizedBox(width: 20),
+                    size: 30.sp, color: Color(category!.color!)),
+                SizedBox(width: 20.w),
                 Expanded(
                   flex: 8,
                   child: Text(category!.category,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20)),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20.sp)),
                 ),
                 categoryBottomSheetBarButtom(
                   categorys: categorys,
@@ -179,35 +187,35 @@ class ExpensePage extends ConsumerWidget {
     memo = ref.watch(memoProvider);
     final memoController = ref.read(memoProvider.notifier);
     return Padding(
-      padding: const EdgeInsets.only(top: 40),
+      padding: EdgeInsets.only(top: 40.h),
       child: Column(
         children: [
           itemLabel(itemName),
           Container(
-            height: 60,
-            width: 320,
-            decoration: const BoxDecoration(
+            height: 60.h,
+            width: 320.w,
+            decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(
-                Radius.circular(20),
+                Radius.circular(20.r),
               ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black38,
-                  offset: Offset(2.0, 2.0),
-                  blurRadius: 4.0,
-                  spreadRadius: 4.0,
+                  offset: Offset(2.0.r, 2.0.r),
+                  blurRadius: 4.0.r,
+                  spreadRadius: 4.0.r,
                 ),
               ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Expanded(flex: 1, child: Icon(Icons.edit)),
+                Expanded(flex: 1, child: Icon(Icons.edit, size: 30.sp)),
                 Expanded(
                   flex: 5,
                   child: TextField(
-                    style: const TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 20.sp),
                     onChanged: (memoText) {
                       memoController.state = memoText;
                     },
@@ -228,24 +236,24 @@ class ExpensePage extends ConsumerWidget {
   //追加ボタン
   Widget addButton(WidgetRef ref, BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 30),
+      padding: EdgeInsets.only(top: 30.h),
       child: Container(
-        height: 50,
-        width: 100,
+        height: 50.h,
+        width: 100.w,
         color: Colors.green,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             elevation: 10,
             backgroundColor: Colors.green,
             foregroundColor: Colors.white,
-            side: const BorderSide(color: Colors.white, width: 3),
+            side: BorderSide(color: Colors.white, width: 3.w),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(30.r),
             ),
           ),
-          child: const Text(
+          child: Text(
             "追加",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.sp),
           ),
           onPressed: () async {
             await addDialog(context, ref);

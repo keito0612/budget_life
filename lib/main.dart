@@ -13,11 +13,12 @@ import 'package:budget/page/home/home_page.dart';
 import 'package:budget/page/input/input_page.dart';
 import 'package:budget/page/list/list_page.dart';
 import 'package:budget/page/setting/setting_page.dart';
+import 'package:budget/provider/ad_banner_provider.dart';
+import 'package:budget/provider/reward_ad._provider.dart';
 import 'package:budget/provider/shared_preferences_provider.dart';
 import 'package:budget/repositorys/category_expense_repository.dart';
 import 'package:budget/repositorys/category_income_repository.dart';
 import 'package:budget/repositorys/fixed_expense_repository.dart';
-import 'package:budget/states/fixed_expense_state.dart';
 import 'package:budget/utils/util.dart';
 import 'package:budget/viewModels/category_expense_model.dart';
 import 'package:budget/viewModels/category_income_model.dart';
@@ -30,10 +31,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'repositorys/recurring_income_repository.dart';
 import 'widgets/passcode/passcode_lock_Screen.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final selectedPageProvider = StateProvider.autoDispose((ref) => 0);
 
@@ -116,6 +119,7 @@ Future _automaticInputIncome() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LoadingWidget.configLoading();
+  await MobileAds.instance.initialize();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -127,6 +131,7 @@ void main() async {
       FixedExpenseModel(FixedExpenseRepository(FixedExpenseDatabase()));
   final recurringIncomeViewModel = RecurringIncomeModel(
       RecurringIncomeRepository(RecurringIncomeDatabase()));
+  final rewardAdNotifier = RewardAdNotifier();
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -171,7 +176,8 @@ void main() async {
         categoryIncomeModelProvider.overrideWith((ref) => categoryIncomeModel),
         fixedExpenseViewModelProvider.overrideWith((ref) => fixedExpenseModel),
         recurringIncomeViewModelProvider
-            .overrideWith((ref) => recurringIncomeViewModel)
+            .overrideWith((ref) => recurringIncomeViewModel),
+        rewardAdProvider.overrideWith((ref) => rewardAdNotifier)
       ],
       child: MaterialApp(
           localizationsDelegates: const [
@@ -215,6 +221,10 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = ref.watch(selectedPageProvider);
     final selectedIndexController = ref.read(selectedPageProvider.notifier);
+    final adBanner =
+        ref.watch(adBannerProvider.select((value) => value.bannerAd));
+    final isLoaded =
+        ref.watch(adBannerProvider.select((value) => value.isLoaded));
     final lock = ref.watch(lockProvider);
     final List<Widget> pageList = [
       const HomePage(),
@@ -225,17 +235,49 @@ class MyApp extends ConsumerWidget {
 
     return lock == true
         ? const PasscodeLockScreen()
-        : Scaffold(
-            body: pageList[selectedIndex],
-            bottomNavigationBar: BottomNavigationBar(
-                unselectedLabelStyle:
-                    const TextStyle(color: Colors.black, fontSize: 14),
-                unselectedItemColor: Colors.black45,
-                selectedItemColor: Colors.green,
-                currentIndex: selectedIndex,
-                onTap: (index) {
-                  selectedIndexController.state = index;
-                },
-                items: _tabItems));
+        : ScreenUtilInit(
+            designSize: const Size(390, 844),
+            minTextAdapt: true,
+            splitScreenMode: true,
+            builder: (context, child) {
+              return Scaffold(
+                  body: pageList[selectedIndex],
+                  bottomNavigationBar: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        isLoaded != false
+                            ? SizedBox(
+                                height: 80.h, child: AdWidget(ad: adBanner!))
+                            : loadingAdBannerWidget(),
+                        BottomNavigationBar(
+                            iconSize: 35.sp,
+                            selectedLabelStyle: TextStyle(fontSize: 14.sp),
+                            unselectedLabelStyle:
+                                TextStyle(color: Colors.black, fontSize: 14.sp),
+                            unselectedItemColor: Colors.black45,
+                            selectedItemColor: Colors.green,
+                            currentIndex: selectedIndex,
+                            onTap: (index) {
+                              selectedIndexController.state = index;
+                            },
+                            items: _tabItems)
+                      ]));
+            });
+  }
+
+  Widget loadingAdBannerWidget() {
+    return SizedBox(
+        width: 100.w,
+        height: 80.h,
+        child: SizedBox(
+          height: 50,
+          width: 50,
+          child: Center(
+            child: CircularProgressIndicator(
+              color: Colors.green,
+            ),
+          ),
+        ));
   }
 }

@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class forgotPasswordPage extends ConsumerWidget {
   forgotPasswordPage({super.key});
@@ -30,25 +31,25 @@ class forgotPasswordPage extends ConsumerWidget {
   Widget _emailAndPasswordResetButtomWidget(
       BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.only(top: 100),
+      padding: EdgeInsets.only(top: 100.h),
       child: Container(
-        width: 350,
-        height: 200,
-        decoration: const BoxDecoration(
+        width: 350.w,
+        height: 200.h,
+        decoration: BoxDecoration(
           color: Colors.green,
-          borderRadius: BorderRadius.all(Radius.circular(50)),
+          borderRadius: BorderRadius.all(Radius.circular(50.r)),
           boxShadow: [
             BoxShadow(
               color: Colors.black38,
-              offset: Offset(2.0, 2.0),
-              blurRadius: 4.0,
-              spreadRadius: 4.0,
+              offset: Offset(2.0.r, 2.0.r),
+              blurRadius: 4.0.r,
+              spreadRadius: 4.0.r,
             ),
           ],
         ),
         child: Column(
           children: [
-            const SizedBox(height: 50),
+            SizedBox(height: 50.h),
             _emailTextField(ref),
             _passwordResetButtom(context, ref)
           ],
@@ -60,24 +61,25 @@ class forgotPasswordPage extends ConsumerWidget {
   Widget _emailTextField(WidgetRef ref) {
     final emailController = ref.read(emailProvider.notifier);
     return Container(
-      height: 50,
-      width: 320,
-      decoration: const BoxDecoration(
+      height: 50.h,
+      width: 320.w,
+      decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(
-          Radius.circular(20),
+          Radius.circular(20.r),
         ),
       ),
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.only(left: 20),
+          padding: EdgeInsets.only(left: 20.w),
           child: TextField(
+            style: TextStyle(fontSize: 15.sp),
             decoration: const InputDecoration(
               border: InputBorder.none,
               hintText: "メールアドレス",
             ),
-            onChanged: (password) {
-              emailController.state = password;
+            onChanged: (mailAddress) {
+              emailController.state = mailAddress;
             },
           ),
         ),
@@ -87,23 +89,23 @@ class forgotPasswordPage extends ConsumerWidget {
 
   Widget _passwordResetButtom(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.only(top: 30),
+      padding: EdgeInsets.only(top: 30.h),
       child: Container(
-        height: 50,
-        width: 250,
+        height: 50.h,
+        width: 250.w,
         color: Colors.green,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             elevation: 0,
             backgroundColor: Colors.green,
             foregroundColor: Colors.white,
-            side: const BorderSide(color: Colors.white, width: 3),
+            side: BorderSide(color: Colors.white, width: 3.w),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30),
             ),
           ),
-          child: const Text("パスワード再設定メールを送る",
-              style: TextStyle(fontWeight: FontWeight.bold)),
+          child: Text("パスワード再設定メールを送る",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.sp)),
           onPressed: () async {
             await _passwordResetDialog(context, ref);
           },

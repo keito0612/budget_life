@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final selectedColorProvider = StateProvider.autoDispose((ref) => Colors.black);
 final selectedIconProvider =
@@ -86,6 +87,7 @@ class CategoryAddPage extends ConsumerWidget {
   String? category;
   Color? color;
   IconData? icon;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     color = ref.watch(selectedColorProvider);
@@ -105,17 +107,17 @@ class CategoryAddPage extends ConsumerWidget {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: 1400,
+          height: 1400.h,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0.r),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 _categoryTextField(cupertinoSlidingValue, ref),
                 _selectedIconWithColor(icon!, color!),
-                const SizedBox(height: 8.0),
+                SizedBox(height: 8.0.h),
                 _selectColorWidget(ref),
-                const SizedBox(height: 20.0),
+                SizedBox(height: 20.0.h),
                 _selectIconsWidget(ref)
               ],
             ),
@@ -128,33 +130,38 @@ class CategoryAddPage extends ConsumerWidget {
   Widget _categoryTextField(int cupertinoSliderValue, WidgetRef ref) {
     final categoryController = ref.read(categoryProvider.notifier);
     return Container(
-      width: 400,
-      height: 110,
+      width: 400.w,
+      height: 120.h,
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(30)),
+          color: Colors.white, borderRadius: BorderRadius.circular(30.r)),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 20),
+            padding: EdgeInsets.only(left: 20.w),
             child: TextField(
-              decoration: const InputDecoration(
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  hintText: "カテゴリー"),
+              style: TextStyle(fontSize: 20.sp),
+              cursorHeight: 20.sp,
+              decoration: InputDecoration(
+                labelStyle: TextStyle(fontSize: 20.sp),
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                hintText: "カテゴリー",
+                hintStyle: TextStyle(fontSize: 20.sp),
+              ),
               onChanged: (category) {
                 categoryController.state = category;
               },
             ),
           ),
-          const Divider(
+          Divider(
             color: Colors.grey,
-            thickness: 2,
-            height: 1,
-            indent: 20,
-            endIndent: 20,
+            thickness: 2.h,
+            height: 1.h,
+            indent: 20.h,
+            endIndent: 20.h,
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0.r),
             child: _cupertinoSlidingWidget(cupertinoSliderValue, ref),
           )
         ],
@@ -166,15 +173,15 @@ class CategoryAddPage extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        width: 200,
-        height: 130,
+        width: 200.w,
+        height: 130.h,
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(30)),
+            color: Colors.white, borderRadius: BorderRadius.circular(30.r)),
         child: Padding(
           padding: const EdgeInsets.only(left: 0),
           child: Icon(
             icon,
-            size: 80,
+            size: 80.sp,
             color: color,
           ),
         ),
@@ -186,28 +193,35 @@ class CategoryAddPage extends ConsumerWidget {
     final cupertinoSlidingValueController =
         ref.read(cupertinoSlidingValueProvider.notifier);
     return SizedBox(
-      width: 300,
+      width: 300.w,
+      height: 40.h,
       child: CupertinoSlidingSegmentedControl(
         children: {
-          0: Text(
-            "支出",
-            style: TextStyle(
-              color: cupertinoSlidingValue == 0 ? Colors.green : Colors.white,
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
-              fontFamily: "SFProRounded",
+          0: Container(
+            margin: EdgeInsets.symmetric(vertical: 5.h),
+            child: Text(
+              "支出",
+              style: TextStyle(
+                color: cupertinoSlidingValue == 0 ? Colors.green : Colors.white,
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w400,
+                fontFamily: "SFProRounded",
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
           ),
-          1: Text(
-            "収入",
-            style: TextStyle(
-              color: cupertinoSlidingValue == 1 ? Colors.green : Colors.white,
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
-              fontFamily: "SFProRounded",
+          1: Container(
+            margin: EdgeInsets.symmetric(vertical: 5.h),
+            child: Text(
+              "収入",
+              style: TextStyle(
+                color: cupertinoSlidingValue == 1 ? Colors.green : Colors.white,
+                fontSize: 15.sp,
+                fontWeight: FontWeight.w400,
+                fontFamily: "SFProRounded",
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
           ),
         },
         groupValue: cupertinoSlidingValue,
@@ -227,7 +241,7 @@ class CategoryAddPage extends ConsumerWidget {
         selectedIconController.state = iconData;
       },
       child: Icon(iconData,
-          size: 40.0,
+          size: 40.0.sp,
           color: selectedIconController.state == iconData
               ? Colors.green
               : Colors.black),
@@ -241,13 +255,13 @@ class CategoryAddPage extends ConsumerWidget {
         selectedColorController.state = color;
       },
       child: Container(
-        width: 40.0,
-        height: 40.0,
+        width: 40.0.w,
+        height: 40.0.h,
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(18.0),
+          shape: BoxShape.circle,
           border: selectedColorController.state == color
-              ? Border.all(color: Colors.white, width: 2.0)
+              ? Border.all(color: Colors.white, width: 2.0.w)
               : null,
         ),
       ),
@@ -257,22 +271,24 @@ class CategoryAddPage extends ConsumerWidget {
   Widget _selectColorWidget(WidgetRef ref) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(30)),
-      height: 300,
+          color: Colors.white, borderRadius: BorderRadius.circular(30.r)),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0.r),
             child: Container(
-              width: 300,
-              height: 30,
+              width: 300.w,
+              height: 30.h,
               decoration: BoxDecoration(
-                  color: Colors.green, borderRadius: BorderRadius.circular(30)),
-              child: const Center(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(30.r)),
+              child: Center(
                 child: Text(
                   "カラー",
                   style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.sp),
                 ),
               ),
             ),
@@ -283,6 +299,7 @@ class CategoryAddPage extends ConsumerWidget {
               children: [
                 Expanded(
                   child: Wrap(
+                    alignment: WrapAlignment.center,
                     spacing: 20.0,
                     runSpacing: 20.0,
                     children: colorList
@@ -302,21 +319,23 @@ class CategoryAddPage extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(30)),
-      height: 550,
       child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
-              width: 300,
-              height: 30,
+              width: 300.w,
+              height: 30.h,
               decoration: BoxDecoration(
-                  color: Colors.green, borderRadius: BorderRadius.circular(30)),
-              child: const Center(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(30.r)),
+              child: Center(
                 child: Text(
                   "アイコン",
                   style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.sp),
                 ),
               ),
             ),
@@ -329,6 +348,7 @@ class CategoryAddPage extends ConsumerWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Wrap(
+                      alignment: WrapAlignment.center,
                       spacing: 20.0,
                       runSpacing: 20.0,
                       children: iconList
@@ -352,11 +372,11 @@ class CategoryAddPage extends ConsumerWidget {
             onPressed: () {
               addDialog(cupertinoSliderValue, context, ref);
             },
-            child: const Text(
+            child: Text(
               "保存",
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20,
+                  fontSize: 20.sp,
                   fontWeight: FontWeight.bold),
             ))
         : TextButton(
@@ -365,7 +385,7 @@ class CategoryAddPage extends ConsumerWidget {
               "保存",
               style: TextStyle(
                   color: Colors.grey[300],
-                  fontSize: 20,
+                  fontSize: 20.sp,
                   fontWeight: FontWeight.bold),
             ),
           );

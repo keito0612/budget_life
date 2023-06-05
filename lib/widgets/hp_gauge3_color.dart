@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HpGauge3Color extends StatelessWidget {
   HpGauge3Color(
@@ -27,47 +28,52 @@ class HpGauge3Color extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: const BorderRadius.all(Radius.circular(50)),
-          border: Border.all(width: 5, color: Colors.black)),
-      width: 350,
-      height: 100,
+          borderRadius: BorderRadius.all(Radius.circular(50.r)),
+          border: Border.all(width: 5.w, color: Colors.black)),
+      width: 350.w,
+      height: 100.h,
       child: SizedBox(
         child: Padding(
           padding:
-              const EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
+              EdgeInsets.only(top: 10.w, left: 20.w, right: 20.w, bottom: 10.h),
           child: Column(children: [
             Row(
               children: [
                 Expanded(
                   flex: 1,
                   child: Container(
-                    height: 25,
-                    decoration: const BoxDecoration(
+                    height: 25.h,
+                    decoration: BoxDecoration(
                         color: Colors.black,
                         borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            bottomLeft: Radius.circular(10))),
+                            topLeft: Radius.circular(10.r),
+                            bottomLeft: Radius.circular(10.r))),
                     child: Center(
                       child: Text(
                         title,
-                        style: const TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.sp),
                       ),
                     ),
                   ),
                 ),
                 Expanded(
                   flex: 6,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(5),
-                        bottomRight: Radius.circular(5)),
-                    child: LinearProgressIndicator(
-                      value: currentAmount / maxAmount,
-                      valueColor: AlwaysStoppedAnimation(
-                          getCurrentHpColor(currentAmount)),
-                      backgroundColor: Colors.grey,
-                      minHeight: 25,
+                  child: SizedBox(
+                    height: 25.h,
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(5),
+                          bottomRight: Radius.circular(5)),
+                      child: LinearProgressIndicator(
+                        value: currentAmount / maxAmount,
+                        valueColor: AlwaysStoppedAnimation(
+                            getCurrentHpColor(currentAmount)),
+                        backgroundColor: Colors.grey,
+                        minHeight: 25.h,
+                      ),
                     ),
                   ),
                 ),
@@ -80,7 +86,7 @@ class HpGauge3Color extends StatelessWidget {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: getAmontTextColor(currentAmount),
-                    fontSize: 20),
+                    fontSize: 20.sp),
               ),
             ),
           ]),
@@ -93,47 +99,52 @@ class HpGauge3Color extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: const BorderRadius.all(Radius.circular(50)),
-          border: Border.all(width: 5, color: Colors.black)),
-      width: 350,
-      height: 100,
+          borderRadius: BorderRadius.all(Radius.circular(50.r)),
+          border: Border.all(width: 5.w, color: Colors.black)),
+      width: 350.w,
+      height: 100.h,
       child: SizedBox(
         child: Padding(
           padding:
-              const EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 10),
+              EdgeInsets.only(top: 10.h, left: 20.w, right: 20.w, bottom: 10.h),
           child: Column(children: [
             Row(
               children: [
                 Expanded(
                   flex: 1,
                   child: Container(
-                    height: 25,
-                    decoration: const BoxDecoration(
+                    height: 25.h,
+                    decoration: BoxDecoration(
                         color: Colors.black,
                         borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            bottomLeft: Radius.circular(10))),
+                            topLeft: Radius.circular(10.r),
+                            bottomLeft: Radius.circular(10.r))),
                     child: Center(
                       child: Text(
                         title,
-                        style: const TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.sp),
                       ),
                     ),
                   ),
                 ),
                 Expanded(
                   flex: 6,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(5),
-                        bottomRight: Radius.circular(5)),
-                    child: LinearProgressIndicator(
-                      value: 0.0,
-                      valueColor: AlwaysStoppedAnimation(
-                          getCurrentHpColor(currentAmount)),
-                      backgroundColor: Colors.grey,
-                      minHeight: 25,
+                  child: SizedBox(
+                    height: 25.h,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(5.r),
+                          bottomRight: Radius.circular(5.r)),
+                      child: LinearProgressIndicator(
+                        value: 0.0,
+                        valueColor: AlwaysStoppedAnimation(
+                            getCurrentHpColor(currentAmount)),
+                        backgroundColor: Colors.grey,
+                        minHeight: 25.h,
+                      ),
                     ),
                   ),
                 ),
@@ -146,7 +157,7 @@ class HpGauge3Color extends StatelessWidget {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: getAmontTextColor(currentAmount),
-                    fontSize: 20),
+                    fontSize: 20.sp),
               ),
             ),
           ]),

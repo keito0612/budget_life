@@ -7,17 +7,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 final recurringIncomeViewModelProvider =
     StateNotifierProvider<RecurringIncomeModel, RecurringIncomeState>(
   (ref) => RecurringIncomeModel(
-    ref,
     RecurringIncomeRepository(RecurringIncomeDatabase()),
   ),
 );
 
 class RecurringIncomeModel extends StateNotifier<RecurringIncomeState> {
-  RecurringIncomeModel(this._ref, this._recurringIncomeRepository)
+  RecurringIncomeModel(this._recurringIncomeRepository)
       : super(const RecurringIncomeState()) {
     getRecurringIncomes();
   }
-  final Ref _ref;
   final RecurringIncomeRepository _recurringIncomeRepository;
 
   Future<void> addRecurringIncome(RecurringIncome recurringIncome) async {

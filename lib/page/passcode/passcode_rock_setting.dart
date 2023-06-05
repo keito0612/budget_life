@@ -3,6 +3,7 @@ import 'package:budget/widgets/cupertino_switch_tile.dart';
 import 'package:budget/widgets/passcode/passcode_lock_setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final passcodeProvider =
@@ -66,34 +67,35 @@ class PassCodeRockSetting extends ConsumerWidget {
       appBar: AppBar(title: const Text("パスコードロック")),
       body: Center(
         child: Container(
-          width: 380,
-          height: 280,
-          decoration: const BoxDecoration(
+          width: 380.w,
+          height: 230.h,
+          decoration: BoxDecoration(
             color: Colors.green,
-            borderRadius: BorderRadius.all(Radius.circular(50)),
+            borderRadius: BorderRadius.all(Radius.circular(50.r)),
             boxShadow: [
               BoxShadow(
                 color: Colors.black38,
-                offset: Offset(2.0, 2.0),
-                blurRadius: 4.0,
-                spreadRadius: 4.0,
+                offset: Offset(2.0.r, 2.0.r),
+                blurRadius: 4.0.r,
+                spreadRadius: 4.0.r,
               ),
             ],
           ),
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(30.0),
+                padding: EdgeInsets.all(20.0.r),
                 child: Container(
-                  decoration: const BoxDecoration(
+                  height: 60.h,
+                  decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    borderRadius: BorderRadius.all(Radius.circular(50.r)),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black38,
-                        offset: Offset(2.0, 2.0),
-                        blurRadius: 4.0,
-                        spreadRadius: 4.0,
+                        offset: Offset(2.0.r, 2.0.r),
+                        blurRadius: 4.0.r,
+                        spreadRadius: 4.0.r,
                       ),
                     ],
                   ),
@@ -111,17 +113,18 @@ class PassCodeRockSetting extends ConsumerWidget {
               ),
               passcode == true
                   ? Padding(
-                      padding: const EdgeInsets.all(30.0),
+                      padding: EdgeInsets.all(20.0.r),
                       child: Container(
-                        decoration: const BoxDecoration(
+                        height: 60.h,
+                        decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                          borderRadius: BorderRadius.all(Radius.circular(50.r)),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black38,
-                              offset: Offset(2.0, 2.0),
-                              blurRadius: 4.0,
-                              spreadRadius: 4.0,
+                              offset: Offset(2.0.r, 2.0.r),
+                              blurRadius: 4.0.r,
+                              spreadRadius: 4.0.r,
                             ),
                           ],
                         ),
