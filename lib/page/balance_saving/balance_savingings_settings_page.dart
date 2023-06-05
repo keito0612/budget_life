@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final balanceProvider = StateProvider.autoDispose((ref) => 0);
 final savingProvider = StateProvider.autoDispose((ref) => 0);
@@ -27,21 +28,21 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
           ),
           body: Center(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0.r),
               child: Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: Colors.green,
-                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                  borderRadius: BorderRadius.all(Radius.circular(50.r)),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black38,
-                      offset: Offset(2.0, 2.0),
-                      blurRadius: 4.0,
-                      spreadRadius: 4.0,
+                      offset: Offset(2.0.r, 2.0.r),
+                      blurRadius: 4.0.r,
+                      spreadRadius: 4.0.r,
                     ),
                   ],
                 ),
-                height: 400,
+                height: 400.h,
                 child: Column(
                   children: [
                     balanceTextField(ref, "月の手取り"),
@@ -57,15 +58,15 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
 
   Widget itemLabel(String itemName) {
     return Padding(
-      padding: const EdgeInsets.only(left: 30),
+      padding: EdgeInsets.only(left: 30.w),
       child: Container(
         width: double.infinity,
         child: Text(itemName,
             textAlign: TextAlign.left,
-            style: const TextStyle(
+            style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 20)),
+                fontSize: 20.sp)),
       ),
     );
   }
@@ -76,37 +77,42 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
     final balanceController = ref.read(balanceProvider.notifier);
 
     return Padding(
-      padding: const EdgeInsets.only(top: 40),
+      padding: EdgeInsets.only(top: 50.h),
       child: Column(
         children: [
           itemLabel(itemName),
           Container(
-            height: 60,
-            width: 320,
-            decoration: const BoxDecoration(
+            height: 60.h,
+            width: 320.w,
+            decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(
-                Radius.circular(20),
+                Radius.circular(20.r),
               ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black38,
-                  offset: Offset(2.0, 2.0),
-                  blurRadius: 4.0,
-                  spreadRadius: 4.0,
+                  offset: Offset(2.0.r, 2.0.r),
+                  blurRadius: 4.0.r,
+                  spreadRadius: 4.0.r,
                 ),
               ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Expanded(flex: 1, child: Icon(Icons.currency_yen)),
+                Expanded(
+                    flex: 1,
+                    child: Icon(
+                      Icons.currency_yen,
+                      size: 20.sp,
+                    )),
                 Expanded(
                   flex: 5,
                   child: TextField(
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    style: const TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 20.sp),
                     onChanged: (monthAmount) {
                       balanceController.state = int.tryParse(monthAmount) ?? 0;
                     },
@@ -129,37 +135,42 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
     saving = ref.watch(savingProvider);
     final savingController = ref.read(savingProvider.notifier);
     return Padding(
-      padding: const EdgeInsets.only(top: 40),
+      padding: EdgeInsets.only(top: 40.h),
       child: Column(
         children: [
           itemLabel(itemName),
           Container(
-            height: 60,
-            width: 320,
-            decoration: const BoxDecoration(
+            height: 60.h,
+            width: 320.w,
+            decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(
-                Radius.circular(20),
+                Radius.circular(20.r),
               ),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black38,
-                  offset: Offset(2.0, 2.0),
-                  blurRadius: 4.0,
-                  spreadRadius: 4.0,
+                  offset: Offset(2.0.r, 2.0.r),
+                  blurRadius: 4.0.r,
+                  spreadRadius: 4.0.r,
                 ),
               ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Expanded(flex: 1, child: Icon(Icons.currency_yen)),
+                Expanded(
+                    flex: 1,
+                    child: Icon(
+                      Icons.currency_yen,
+                      size: 20.sp,
+                    )),
                 Expanded(
                   flex: 5,
                   child: TextField(
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    style: const TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 20.sp),
                     onChanged: (amount) {
                       savingController.state = int.tryParse(amount) ?? 0;
                     },
@@ -179,23 +190,23 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
 
   Widget settingButton(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.only(top: 30),
+      padding: EdgeInsets.only(top: 30.r),
       child: Container(
-        height: 50,
-        width: 100,
+        height: 50.h,
+        width: 100.w,
         color: Colors.green,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             elevation: 10,
             backgroundColor: Colors.green,
             foregroundColor: Colors.white,
-            side: const BorderSide(color: Colors.white, width: 3),
+            side: BorderSide(color: Colors.white, width: 3.w),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(30.r),
             ),
           ),
-          child:
-              const Text("設定", style: TextStyle(fontWeight: FontWeight.bold)),
+          child: Text("設定",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp)),
           onPressed: () async {
             await settingDialog(context, ref);
           },

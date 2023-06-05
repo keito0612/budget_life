@@ -6,6 +6,7 @@ import 'package:budget/widgets/cupertino_switch_tile.dart';
 import 'package:budget/widgets/cupertino_time_piker_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NotificationSettingPage extends ConsumerWidget {
   const NotificationSettingPage({super.key});
@@ -24,62 +25,66 @@ class NotificationSettingPage extends ConsumerWidget {
       appBar: AppBar(title: const Text("通知設定")),
       body: Center(
         child: Container(
-          width: 380,
-          height: 280,
-          decoration: const BoxDecoration(
+          width: 380.w,
+          height: 230.h,
+          decoration: BoxDecoration(
             color: Colors.green,
-            borderRadius: BorderRadius.all(Radius.circular(50)),
+            borderRadius: BorderRadius.all(Radius.circular(50.r)),
             boxShadow: [
               BoxShadow(
                 color: Colors.black38,
-                offset: Offset(2.0, 2.0),
-                blurRadius: 4.0,
-                spreadRadius: 4.0,
+                offset: Offset(2.0.r, 2.0.r),
+                blurRadius: 4.0.r,
+                spreadRadius: 4.0.r,
               ),
             ],
           ),
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(30.0),
+                padding: EdgeInsets.all(20.0.r),
                 child: Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    borderRadius: BorderRadius.all(Radius.circular(50.r)),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black38,
-                        offset: Offset(2.0, 2.0),
-                        blurRadius: 4.0,
-                        spreadRadius: 4.0,
+                        offset: Offset(2.0.r, 2.0.r),
+                        blurRadius: 4.0.r,
+                        spreadRadius: 4.0.r,
                       ),
                     ],
                   ),
-                  child: CupertinoSwitchTile(
-                      title: "通知",
-                      value: notification,
-                      onChanged: (bool value) async {
-                        notificationController.setNotification(value);
-                        if (notification == false) {
-                          prefs.remove("notification_time");
-                          NotificationService().cancelAllNotification();
-                        }
-                      }),
+                  child: SizedBox(
+                    height: 60.h,
+                    child: CupertinoSwitchTile(
+                        title: "通知",
+                        value: notification,
+                        onChanged: (bool value) async {
+                          notificationController.setNotification(value);
+                          if (notification == false) {
+                            prefs.remove("notification_time");
+                            NotificationService().cancelAllNotification();
+                          }
+                        }),
+                  ),
                 ),
               ),
               notification == true
                   ? Padding(
-                      padding: const EdgeInsets.all(30.0),
+                      padding: EdgeInsets.all(20.0.r),
                       child: Container(
-                        decoration: const BoxDecoration(
+                        height: 60.h,
+                        decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
+                          borderRadius: BorderRadius.all(Radius.circular(50.r)),
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black38,
-                              offset: Offset(2.0, 2.0),
-                              blurRadius: 4.0,
-                              spreadRadius: 4.0,
+                              offset: Offset(2.0.r, 2.0.r),
+                              blurRadius: 4.0.r,
+                              spreadRadius: 4.0.r,
                             ),
                           ],
                         ),

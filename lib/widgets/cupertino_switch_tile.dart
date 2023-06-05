@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CupertinoSwitchTile extends StatelessWidget {
   const CupertinoSwitchTile({
@@ -16,10 +17,28 @@ class CupertinoSwitchTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: null,
-      title: Text(title),
-      trailing: CupertinoSwitch(
-        value: value,
-        onChanged: onChanged,
+      title: Row(
+        children: [
+          Center(
+            child: Text(
+              title,
+              style: TextStyle(fontSize: 25.sp),
+            ),
+          ),
+        ],
+      ),
+      trailing: Container(
+        width: 70.h,
+        height: 70.h,
+        child: Center(
+          child: Transform.scale(
+            scale: 1.1.sp,
+            child: CupertinoSwitch(
+              value: value,
+              onChanged: onChanged,
+            ),
+          ),
+        ),
       ),
     );
   }

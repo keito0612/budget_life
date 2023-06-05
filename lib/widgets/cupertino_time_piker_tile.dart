@@ -2,6 +2,7 @@ import 'package:budget/utils/util.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CupertinoTimePikerTile extends ConsumerWidget {
   CupertinoTimePikerTile(
@@ -21,11 +22,23 @@ class CupertinoTimePikerTile extends ConsumerWidget {
           _showCupertinoDatePicker(context);
         },
         tileColor: Colors.white,
-        title: Row(
+        title: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(title),
-            const SizedBox(width: 190),
-            Text(time, style: const TextStyle(fontSize: 20))
+            Row(
+              children: [
+                Expanded(
+                  flex: 4,
+                  child: Text(
+                    title,
+                    style: TextStyle(fontSize: 25.sp),
+                  ),
+                ),
+                Expanded(
+                    flex: 1,
+                    child: Text(time, style: TextStyle(fontSize: 21.sp)))
+              ],
+            ),
           ],
         ),
       ),
@@ -51,12 +64,12 @@ class CupertinoTimePikerTile extends ConsumerWidget {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: const Text(
+                    child: Text(
                       "閉じる",
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 20.sp),
                     )),
                 SizedBox(
-                    height: 200,
+                    height: 200.h,
                     child: CupertinoDatePicker(
                         initialDateTime: Util.convartDateToTime(time),
                         use24hFormat: true,

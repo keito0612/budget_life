@@ -8,6 +8,7 @@ import 'package:budget/viewModels/fixed_expense_model.dart';
 import 'package:budget/viewModels/recurringI_income_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class FixedExpenseWithRecurringIncomePage extends ConsumerWidget {
@@ -22,29 +23,53 @@ class FixedExpenseWithRecurringIncomePage extends ConsumerWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(10.r),
           child: Column(
             children: [
-              labelWidget(
-                  text: "支出", right: 300.0, left: 0.0, top: 0.0, bottom: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  labelWidget(
+                      text: "支出",
+                      right: 0.0.w,
+                      left: 0.0.w,
+                      top: 0.0.h,
+                      bottom: 10.h),
+                ],
+              ),
               _fixedExpenseWidget(ref, context),
-              labelWidget(
-                  text: "収入", right: 300.0, left: 0.0, top: 10.0, bottom: 10),
+              Row(
+                children: [
+                  labelWidget(
+                      text: "収入",
+                      right: 120.0.w,
+                      left: 0.0.w,
+                      top: 10.0.h,
+                      bottom: 10.h),
+                ],
+              ),
               _recurringIncomeWidget(ref, context)
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  fullscreenDialog: true,
-                  builder: (context) =>
-                      const fixedExpenseWithRecurringIncomeAddPage()));
-        },
+      floatingActionButton: Container(
+        width: 60.0.sp,
+        height: 60.0.sp,
+        child: FloatingActionButton(
+          child: Icon(
+            Icons.add,
+            size: 20.sp,
+          ),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    fullscreenDialog: true,
+                    builder: (context) =>
+                        const fixedExpenseWithRecurringIncomeAddPage()));
+          },
+        ),
       ),
     );
   }
@@ -60,8 +85,8 @@ class FixedExpenseWithRecurringIncomePage extends ConsumerWidget {
           right: right!, left: left!, top: top!, bottom: bottom!),
       child: Text(
         text!,
-        style: const TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+        style: TextStyle(
+            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.sp),
       ),
     );
   }
@@ -70,14 +95,14 @@ class FixedExpenseWithRecurringIncomePage extends ConsumerWidget {
     final fixedExpenses = ref.watch(fixedExpenseViewModelProvider);
     final fixedExpenseModel = ref.read(fixedExpenseViewModelProvider.notifier);
     return ConstrainedBox(
-      constraints: const BoxConstraints(
-        minHeight: 100,
+      constraints: BoxConstraints(
+        minHeight: 100.h,
       ),
       child: Container(
           width: double.infinity,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
               color: Colors.green,
-              borderRadius: BorderRadius.all(Radius.circular(20))),
+              borderRadius: BorderRadius.all(Radius.circular(20.r))),
           child: _fixedExpenseList(
               fixedExpenses.fixedExpenses, fixedExpenseModel, context)),
     );
@@ -99,10 +124,10 @@ class FixedExpenseWithRecurringIncomePage extends ConsumerWidget {
       FixedExpenseModel fixedExpenseModel, FixedExpense fixedExpnese) {
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(6.0),
+        borderRadius: BorderRadius.circular(6.0.r),
       ),
       elevation: 8.0,
-      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+      margin: EdgeInsets.symmetric(horizontal: 10.0.r, vertical: 6.0.r),
       child: SizedBox(
         child: Slidable(
           endActionPane: ActionPane(
@@ -151,18 +176,28 @@ class FixedExpenseWithRecurringIncomePage extends ConsumerWidget {
                 Row(
                   children: [
                     Icon(
-                      IconData(fixedExpnese.icon!, fontFamily: 'MaterialIcons'),
+                      IconData(
+                        fixedExpnese.icon!,
+                        fontFamily: 'MaterialIcons',
+                      ),
                       color: Color(fixedExpnese.color!),
+                      size: 25.sp,
                     ),
                     const SizedBox(width: 5),
-                    Text(fixedExpnese.category!),
+                    Text(
+                      fixedExpnese.category!,
+                      style: TextStyle(fontSize: 20.sp),
+                    ),
                   ],
                 ),
                 Text(
                   "金額：${fixedExpnese.amount}円",
+                  style: TextStyle(fontSize: 20.sp),
                 ),
-                Text("自動入力：${fixedExpnese.autoMaticInputDate}"),
-                Text("メモ：${fixedExpnese.memo}"),
+                Text("自動入力：${fixedExpnese.autoMaticInputDate}",
+                    style: TextStyle(fontSize: 20.sp)),
+                Text("メモ：${fixedExpnese.memo}",
+                    style: TextStyle(fontSize: 20.sp)),
               ],
             ),
           ),
@@ -176,14 +211,14 @@ class FixedExpenseWithRecurringIncomePage extends ConsumerWidget {
     final recurringIncomeModel =
         ref.read(recurringIncomeViewModelProvider.notifier);
     return ConstrainedBox(
-      constraints: const BoxConstraints(
-        minHeight: 100,
+      constraints: BoxConstraints(
+        minHeight: 100.h,
       ),
       child: Container(
         width: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
             color: Colors.green,
-            borderRadius: BorderRadius.all(Radius.circular(20))),
+            borderRadius: BorderRadius.all(Radius.circular(20.r))),
         child: _recurringIncomeList(
             recurringIncomes.recurringIncomes, recurringIncomeModel, context),
       ),
@@ -206,10 +241,10 @@ class FixedExpenseWithRecurringIncomePage extends ConsumerWidget {
       RecurringIncomeModel recurringIncomeModel, BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(6.0),
+        borderRadius: BorderRadius.circular(6.0.r),
       ),
       elevation: 8.0,
-      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+      margin: EdgeInsets.symmetric(horizontal: 10.0.r, vertical: 6.0.r),
       child: SizedBox(
         child: Slidable(
           endActionPane: ActionPane(
@@ -262,16 +297,23 @@ class FixedExpenseWithRecurringIncomePage extends ConsumerWidget {
                       IconData(recurringIncome.icon!,
                           fontFamily: 'MaterialIcons'),
                       color: Color(recurringIncome.color!),
+                      size: 25.sp,
                     ),
-                    const SizedBox(width: 5),
-                    Text(recurringIncome.category!),
+                    SizedBox(width: 5.w),
+                    Text(recurringIncome.category!,
+                        style: TextStyle(fontSize: 20.sp)),
                   ],
                 ),
                 Text(
                   "金額：${recurringIncome.amount}円",
+                  style: TextStyle(fontSize: 20.sp),
                 ),
-                Text("自動入力：${recurringIncome.autoMaticInputDate}"),
-                Text("メモ：${recurringIncome.memo}"),
+                Text("自動入力：${recurringIncome.autoMaticInputDate}",
+                    style: TextStyle(fontSize: 20.sp)),
+                Text(
+                  "メモ：${recurringIncome.memo}",
+                  style: TextStyle(fontSize: 20.sp),
+                ),
               ],
             ),
           ),

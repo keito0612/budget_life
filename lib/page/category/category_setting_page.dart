@@ -5,6 +5,7 @@ import 'package:budget/viewModels/category_expense_model.dart';
 import 'package:budget/viewModels/category_income_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class CategorySettingPage extends ConsumerWidget {
@@ -28,25 +29,26 @@ class CategorySettingPage extends ConsumerWidget {
       body: SingleChildScrollView(
         child: Padding(
           padding:
-              const EdgeInsets.only(left: 10, right: 8, top: 30, bottom: 8),
+              EdgeInsets.only(left: 10.w, right: 8.w, top: 30.h, bottom: 8.h),
           child: Column(
             children: [
               SizedBox(
-                height: 40,
-                width: 320,
+                height: 40.h,
+                width: 320.w,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     elevation: 10,
                     backgroundColor: Colors.green,
                     foregroundColor: Colors.white,
-                    side: const BorderSide(color: Colors.white, width: 3),
+                    side: BorderSide(color: Colors.white, width: 3.w),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     "新規カテゴリー",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15.sp),
                   ),
                   onPressed: () async {
                     Navigator.push(
@@ -57,28 +59,28 @@ class CategorySettingPage extends ConsumerWidget {
                   },
                 ),
               ),
-              const SizedBox(height: 30),
-              const Padding(
-                padding: EdgeInsets.only(right: 300),
+              SizedBox(height: 30.h),
+              Padding(
+                padding: EdgeInsets.only(right: 300.w),
                 child: Text(
                   "支出",
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20),
+                      fontSize: 20.sp),
                 ),
               ),
               _categoryExpenseListWidget(categoryExoenseModel.categorys,
                   categoryExpenseModelController),
-              const SizedBox(height: 30),
-              const Padding(
-                padding: EdgeInsets.only(right: 300),
+              SizedBox(height: 30.h),
+              Padding(
+                padding: EdgeInsets.only(right: 300.w),
                 child: Text(
                   "収入",
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20),
+                      fontSize: 20.sp),
                 ),
               ),
               _categoryIncomeListWidget(categoryIncomeModel.categoryIncomes,
@@ -93,11 +95,11 @@ class CategorySettingPage extends ConsumerWidget {
   Widget _categoryExpenseListWidget(
       List<Category> list, CategoryExpenseModel model) {
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: EdgeInsets.all(10),
       child: Container(
-        width: 350,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+        width: 350.w,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20.r)),
           color: Colors.white,
         ),
         child: ListView(
@@ -142,10 +144,15 @@ class CategorySettingPage extends ConsumerWidget {
                           leading: Icon(
                             IconData(category.icon!,
                                 fontFamily: 'MaterialIcons'),
+                            size: 25.sp,
                             color: Color(category.color!),
                           ),
-                          title: Text(category.category),
-                          trailing: const Icon(Icons.arrow_left_sharp)),
+                          title: Text(category.category,
+                              style: TextStyle(fontSize: 21.sp)),
+                          trailing: Icon(
+                            Icons.arrow_left_sharp,
+                            size: 30.sp,
+                          )),
                     ))
                 .toList()),
       ),
@@ -155,11 +162,11 @@ class CategorySettingPage extends ConsumerWidget {
   Widget _categoryIncomeListWidget(
       List<Category> list, CategoryIncomeModel model) {
     return Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: EdgeInsets.all(10.0),
         child: Container(
-          width: 350,
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
+          width: 350.w,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20.r)),
             color: Colors.white,
           ),
           child: ListView(
@@ -204,10 +211,15 @@ class CategorySettingPage extends ConsumerWidget {
                             leading: Icon(
                               IconData(category.icon!,
                                   fontFamily: 'MaterialIcons'),
+                              size: 22.sp,
                               color: Color(category.color!),
                             ),
-                            title: Text(category.category),
-                            trailing: const Icon(Icons.arrow_left_sharp)),
+                            title: Text(
+                              category.category,
+                              style: TextStyle(fontSize: 21.sp),
+                            ),
+                            trailing:
+                                Icon(Icons.arrow_left_sharp, size: 30.sp)),
                       ))
                   .toList()),
         ));
