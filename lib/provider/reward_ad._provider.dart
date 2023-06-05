@@ -66,7 +66,7 @@ class RewardAdNotifier extends StateNotifier<RewardAdState> {
       return 'ca-app-pub-3940256099942544/5224354917';
     }
     if (Platform.isIOS) {
-      return 'ca-app-pub-8369847853540237/8608048258';
+      return 'ここにテスト用の番号が入る。';
     } else {
       return 'ca-app-pub-3940256099942544/5224354917';
     }
