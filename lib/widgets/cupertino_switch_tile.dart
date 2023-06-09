@@ -19,20 +19,18 @@ class CupertinoSwitchTile extends StatelessWidget {
       leading: null,
       title: Row(
         children: [
-          Center(
-            child: Text(
-              title,
-              style: TextStyle(fontSize: 25.sp),
-            ),
+          Text(
+            title,
+            style: TextStyle(fontSize: 20.sp),
           ),
         ],
       ),
       trailing: Container(
-        width: 70.h,
-        height: 70.h,
+        height: 60.h,
+        width: 60.w,
         child: Center(
           child: Transform.scale(
-            scale: 1.1.sp,
+            scale: 1.0.sp,
             child: CupertinoSwitch(
               value: value,
               onChanged: onChanged,

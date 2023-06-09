@@ -31,7 +31,7 @@ class CupertinoTimePikerTile extends ConsumerWidget {
                   flex: 4,
                   child: Text(
                     title,
-                    style: TextStyle(fontSize: 25.sp),
+                    style: TextStyle(fontSize: 20.sp),
                   ),
                 ),
                 Expanded(
