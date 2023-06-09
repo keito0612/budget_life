@@ -57,7 +57,7 @@ class NotificationSettingPage extends ConsumerWidget {
                     ],
                   ),
                   child: SizedBox(
-                    height: 60.h,
+                    height: 50.h,
                     child: CupertinoSwitchTile(
                         title: "通知",
                         value: notification,
@@ -75,7 +75,7 @@ class NotificationSettingPage extends ConsumerWidget {
                   ? Padding(
                       padding: EdgeInsets.all(20.0.r),
                       child: Container(
-                        height: 60.h,
+                        height: 50.h,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(50.r)),
