@@ -44,6 +44,7 @@ class NotificationSettingPage extends ConsumerWidget {
               Padding(
                 padding: EdgeInsets.all(20.0.r),
                 child: Container(
+                  height: 60.h,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(50.r)),
@@ -56,26 +57,23 @@ class NotificationSettingPage extends ConsumerWidget {
                       ),
                     ],
                   ),
-                  child: SizedBox(
-                    height: 50.h,
-                    child: CupertinoSwitchTile(
-                        title: "通知",
-                        value: notification,
-                        onChanged: (bool value) async {
-                          notificationController.setNotification(value);
-                          if (notification == false) {
-                            prefs.remove("notification_time");
-                            NotificationService().cancelAllNotification();
-                          }
-                        }),
-                  ),
+                  child: CupertinoSwitchTile(
+                      title: "通知",
+                      value: notification,
+                      onChanged: (bool value) async {
+                        notificationController.setNotification(value);
+                        if (notification == false) {
+                          prefs.remove("notification_time");
+                          NotificationService().cancelAllNotification();
+                        }
+                      }),
                 ),
               ),
               notification == true
                   ? Padding(
                       padding: EdgeInsets.all(20.0.r),
                       child: Container(
-                        height: 50.h,
+                        height: 60.h,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(50.r)),
