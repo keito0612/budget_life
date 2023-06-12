@@ -191,6 +191,7 @@ void main() async {
             primarySwatch: Colors.green,
           ),
           builder: EasyLoading.init(),
+          debugShowCheckedModeBanner: false,
           home: const MyApp())));
 }
 
