@@ -22,23 +22,17 @@ class CupertinoTimePikerTile extends ConsumerWidget {
           _showCupertinoDatePicker(context);
         },
         tileColor: Colors.white,
-        title: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        title: Row(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  flex: 4,
-                  child: Text(
-                    title,
-                    style: TextStyle(fontSize: 20.sp),
-                  ),
-                ),
-                Expanded(
-                    flex: 1,
-                    child: Text(time, style: TextStyle(fontSize: 21.sp)))
-              ],
+            Expanded(
+              flex: 4,
+              child: Text(
+                title,
+                style: TextStyle(fontSize: 20.sp),
+              ),
             ),
+            Expanded(
+                flex: 1, child: Text(time, style: TextStyle(fontSize: 21.sp)))
           ],
         ),
       ),
