@@ -85,56 +85,26 @@ class PassCodeRockSetting extends ConsumerWidget {
             children: [
               Padding(
                 padding: EdgeInsets.all(20.0.r),
-                child: Container(
-                  height: 60.h,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(50.r)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black38,
-                        offset: Offset(2.0.r, 2.0.r),
-                        blurRadius: 4.0.r,
-                        spreadRadius: 4.0.r,
-                      ),
-                    ],
-                  ),
-                  child: CupertinoSwitchTile(
-                      title: "パスコードロック",
-                      value: passcode,
-                      onChanged: (bool value) {
-                        passcodeController.setPasscode(value);
-                        if (value == true) {
-                          PasscodeLockSettingScreen.passcodeLockSettingScreen(
-                              context, ref);
-                        }
-                      }),
-                ),
+                child: CupertinoSwitchTile(
+                    title: "パスコードロック",
+                    value: passcode,
+                    onChanged: (bool value) {
+                      passcodeController.setPasscode(value);
+                      if (value == true) {
+                        PasscodeLockSettingScreen.passcodeLockSettingScreen(
+                            context, ref);
+                      }
+                    }),
               ),
               passcode == true
                   ? Padding(
                       padding: EdgeInsets.all(20.0.r),
-                      child: Container(
-                        height: 60.h,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(50.r)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black38,
-                              offset: Offset(2.0.r, 2.0.r),
-                              blurRadius: 4.0.r,
-                              spreadRadius: 4.0.r,
-                            ),
-                          ],
-                        ),
-                        child: CupertinoSwitchTile(
-                            title: "顔認証",
-                            value: passcode == true ? faceId : false,
-                            onChanged: (bool value) {
-                              faceIdController.setFaceId(value);
-                            }),
-                      ),
+                      child: CupertinoSwitchTile(
+                          title: "顔認証",
+                          value: passcode == true ? faceId : false,
+                          onChanged: (bool value) {
+                            faceIdController.setFaceId(value);
+                          }),
                     )
                   : const SizedBox()
             ],
