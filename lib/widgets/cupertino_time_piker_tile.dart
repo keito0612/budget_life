@@ -16,24 +16,36 @@ class CupertinoTimePikerTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Ink(
-      child: ListTile(
-        onTap: () {
-          _showCupertinoDatePicker(context);
-        },
-        tileColor: Colors.white,
-        title: Row(
-          children: [
-            Expanded(
-              flex: 4,
-              child: Text(
+    return InkWell(
+      onTap: () {
+        _showCupertinoDatePicker(context);
+      },
+      child: Container(
+        height: 70.h,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.all(Radius.circular(50.r)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black38,
+              offset: Offset(2.0.r, 2.0.r),
+              blurRadius: 4.0.r,
+              spreadRadius: 4.0.r,
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(left: 10.w, right: 20.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
                 title,
                 style: TextStyle(fontSize: 20.sp),
               ),
-            ),
-            Expanded(
-                flex: 1, child: Text(time, style: TextStyle(fontSize: 21.sp)))
-          ],
+              Text(time, style: TextStyle(fontSize: 21.sp))
+            ],
+          ),
         ),
       ),
     );
