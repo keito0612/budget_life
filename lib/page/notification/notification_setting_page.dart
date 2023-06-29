@@ -43,58 +43,28 @@ class NotificationSettingPage extends ConsumerWidget {
             children: [
               Padding(
                 padding: EdgeInsets.all(20.0.r),
-                child: Container(
-                  height: 60.h,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(50.r)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black38,
-                        offset: Offset(2.0.r, 2.0.r),
-                        blurRadius: 4.0.r,
-                        spreadRadius: 4.0.r,
-                      ),
-                    ],
-                  ),
-                  child: CupertinoSwitchTile(
-                      title: "通知",
-                      value: notification,
-                      onChanged: (bool value) async {
-                        notificationController.setNotification(value);
-                        if (notification == false) {
-                          prefs.remove("notification_time");
-                          NotificationService().cancelAllNotification();
-                        }
-                      }),
-                ),
+                child: CupertinoSwitchTile(
+                    title: "通知",
+                    value: notification,
+                    onChanged: (bool value) async {
+                      notificationController.setNotification(value);
+                      if (notification == false) {
+                        prefs.remove("notification_time");
+                        NotificationService().cancelAllNotification();
+                      }
+                    }),
               ),
               notification == true
                   ? Padding(
                       padding: EdgeInsets.all(20.0.r),
-                      child: Container(
-                        height: 60.h,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(50.r)),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black38,
-                              offset: Offset(2.0.r, 2.0.r),
-                              blurRadius: 4.0.r,
-                              spreadRadius: 4.0.r,
-                            ),
-                          ],
-                        ),
-                        child: CupertinoTimePikerTile(
-                            title: "時刻",
-                            time: notificationTime,
-                            onDateTimeChanged: (DateTime dateTime) async {
-                              NotificationService().cancelAllNotification();
-                              notificationTimeController
-                                  .setNotificationTime(dateTime);
-                            }),
-                      ),
+                      child: CupertinoTimePikerTile(
+                          title: "時刻",
+                          time: notificationTime,
+                          onDateTimeChanged: (DateTime dateTime) async {
+                            NotificationService().cancelAllNotification();
+                            notificationTimeController
+                                .setNotificationTime(dateTime);
+                          }),
                     )
                   : const SizedBox()
             ],
