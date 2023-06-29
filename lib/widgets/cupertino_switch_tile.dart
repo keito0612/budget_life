@@ -15,27 +15,46 @@ class CupertinoSwitchTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: null,
-      title: Row(
-        children: [
-          Text(
-            title,
-            style: TextStyle(fontSize: 20.sp),
+    return Container(
+      height: 70.h,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(50.r)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black38,
+            offset: Offset(2.0.r, 2.0.r),
+            blurRadius: 4.0.r,
+            spreadRadius: 4.0.r,
           ),
         ],
       ),
-      trailing: Container(
-        height: 60.h,
-        width: 60.w,
-        child: Center(
-          child: Transform.scale(
-            scale: 1.0.sp,
-            child: CupertinoSwitch(
-              value: value,
-              onChanged: onChanged,
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 20.h,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              textAlign: TextAlign.start,
+              title,
+              style: TextStyle(fontSize: 20.sp),
             ),
-          ),
+            Container(
+              height: 50.h,
+              width: 50.w,
+              child: Center(
+                child: Transform.scale(
+                  scale: 1.0.sp,
+                  child: CupertinoSwitch(
+                    value: value,
+                    onChanged: onChanged,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
