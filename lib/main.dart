@@ -37,6 +37,7 @@ import 'repositorys/recurring_income_repository.dart';
 import 'widgets/passcode/passcode_lock_Screen.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
 final selectedPageProvider = StateProvider.autoDispose((ref) => 0);
 
@@ -116,10 +117,19 @@ Future _automaticInputIncome() async {
   }
 }
 
+Future<void> initPlugin() async {
+  final status = await AppTrackingTransparency.trackingAuthorizationStatus;
+  if (status == TrackingStatus.notDetermined) {
+    await Future.delayed(const Duration(milliseconds: 200));
+    await AppTrackingTransparency.requestTrackingAuthorization();
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LoadingWidget.configLoading();
   await MobileAds.instance.initialize();
+  WidgetsBinding.instance.addPostFrameCallback((_) => initPlugin());
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -271,7 +281,7 @@ class MyApp extends ConsumerWidget {
     return SizedBox(
         width: 100.w,
         height: 80.h,
-        child: SizedBox(
+        child: const SizedBox(
           height: 50,
           width: 50,
           child: Center(
