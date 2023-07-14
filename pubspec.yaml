@@ -70,6 +70,7 @@ dependencies:
   icloud_storage: ^2.2.0
   google_mobile_ads: ^3.0.0
   flutter_screenutil: ^5.7.0
+  app_tracking_transparency: ^2.0.4
 
 dev_dependencies:
   flutter_test:
