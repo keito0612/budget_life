@@ -41,11 +41,14 @@ class CupertinoSwitchTile extends StatelessWidget {
               title,
               style: TextStyle(fontSize: 20.sp),
             ),
-            Transform.scale(
-              scale: 1.0.sp,
-              child: CupertinoSwitch(
-                value: value,
-                onChanged: onChanged,
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Transform.scale(
+                scale: 1.0.sp,
+                child: CupertinoSwitch(
+                  value: value,
+                  onChanged: onChanged,
+                ),
               ),
             ),
           ],
