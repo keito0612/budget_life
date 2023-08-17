@@ -4,7 +4,7 @@
 # 画面
 
 
-##　URL
+##　 URL
 • 家計簿アプリLife : https://apps.apple.com/jp/app/id6457262696?platform=iphone
 
 
