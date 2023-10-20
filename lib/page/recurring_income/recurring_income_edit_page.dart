@@ -10,6 +10,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../viewModels/category_income_model.dart';
+
 class RecurringIncomeEditPage extends ConsumerWidget {
   late final amountEditProvider = StateProvider.autoDispose((ref) => amount);
   late final memoEditProvider = StateProvider.autoDispose((ref) => memo);
@@ -45,12 +47,12 @@ class RecurringIncomeEditPage extends ConsumerWidget {
   TextEditingController memoTextEditingController = TextEditingController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categoryExpenseModel = ref.watch(categoryExpenseModelProvider);
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: const Text("編集"),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text("編集", style: TextStyle(color: Colors.white)),
       ),
       body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -76,8 +78,7 @@ class RecurringIncomeEditPage extends ConsumerWidget {
                   child: Column(children: [
                     automaticInputDate(context, ref, "自動入力"),
                     amountTextField(ref, "収入"),
-                    categoryBar(
-                        context, ref, "カテゴリー", categoryExpenseModel.categorys),
+                    categoryBar(context, ref, "カテゴリー"),
                     memoTextField("メモ", ref),
                     addButton(ref, context)
                   ])),
@@ -231,10 +232,10 @@ class RecurringIncomeEditPage extends ConsumerWidget {
   }
 
   //カテゴリ欄
-  Widget categoryBar(BuildContext context, WidgetRef ref, String itemName,
-      List<Category> categorys) {
+  Widget categoryBar(BuildContext context, WidgetRef ref, String itemName) {
     categoryIncomeIndex = ref.watch(categoryEditIndexProvider);
-    category = categorys[categoryIncomeIndex!];
+    final categoryIncomeModel = ref.watch(categoryIncomeModelProvider);
+    category = categoryIncomeModel.categoryIncomes[categoryIncomeIndex!];
     return Padding(
       padding: EdgeInsets.only(top: 40.h),
       child: Column(
@@ -267,7 +268,7 @@ class RecurringIncomeEditPage extends ConsumerWidget {
                           fontWeight: FontWeight.bold, fontSize: 20.sp)),
                 ),
                 categoryBottomSheetBarButtom(
-                  categorys: categorys,
+                  categorys: categoryIncomeModel.categoryIncomes,
                   onSelectedItemChanged: (index) {
                     ref.read(categoryEditIndexProvider.notifier).state = index;
                   },

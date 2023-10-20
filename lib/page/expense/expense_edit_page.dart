@@ -38,12 +38,12 @@ class ExpenseEditPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categorys = ref.watch(categoryExpenseModelProvider);
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.green,
-        title: const Text("編集"),
+        title: const Text("編集", style: TextStyle(color: Colors.white)),
       ),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
@@ -71,7 +71,7 @@ class ExpenseEditPage extends ConsumerWidget {
                     ),
                     child: Column(children: [
                       amountTextField(ref, "支出"),
-                      categoryBar(context, ref, "カテゴリー", categorys.categorys),
+                      categoryBar(context, ref, "カテゴリー"),
                       memoTextField("メモ", ref),
                       editButton(ref, context)
                     ])),
@@ -158,10 +158,14 @@ class ExpenseEditPage extends ConsumerWidget {
   }
 
   //カテゴリ欄
-  Widget categoryBar(BuildContext context, WidgetRef ref, String itemName,
-      List<Category> categorys) {
+  Widget categoryBar(
+    BuildContext context,
+    WidgetRef ref,
+    String itemName,
+  ) {
     categoryIndex = ref.watch(categoryEditIndexProvider);
-    category = categorys[categoryIndex!];
+    final categorysExpense = ref.watch(categoryExpenseModelProvider);
+    category = categorysExpense.categorys[categoryIndex!];
     return Padding(
       padding: EdgeInsets.only(top: 40.h),
       child: Column(
@@ -194,10 +198,9 @@ class ExpenseEditPage extends ConsumerWidget {
                           fontWeight: FontWeight.bold, fontSize: 20.sp)),
                 ),
                 categoryBottomSheetBarButtom(
-                  categorys: categorys,
+                  categorys: categorysExpense.categorys,
                   onSelectedItemChanged: (index) {
-                    ref.read(categoryExpenseIndexProvider.notifier).state =
-                        index;
+                    ref.read(categoryEditIndexProvider.notifier).state = index;
                   },
                 )
               ])),

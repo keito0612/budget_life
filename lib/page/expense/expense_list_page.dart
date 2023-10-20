@@ -224,36 +224,43 @@ class ExpenseListPage extends ConsumerWidget {
                   }),
             ],
           ),
-          child: ListTile(
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      IconData(
-                        expense.icon!,
-                        fontFamily: 'MaterialIcons',
+          child: Container(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              // ここまで
+              color: Colors.white,
+            ),
+            child: ListTile(
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        IconData(
+                          expense.icon!,
+                          fontFamily: 'MaterialIcons',
+                        ),
+                        color: Color(expense.color!),
+                        size: 25.sp,
                       ),
-                      color: Color(expense.color!),
-                      size: 25.sp,
-                    ),
-                    SizedBox(width: 5.w),
-                    Text(
-                      expense.category!,
-                      style: TextStyle(fontSize: 20.sp),
-                    ),
-                  ],
-                ),
-                Text(
-                  "金額：${expense.amount}円",
-                  style: TextStyle(fontSize: 20.sp),
-                ),
-                Text(
-                  "メモ：${expense.memo}",
-                  style: TextStyle(fontSize: 20.sp),
-                ),
-              ],
+                      SizedBox(width: 5.w),
+                      Text(
+                        expense.category!,
+                        style: TextStyle(fontSize: 20.sp),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    "金額：${expense.amount}円",
+                    style: TextStyle(fontSize: 20.sp),
+                  ),
+                  Text(
+                    "メモ：${expense.memo}",
+                    style: TextStyle(fontSize: 20.sp),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -272,20 +279,23 @@ class ExpenseListPage extends ConsumerWidget {
               sortTypeController.state = SortType.newType;
               Navigator.pop(context);
             },
-            child: const Text('日付が新しい順'),
+            child: const Text('日付が新しい順', style: TextStyle(color: Colors.green)),
           ),
           CupertinoActionSheetAction(
             onPressed: () {
               sortTypeController.state = SortType.oldType;
               Navigator.pop(context);
             },
-            child: const Text('日付が古い順'),
+            child: const Text('日付が古い順', style: TextStyle(color: Colors.green)),
           ),
         ],
         cancelButton: TextButton(
             child: Text(
               "キャンセル",
-              style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Colors.green,
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.bold),
             ),
             onPressed: () {
               Navigator.pop(context);

@@ -4,7 +4,6 @@ import 'package:budget/page/category/category_setting_page.dart';
 import 'package:budget/page/fixed_expense_with_recurring_income/fixed_expense_with_recurring_income.page.dart';
 import 'package:budget/page/notification/notification_setting_page.dart';
 import 'package:budget/page/passcode/passcode_rock_setting.dart';
-import 'package:budget/provider/ad_banner_provider.dart';
 import 'package:budget/provider/notification_time_provider.dart';
 import 'package:budget/provider/shared_preferences_provider.dart';
 import 'package:budget/utils/util.dart';
@@ -21,7 +20,9 @@ class SettingPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: Colors.grey,
-      appBar: AppBar(title: const Text("設定"), backgroundColor: Colors.green),
+      appBar: AppBar(
+          title: const Text("設定", style: TextStyle(color: Colors.white)),
+          backgroundColor: Colors.green),
       body: SingleChildScrollView(
         child: Column(
           children: [

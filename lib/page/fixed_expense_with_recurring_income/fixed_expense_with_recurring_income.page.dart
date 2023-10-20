@@ -19,7 +19,9 @@ class FixedExpenseWithRecurringIncomePage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
-        title: const Text("月の固定費•定期収入"),
+        title: const Text("月の固定費•定期収入", style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.green,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -58,6 +60,7 @@ class FixedExpenseWithRecurringIncomePage extends ConsumerWidget {
         height: 60.0.sp,
         child: FloatingActionButton(
           child: Icon(
+            color: Colors.white,
             Icons.add,
             size: 20.sp,
           ),

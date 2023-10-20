@@ -22,7 +22,11 @@ class NotificationSettingPage extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: Colors.grey,
-      appBar: AppBar(title: const Text("通知設定")),
+      appBar: AppBar(
+        title: const Text("通知設定", style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.green,
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: Center(
         child: Container(
           width: 380.w,

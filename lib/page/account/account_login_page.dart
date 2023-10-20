@@ -21,7 +21,11 @@ class AccountLoginPage extends ConsumerWidget {
     _email = ref.watch(emailProvider);
     return Scaffold(
       backgroundColor: Colors.grey,
-      appBar: AppBar(title: const Text("ログイン")),
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text("ログイン", style: TextStyle(color: Colors.white)),
+      ),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
@@ -141,7 +145,7 @@ class AccountLoginPage extends ConsumerWidget {
       padding: EdgeInsets.only(top: 30.h),
       child: Container(
         height: 50.h,
-        width: 100.w,
+        width: 120.w,
         color: Colors.green,
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(

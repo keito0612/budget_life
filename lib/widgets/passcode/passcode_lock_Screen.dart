@@ -5,6 +5,7 @@ import 'package:budget/provider/shared_preferences_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screen_lock/flutter_screen_lock.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final passcodePassWordProvider = StateProvider((ref) {
   final prefs = ref.watch(sharedPreferencesProvider);
@@ -74,7 +75,7 @@ class PasscodeLockScreen extends ConsumerWidget {
         displayStrings: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
       ),
       cancelButton: null,
-      deleteButton: const Icon(Icons.delete, color: Colors.white),
+      deleteButton: Icon(size: 20.0.sh, Icons.delete, color: Colors.white),
     );
   }
 }

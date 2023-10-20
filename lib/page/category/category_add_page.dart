@@ -99,7 +99,8 @@ class CategoryAddPage extends ConsumerWidget {
       backgroundColor: Colors.grey,
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: const Text("新規カテゴリー"),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text("新規カテゴリー", style: TextStyle(color: Colors.white)),
         actions: [
           _saveCategoryButtom(
               cupertinoSlidingValue, category!, icon!, color!, ref, context),

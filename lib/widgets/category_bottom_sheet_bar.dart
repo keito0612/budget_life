@@ -60,7 +60,8 @@ class categoryBottomSheetBarButtom extends ConsumerWidget {
                           padding: EdgeInsets.only(right: 240.w),
                           child: Text(
                             "閉じる",
-                            style: TextStyle(fontSize: 20.sp),
+                            style:
+                                TextStyle(fontSize: 20.sp, color: Colors.green),
                           ),
                         ),
                         TextButton(
@@ -77,7 +78,8 @@ class categoryBottomSheetBarButtom extends ConsumerWidget {
                           },
                           child: Text(
                             "編集",
-                            style: TextStyle(fontSize: 20.sp),
+                            style:
+                                TextStyle(fontSize: 20.sp, color: Colors.green),
                           ),
                         ),
                       ],

@@ -20,7 +20,9 @@ class AccountPage extends ConsumerWidget {
     return Scaffold(
         backgroundColor: Colors.grey,
         appBar: AppBar(
-          title: const Text("アカウント"),
+          backgroundColor: Colors.green,
+          iconTheme: const IconThemeData(color: Colors.white),
+          title: const Text("アカウント", style: TextStyle(color: Colors.white)),
         ),
         body: userState.when(
           data: (user) {
@@ -106,6 +108,7 @@ class AccountPage extends ConsumerWidget {
                                   builder: (context) => AccountCreatePage()));
                         },
                         style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.r),
                           ),
@@ -117,7 +120,9 @@ class AccountPage extends ConsumerWidget {
                         child: Text(
                           "アカウント作成",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20.sp),
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20.sp),
                         ),
                       ),
                     ),
@@ -133,6 +138,7 @@ class AccountPage extends ConsumerWidget {
                                 builder: (context) => AccountLoginPage()));
                       },
                       style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.r),
                         ),
@@ -144,7 +150,9 @@ class AccountPage extends ConsumerWidget {
                       child: Text(
                         "ログイン",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20.sp),
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.sp),
                       ),
                     ),
                   ),
@@ -168,6 +176,7 @@ class AccountPage extends ConsumerWidget {
               _syncDialog(context, ref);
             },
             style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.green,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.r),
               ),
@@ -178,7 +187,10 @@ class AccountPage extends ConsumerWidget {
             ),
             child: Text(
               "データを同期する",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.sp),
             ),
           ),
         ));
@@ -197,6 +209,7 @@ class AccountPage extends ConsumerWidget {
             await ref.watch(authRepositoryImplProvider).signOut();
           },
           style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.r),
             ),
@@ -207,7 +220,10 @@ class AccountPage extends ConsumerWidget {
           ),
           child: Text(
             "サインアウト",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 20.sp),
           ),
         ),
       ),
@@ -227,6 +243,7 @@ class AccountPage extends ConsumerWidget {
             await _unsubscribeDialog(context, ref);
           },
           style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.r),
             ),
@@ -237,7 +254,10 @@ class AccountPage extends ConsumerWidget {
           ),
           child: Text(
             "退会",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 20.sp),
           ),
         ),
       ),
