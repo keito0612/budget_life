@@ -64,7 +64,11 @@ class PassCodeRockSetting extends ConsumerWidget {
     final faceIdController = ref.read(faceProvider.notifier);
     return Scaffold(
       backgroundColor: Colors.grey,
-      appBar: AppBar(title: const Text("パスコードロック")),
+      appBar: AppBar(
+        title: const Text("パスコードロック", style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.green,
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
       body: Center(
         child: Container(
           width: 380.w,

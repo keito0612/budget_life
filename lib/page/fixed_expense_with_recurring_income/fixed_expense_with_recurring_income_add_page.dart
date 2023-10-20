@@ -16,7 +16,10 @@ class fixedExpenseWithRecurringIncomeAddPage extends ConsumerWidget {
     final pageWidgets = [FixedExpensePage(), RecurringIncomePage()];
     return Scaffold(
         backgroundColor: Colors.grey,
-        appBar: AppBar(title: _cupertinoListSlidingWidget(ref, pageValue)),
+        appBar: AppBar(
+            backgroundColor: Colors.green,
+            iconTheme: const IconThemeData(color: Colors.white),
+            title: _cupertinoListSlidingWidget(ref, pageValue)),
         body: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: pageWidgets[pageValue]));

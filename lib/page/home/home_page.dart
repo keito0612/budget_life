@@ -18,12 +18,16 @@ class HomePage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          title: const Text("ホーム"),
+          title: const Text(
+            "ホーム",
+            style: TextStyle(color: Colors.white),
+          ),
           actions: [
             IconButton(
+              color: Colors.white,
               icon: Icon(
                 Icons.settings,
-                size: 30.sp,
+                size: 25.sp,
               ),
               onPressed: () {
                 Navigator.push(

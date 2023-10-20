@@ -1,4 +1,5 @@
 import 'package:budget/model/balance_with_saving/balance_with_saving.dart';
+import 'package:budget/provider/shared_preferences_provider.dart';
 import 'package:budget/viewModels/balance_with_saving_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,13 +7,21 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-final balanceProvider = StateProvider.autoDispose((ref) => 0);
-final savingProvider = StateProvider.autoDispose((ref) => 0);
+final balanceProvider = StateProvider.autoDispose((ref) {
+  final prefs = ref.watch(sharedPreferencesProvider);
+  return prefs.getInt("balanse") ?? 0;
+});
+final savingProvider = StateProvider.autoDispose((ref) {
+  final prefs = ref.watch(sharedPreferencesProvider);
+  return prefs.getInt("saving") ?? 0;
+});
 
 class BalanceSavingSettingsPage extends ConsumerWidget {
   BalanceSavingSettingsPage({super.key});
   int balance = 0;
   int saving = 0;
+  TextEditingController textBalanceEditController = TextEditingController();
+  TextEditingController textSavingEditController = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,9 +32,10 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
       child: Scaffold(
           backgroundColor: Colors.grey,
           appBar: AppBar(
-            backgroundColor: Colors.green,
-            title: const Text("月の手取りと貯金の設定"),
-          ),
+              iconTheme: const IconThemeData(color: Colors.white),
+              backgroundColor: Colors.green,
+              title: const Text("月の手取りと貯金の設定",
+                  style: TextStyle(color: Colors.white))),
           body: Center(
             child: Padding(
               padding: EdgeInsets.all(8.0.r),
@@ -75,6 +85,7 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
   Widget balanceTextField(WidgetRef ref, String itemName) {
     balance = ref.watch(balanceProvider);
     final balanceController = ref.read(balanceProvider.notifier);
+    textBalanceEditController.text = balance == 0 ? "" : balance.toString();
 
     return Padding(
       padding: EdgeInsets.only(top: 50.h),
@@ -110,6 +121,7 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
                 Expanded(
                   flex: 5,
                   child: TextField(
+                    controller: textBalanceEditController,
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     style: TextStyle(fontSize: 20.sp),
@@ -133,6 +145,7 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
   //貯金額欄
   Widget savingTextField(String itemName, WidgetRef ref) {
     saving = ref.watch(savingProvider);
+    textSavingEditController.text = saving == 0 ? "" : saving.toString();
     final savingController = ref.read(savingProvider.notifier);
     return Padding(
       padding: EdgeInsets.only(top: 40.h),
@@ -169,6 +182,7 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
                   flex: 5,
                   child: TextField(
                     keyboardType: TextInputType.number,
+                    controller: textSavingEditController,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     style: TextStyle(fontSize: 20.sp),
                     onChanged: (amount) {
@@ -241,7 +255,7 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
           content: const Text(''),
           actions: <Widget>[
             TextButton(
-              child: const Text('OK'),
+              child: const Text('OK', style: TextStyle(color: Colors.green)),
               onPressed: () async {
                 model.getBalanseWithSaving();
                 Navigator.of(context).pop();
@@ -259,9 +273,9 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: Row(
+          title: const Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: const [
+            children: [
               Icon(
                 Icons.error_outline_rounded,
                 color: Colors.red,
@@ -279,7 +293,7 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('OK'),
+              child: const Text('OK', style: TextStyle(color: Colors.green)),
               onPressed: () {
                 Navigator.of(context).pop();
               },

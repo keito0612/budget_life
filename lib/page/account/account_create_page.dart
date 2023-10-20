@@ -27,7 +27,11 @@ class AccountCreatePage extends ConsumerWidget {
     final user = ref.watch(authRepositoryImplProvider)..currentUser;
     return Scaffold(
       backgroundColor: Colors.grey,
-      appBar: AppBar(title: const Text("アカウント作成")),
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text("アカウント作成", style: TextStyle(color: Colors.white)),
+      ),
       body: Center(
         child: Column(
           children: [_mailAddressAndPasswordWidget(context, ref)],

@@ -38,12 +38,12 @@ class IncomeEditPage extends ConsumerWidget {
   TextEditingController memoTextEditingController = TextEditingController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categorys = ref.watch(categoryIncomeModelProvider);
     return Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: Colors.green,
-        title: const Text("編集"),
+        title: const Text("編集", style: TextStyle(color: Colors.white)),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -69,8 +69,7 @@ class IncomeEditPage extends ConsumerWidget {
                   ),
                   child: Column(children: [
                     amountTextField(ref, "支出"),
-                    categoryBar(
-                        context, ref, categorys.categoryIncomes, "カテゴリー"),
+                    categoryBar(context, ref, "カテゴリー"),
                     memoTextField("メモ", ref),
                     editButton(ref, context)
                   ])),
@@ -156,10 +155,10 @@ class IncomeEditPage extends ConsumerWidget {
   }
 
   //カテゴリ欄
-  Widget categoryBar(BuildContext context, WidgetRef ref,
-      List<Category> categorys, String itemName) {
+  Widget categoryBar(BuildContext context, WidgetRef ref, String itemName) {
     final categoryIndex = ref.watch(categoryIncomeIndexProvider);
-    category = categorys[categoryIndex];
+    final categorysIncome = ref.watch(categoryIncomeModelProvider);
+    category = categorysIncome.categoryIncomes[categoryIndex];
     return Padding(
       padding: EdgeInsets.only(top: 40.h),
       child: Column(
@@ -191,7 +190,7 @@ class IncomeEditPage extends ConsumerWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 20.sp))),
                 categoryBottomSheetBarButtom(
-                  categorys: categorys,
+                  categorys: categorysIncome.categoryIncomes,
                   onSelectedItemChanged: ((int index) {
                     ref.read(categoryIncomeIndexProvider.notifier).state =
                         index;
@@ -317,7 +316,7 @@ class IncomeEditPage extends ConsumerWidget {
           content: const Text(''),
           actions: <Widget>[
             TextButton(
-              child: const Text('OK'),
+              child: const Text('OK', style: TextStyle(color: Colors.green)),
               onPressed: () async {
                 final addedDay = DateTime.now();
                 prefs.setString("added_day", Util.toDate(addedDay));
@@ -336,9 +335,9 @@ class IncomeEditPage extends ConsumerWidget {
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: Row(
+          title: const Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: const [
+            children: [
               Icon(
                 Icons.error_outline_rounded,
                 color: Colors.red,
@@ -356,7 +355,10 @@ class IncomeEditPage extends ConsumerWidget {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('OK'),
+              child: const Text(
+                'OK',
+                style: TextStyle(color: Colors.green),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },

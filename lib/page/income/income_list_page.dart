@@ -177,30 +177,37 @@ class IncomeListPage extends ConsumerWidget {
                   }),
             ],
           ),
-          child: ListTile(
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      IconData(income.icon!, fontFamily: 'MaterialIcons'),
-                      color: Color(income.color!),
-                      size: 25.sp,
-                    ),
-                    SizedBox(width: 5.w),
-                    Text(
-                      income.category!,
-                      style: TextStyle(fontSize: 20.sp),
-                    ),
-                  ],
-                ),
-                Text(
-                  "金額：${income.amount}円",
-                  style: TextStyle(fontSize: 20.sp),
-                ),
-                Text("メモ：${income.memo}", style: TextStyle(fontSize: 20.sp)),
-              ],
+          child: Container(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+              // ここまで
+              color: Colors.white,
+            ),
+            child: ListTile(
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(
+                        IconData(income.icon!, fontFamily: 'MaterialIcons'),
+                        color: Color(income.color!),
+                        size: 25.sp,
+                      ),
+                      SizedBox(width: 5.w),
+                      Text(
+                        income.category!,
+                        style: TextStyle(fontSize: 20.sp),
+                      ),
+                    ],
+                  ),
+                  Text(
+                    "金額：${income.amount}円",
+                    style: TextStyle(fontSize: 20.sp),
+                  ),
+                  Text("メモ：${income.memo}", style: TextStyle(fontSize: 20.sp)),
+                ],
+              ),
             ),
           ),
         ),

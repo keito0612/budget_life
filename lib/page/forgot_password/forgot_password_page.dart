@@ -16,7 +16,11 @@ class forgotPasswordPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     _email = ref.watch(emailProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text("パスワード再登録")),
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text("パスワード再登録", style: TextStyle(color: Colors.white)),
+      ),
       backgroundColor: Colors.grey,
       body: Center(
         child: Column(
@@ -105,7 +109,7 @@ class forgotPasswordPage extends ConsumerWidget {
             ),
           ),
           child: Text("パスワード再設定メールを送る",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15.sp)),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.sp)),
           onPressed: () async {
             await _passwordResetDialog(context, ref);
           },
@@ -161,9 +165,9 @@ class forgotPasswordPage extends ConsumerWidget {
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: Row(
+          title: const Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: const [
+            children: [
               Icon(
                 Icons.error_outline_rounded,
                 color: Colors.red,

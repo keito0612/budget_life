@@ -32,8 +32,14 @@
 	<string>${REWARDAD_ID}</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>Localization native development region</key>
+	<string>Japan</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>生体認証を有効にしますか？</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>当アプリでは取得したトラッキングデータを、お客様に合わせたご提案等のサービスの改善や広告配信,広告効果測定を目的として分析・使用させていただきます。</string>
+    <key>SKAdNetworkIdentifier</key>
+    <string>cstr6suwn9.skadnetwork</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -43,8 +49,6 @@
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>当アプリでは取得したトラッキングデータを、お客様に合わせたご提案等のサービスの改善や広告配信,広告効果測定を目的として分析・使用させていただきます。</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>

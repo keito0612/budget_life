@@ -298,7 +298,7 @@ class ExpensePage extends ConsumerWidget {
           content: const Text(''),
           actions: <Widget>[
             TextButton(
-              child: const Text('OK'),
+              child: const Text('OK', style: TextStyle(color: Colors.green)),
               onPressed: () async {
                 final addedDay = DateTime.now();
                 prefs.setString("added_day", Util.toDate(addedDay));
@@ -317,17 +317,14 @@ class ExpensePage extends ConsumerWidget {
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: Row(
+          title: const Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: const [
+            children: [
               Icon(
                 Icons.error_outline_rounded,
                 color: Colors.red,
               ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("エラーが発生しました"),
-              )
+              Padding(padding: EdgeInsets.all(8.0), child: Text("エラーが発生しました"))
             ],
           ),
           content: Column(
@@ -337,7 +334,7 @@ class ExpensePage extends ConsumerWidget {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('OK'),
+              child: const Text('OK', style: TextStyle(color: Colors.green)),
               onPressed: () {
                 Navigator.of(context).pop();
               },

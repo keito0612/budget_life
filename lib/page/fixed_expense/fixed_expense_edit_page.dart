@@ -45,10 +45,12 @@ class FixedExpenseEditPage extends ConsumerWidget {
   TextEditingController memoTextEditingController = TextEditingController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categoryExpenseModel = ref.watch(categoryExpenseModelProvider);
     return Scaffold(
         backgroundColor: Colors.grey,
-        appBar: AppBar(title: const Text("編集")),
+        appBar: AppBar(
+            backgroundColor: Colors.green,
+            iconTheme: const IconThemeData(color: Colors.white),
+            title: const Text("編集", style: TextStyle(color: Colors.white))),
         body: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: SingleChildScrollView(
@@ -73,8 +75,7 @@ class FixedExpenseEditPage extends ConsumerWidget {
                   child: Column(children: [
                     automaticInputDate(context, ref, "自動入力"),
                     amountTextField(context, ref, "支出"),
-                    categoryBar(
-                        context, ref, "カテゴリー", categoryExpenseModel.categorys),
+                    categoryBar(context, ref, "カテゴリー"),
                     memoTextField("メモ", ref),
                     addButton(ref, context)
                   ])),
@@ -228,10 +229,10 @@ class FixedExpenseEditPage extends ConsumerWidget {
   }
 
   //カテゴリ欄
-  Widget categoryBar(BuildContext context, WidgetRef ref, String itemName,
-      List<Category> categorys) {
+  Widget categoryBar(BuildContext context, WidgetRef ref, String itemName) {
     categoryExpenseIndex = ref.watch(categoryEditIndexProvider);
-    category = categorys[categoryExpenseIndex!];
+    final categoryExpenseModel = ref.watch(categoryExpenseModelProvider);
+    category = categoryExpenseModel.categorys[categoryExpenseIndex!];
     return Padding(
       padding: EdgeInsets.only(top: 40.h),
       child: Column(
@@ -264,10 +265,9 @@ class FixedExpenseEditPage extends ConsumerWidget {
                           fontWeight: FontWeight.bold, fontSize: 20.sp)),
                 ),
                 categoryBottomSheetBarButtom(
-                  categorys: categorys,
+                  categorys: categoryExpenseModel.categorys,
                   onSelectedItemChanged: (index) {
-                    ref.read(categoryExpenseIndexProvider.notifier).state =
-                        index;
+                    ref.read(categoryEditIndexProvider.notifier).state = index;
                   },
                 )
               ])),

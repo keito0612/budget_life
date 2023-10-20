@@ -24,7 +24,8 @@ class CategorySettingPage extends ConsumerWidget {
       backgroundColor: Colors.grey,
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: const Text("カテゴリー"),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text("カテゴリー", style: TextStyle(color: Colors.white)),
       ),
       body: SingleChildScrollView(
         child: Padding(

@@ -3,6 +3,7 @@ import 'package:budget/provider/shared_preferences_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screen_lock/flutter_screen_lock.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PasscodeLockSettingScreen {
@@ -60,8 +61,8 @@ class PasscodeLockSettingScreen {
         ),
         displayStrings: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
       ),
-      cancelButton: const Icon(Icons.close, color: Colors.white),
-      deleteButton: const Icon(Icons.delete, color: Colors.white),
+      cancelButton: Icon(size: 20.0.sp, Icons.close, color: Colors.white),
+      deleteButton: Icon(size: 20.0.sp, Icons.delete, color: Colors.white),
       onCancelled: () async {
         passcodeController.setPasscode(false);
         SharedPreferences prefs = await SharedPreferences.getInstance();

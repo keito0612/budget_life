@@ -189,20 +189,37 @@ void main() async {
             .overrideWith((ref) => recurringIncomeViewModel),
         rewardAdProvider.overrideWith((ref) => rewardAdNotifier)
       ],
-      child: MaterialApp(
-          localizationsDelegates: const [
-            GlobalMaterialLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: const [
-            Locale('ja'),
-          ],
-          theme: ThemeData(
-            primarySwatch: Colors.green,
-          ),
-          builder: EasyLoading.init(),
-          debugShowCheckedModeBanner: false,
-          home: const MyApp())));
+      child: ScreenUtilInit(
+        designSize: const Size(390, 844),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        child: MaterialApp(
+            localizationsDelegates: const [
+              GlobalMaterialLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: const [
+              Locale('ja'),
+            ],
+            theme: ThemeData(
+                primarySwatch: Colors.green,
+                colorScheme: const ColorScheme(
+                    brightness: Brightness.light,
+                    primary: Colors.green,
+                    onPrimary: Colors.green,
+                    secondary: Colors.grey,
+                    error: Colors.red,
+                    onError: Colors.black,
+                    background: Colors.white,
+                    onBackground: Colors.white,
+                    surface: Colors.white,
+                    onSecondary: Colors.black,
+                    onSurface: Colors.black),
+                primaryIconTheme: const IconThemeData(color: Colors.white)),
+            builder: EasyLoading.init(),
+            debugShowCheckedModeBanner: false,
+            home: const MyApp()),
+      )));
 }
 
 class MyApp extends ConsumerWidget {
@@ -246,35 +263,28 @@ class MyApp extends ConsumerWidget {
 
     return lock == true
         ? const PasscodeLockScreen()
-        : ScreenUtilInit(
-            designSize: const Size(390, 844),
-            minTextAdapt: true,
-            splitScreenMode: true,
-            builder: (context, child) {
-              return Scaffold(
-                  body: pageList[selectedIndex],
-                  bottomNavigationBar: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        isLoaded != false
-                            ? SizedBox(
-                                height: 80.h, child: AdWidget(ad: adBanner!))
-                            : loadingAdBannerWidget(),
-                        BottomNavigationBar(
-                            iconSize: 35.sp,
-                            selectedLabelStyle: TextStyle(fontSize: 14.sp),
-                            unselectedLabelStyle:
-                                TextStyle(color: Colors.black, fontSize: 14.sp),
-                            unselectedItemColor: Colors.black45,
-                            selectedItemColor: Colors.green,
-                            currentIndex: selectedIndex,
-                            onTap: (index) {
-                              selectedIndexController.state = index;
-                            },
-                            items: _tabItems)
-                      ]));
-            });
+        : Scaffold(
+            body: pageList[selectedIndex],
+            bottomNavigationBar: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  isLoaded != false
+                      ? SizedBox(height: 80.h, child: AdWidget(ad: adBanner!))
+                      : loadingAdBannerWidget(),
+                  BottomNavigationBar(
+                      iconSize: 35.sp,
+                      selectedLabelStyle: TextStyle(fontSize: 14.sp),
+                      unselectedLabelStyle:
+                          TextStyle(color: Colors.black, fontSize: 14.sp),
+                      unselectedItemColor: Colors.black45,
+                      selectedItemColor: Colors.green,
+                      currentIndex: selectedIndex,
+                      onTap: (index) {
+                        selectedIndexController.state = index;
+                      },
+                      items: _tabItems)
+                ]));
   }
 
   Widget loadingAdBannerWidget() {

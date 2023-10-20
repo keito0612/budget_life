@@ -6,6 +6,7 @@ import 'package:budget/utils/util.dart';
 import 'package:budget/viewModels/expense_model.dart';
 import 'package:budget/viewModels/income_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path/path.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final balanceWithSavingModelProvider =
@@ -33,6 +34,7 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
 
   Future<void> getBalanseWithSaving() async {
     final today = DateTime.now();
+    final currentMonthOneDate = DateTime(today.year, today.month, 1);
     final expenseState = _expenseState;
     final incomeState = _incomeState;
     //月の合計支出金額
@@ -51,26 +53,26 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
     int remainingBalanse = balanse;
     //残りの貯金額
     int remainingSaving = saving;
-    //追加した日にち
-    final addedDay =
-        Util.convartDate(_prefs.getString("added_day") ?? Util.toDate(today));
 
     if (expenseState.expenses.isNotEmpty) {
       //支出リストから日付ごとの支出合計金額を取り出す。
       expenseState.expenses.forEach((expense) {
-        final month = expense.date.substring(0, 7);
-        if (monthExpenseTotal.containsKey(currentMonth) == true) {
+        final month = expense.date.substring(0, 8);
+        if (monthExpenseTotal.containsKey(currentMonth)) {
           monthExpenseTotal[currentMonth] =
               monthExpenseTotal[currentMonth]! + int.parse(expense.amount);
+          print(monthExpenseTotal[currentMonth]);
         } else {
           monthExpenseTotal[month] = int.parse(expense.amount);
+          print(monthExpenseTotal[month]);
         }
       });
+      print(monthExpenseTotal[currentMonth]);
     }
     if (incomeState.incomes.isNotEmpty) {
       //収入リストから日付ごとの収入合計金額を取り出す。
       incomeState.incomes.forEach((income) {
-        final month = income.date.substring(0, 7);
+        final month = income.date.substring(0, 8);
         //同じ日付があったらそれ同士を足してまとめる。
         if (monthIncomeTotal.containsKey(month)) {
           monthIncomeTotal[month] =
@@ -91,7 +93,9 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
     } else if (monthIncomeTotal[currentMonth] == null &&
         monthExpenseTotal[currentMonth] != null) {
       // 今月の収入がなければそのまま支出を引く
-      remainingBalanse += -(monthExpenseTotal[currentMonth]!);
+      remainingBalanse = remainingBalanse - monthExpenseTotal[currentMonth]!;
+
+      print(remainingSaving);
     } else if (monthIncomeTotal[currentMonth] != null &&
         monthExpenseTotal[currentMonth] == null) {
       // 今月の支出がなければそのまま収入分を足す
@@ -101,15 +105,17 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
 
     //設定した残高を超えたらその分を貯金額に引く
     if (remainingBalanse < 0) {
+      //remainingBalanseがマイナスの値になるためプラスにしてある
       remainingSaving = remainingSaving + remainingBalanse;
-      if (addedDay.year != today.year || addedDay.month != today.month) {
+      if (today == currentMonthOneDate) {
         _prefs.setInt("remainingSaving", remainingSaving);
         _prefs.setString("addedDay", Util.toDate(today));
       }
       remainingBalanse = 0;
     }
+
     //次の月までに,残高が余っていたら、その分を貯金額にたす。
-    if (addedDay.year != today.year || addedDay.month != today.month) {
+    if (today == currentMonthOneDate) {
       if (remainingBalanse > 0) {
         remainingSaving = remainingSaving + remainingBalanse;
         _prefs.setInt("saving", remainingSaving);

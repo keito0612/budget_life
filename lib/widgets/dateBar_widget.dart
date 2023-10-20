@@ -130,10 +130,10 @@ class dateBarWidget extends ConsumerWidget {
               children: [
                 Padding(
                   padding:
-                      EdgeInsets.only(left: 15.w, right: 200.w, bottom: 10.h),
+                      EdgeInsets.only(left: 15.w, right: 190.w, bottom: 10.h),
                   child: SizedBox(
-                    width: 70.w,
-                    height: 40.h,
+                    width: 75.w,
+                    height: 45.h,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           elevation: 10,
@@ -149,7 +149,7 @@ class dateBarWidget extends ConsumerWidget {
                         },
                         child: Text("昨日",
                             style: TextStyle(
-                                fontSize: 16.sp,
+                                fontSize: 13.sp,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold))),
                   ),
@@ -157,8 +157,8 @@ class dateBarWidget extends ConsumerWidget {
                 Padding(
                   padding: EdgeInsets.only(bottom: 10.h),
                   child: SizedBox(
-                    width: 70.w,
-                    height: 40.h,
+                    width: 75.w,
+                    height: 45.h,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           elevation: 10,
@@ -174,7 +174,7 @@ class dateBarWidget extends ConsumerWidget {
                         },
                         child: Text("翌日",
                             style: TextStyle(
-                                fontSize: 16.sp,
+                                fontSize: 13.sp,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold))),
                   ),
