@@ -23,9 +23,15 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
 
   late final Ref _ref;
   final SharedPreferences _prefs;
+  final today = DateTime.now();
 
   ExpenseState get _expenseState => _ref.watch(expenseViewModelProvider);
   IncomeState get _incomeState => _ref.watch(incomeViewModelProvider);
+
+  //月の合計支出金額
+  final monthExpenseTotal = <String, int>{};
+  //月の合計収入金顔
+  final monthIncomeTotal = <String, int>{};
 
   Future<void> setBalanseWithSaving(BalanceWithSaving balanseWithSaving) async {
     await _prefs.setInt("balanse", balanseWithSaving.balance);
@@ -33,14 +39,9 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
   }
 
   Future<void> getBalanseWithSaving() async {
-    final today = DateTime.now();
     final currentMonthOneDate = DateTime(today.year, today.month, 1);
     final expenseState = _expenseState;
     final incomeState = _incomeState;
-    //月の合計支出金額
-    final monthExpenseTotal = <String, int>{};
-    //月の合計収入金顔
-    final monthIncomeTotal = <String, int>{};
     //今月
     final currentMonth = "${today.year}年${today.month}月";
 
@@ -57,11 +58,15 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
     if (expenseState.expenses.isNotEmpty) {
       //支出リストから日付ごとの支出合計金額を取り出す。
       expenseState.expenses.forEach((expense) {
-        final month = expense.date.substring(0, 8);
+        final date = Util.convartDate(expense.date);
+        final month = "${date.year}年${date.month}月";
         if (monthExpenseTotal.containsKey(currentMonth)) {
           monthExpenseTotal[currentMonth] =
               monthExpenseTotal[currentMonth]! + int.parse(expense.amount);
           print(monthExpenseTotal[currentMonth]);
+        } else if (monthExpenseTotal.containsKey(month)) {
+          monthExpenseTotal[month] =
+              monthExpenseTotal[month]! + int.parse(expense.amount);
         } else {
           monthExpenseTotal[month] = int.parse(expense.amount);
           print(monthExpenseTotal[month]);
@@ -72,7 +77,8 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
     if (incomeState.incomes.isNotEmpty) {
       //収入リストから日付ごとの収入合計金額を取り出す。
       incomeState.incomes.forEach((income) {
-        final month = income.date.substring(0, 8);
+        final date = Util.convartDate(income.date);
+        final month = "${date.year}年${date.month}月";
         //同じ日付があったらそれ同士を足してまとめる。
         if (monthIncomeTotal.containsKey(month)) {
           monthIncomeTotal[month] =
@@ -109,22 +115,18 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
       remainingSaving = remainingSaving + remainingBalanse;
       if (today == currentMonthOneDate) {
         _prefs.setInt("remainingSaving", remainingSaving);
-        _prefs.setString("addedDay", Util.toDate(today));
       }
       remainingBalanse = 0;
     }
 
-    //次の月までに,残高が余っていたら、その分を貯金額にたす。
+    //次の月までに,残高が余っていたら、その分を貯金額にたす。余らなかったら引く
     if (today == currentMonthOneDate) {
-      if (remainingBalanse > 0) {
-        remainingSaving = remainingSaving + remainingBalanse;
-        _prefs.setInt("saving", remainingSaving);
-        _prefs.setString("addedDay", Util.toDate(today));
-      }
+      _saveSaving();
+      saving = _prefs.getInt("saving") ?? 0;
     }
 
-    //設定した貯金額を超えたらゼロにする。
-    if (remainingSaving <= 0) {
+    //設定した貯金額より下回っていたらゼロにする。
+    if (remainingSaving < 0) {
       remainingSaving = 0;
     }
 
@@ -134,6 +136,48 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
         saving: saving,
         remainingBalance: remainingBalanse,
         remainingSaving: remainingSaving);
+  }
+
+  int _getPreviousMonthTotalExpense() {
+    String? previousMonth;
+    if (today.month == 1) {
+      previousMonth = "${today.year - 1}年${12}月";
+    } else {
+      previousMonth = "${today.year}年${today.month - 1}月";
+    }
+    if (monthExpenseTotal[previousMonth] != null) {
+      return monthExpenseTotal[previousMonth]!;
+    } else {
+      return 0;
+    }
+  }
+
+  int _getPreviousMonthTotalIncome() {
+    String? previousMonth;
+    if (today.month == 1) {
+      previousMonth = "${today.year - 1}年${12}月";
+    } else {
+      previousMonth = "${today.year}年${today.month - 1}月";
+    }
+    if (monthIncomeTotal[previousMonth] != null) {
+      return monthIncomeTotal[previousMonth]!;
+    } else {
+      return 0;
+    }
+  }
+
+  int _getPreviousMonthBalance(
+      int previousMonthExpense, int previousMonthIncome) {
+    return previousMonthIncome - previousMonthExpense;
+  }
+
+  void _saveSaving() {
+    final previousMonthExpense = _getPreviousMonthTotalExpense();
+    final previousMonthIncome = _getPreviousMonthTotalIncome();
+    final previousMonthBalance =
+        _getPreviousMonthBalance(previousMonthExpense, previousMonthIncome);
+    int saving = _prefs.getInt("saving") ?? 0;
+    _prefs.setInt("saving", saving + previousMonthBalance);
   }
 
   int _deductExpenses(int income, int expense) {
