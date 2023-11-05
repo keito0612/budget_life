@@ -63,22 +63,22 @@ class _$RewardAdStateCopyWithImpl<$Res, $Val extends RewardAdState>
 }
 
 /// @nodoc
-abstract class _$$_RewardAdStateCopyWith<$Res>
+abstract class _$$RewardAdStateImplCopyWith<$Res>
     implements $RewardAdStateCopyWith<$Res> {
-  factory _$$_RewardAdStateCopyWith(
-          _$_RewardAdState value, $Res Function(_$_RewardAdState) then) =
-      __$$_RewardAdStateCopyWithImpl<$Res>;
+  factory _$$RewardAdStateImplCopyWith(
+          _$RewardAdStateImpl value, $Res Function(_$RewardAdStateImpl) then) =
+      __$$RewardAdStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({RewardedAd? rewardedAd, bool isLoaded});
 }
 
 /// @nodoc
-class __$$_RewardAdStateCopyWithImpl<$Res>
-    extends _$RewardAdStateCopyWithImpl<$Res, _$_RewardAdState>
-    implements _$$_RewardAdStateCopyWith<$Res> {
-  __$$_RewardAdStateCopyWithImpl(
-      _$_RewardAdState _value, $Res Function(_$_RewardAdState) _then)
+class __$$RewardAdStateImplCopyWithImpl<$Res>
+    extends _$RewardAdStateCopyWithImpl<$Res, _$RewardAdStateImpl>
+    implements _$$RewardAdStateImplCopyWith<$Res> {
+  __$$RewardAdStateImplCopyWithImpl(
+      _$RewardAdStateImpl _value, $Res Function(_$RewardAdStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -87,7 +87,7 @@ class __$$_RewardAdStateCopyWithImpl<$Res>
     Object? rewardedAd = freezed,
     Object? isLoaded = null,
   }) {
-    return _then(_$_RewardAdState(
+    return _then(_$RewardAdStateImpl(
       rewardedAd: freezed == rewardedAd
           ? _value.rewardedAd
           : rewardedAd // ignore: cast_nullable_to_non_nullable
@@ -102,8 +102,8 @@ class __$$_RewardAdStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_RewardAdState implements _RewardAdState {
-  const _$_RewardAdState({this.rewardedAd, this.isLoaded = false});
+class _$RewardAdStateImpl implements _RewardAdState {
+  const _$RewardAdStateImpl({this.rewardedAd, this.isLoaded = false});
 
   @override
   final RewardedAd? rewardedAd;
@@ -120,7 +120,7 @@ class _$_RewardAdState implements _RewardAdState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RewardAdState &&
+            other is _$RewardAdStateImpl &&
             (identical(other.rewardedAd, rewardedAd) ||
                 other.rewardedAd == rewardedAd) &&
             (identical(other.isLoaded, isLoaded) ||
@@ -133,13 +133,14 @@ class _$_RewardAdState implements _RewardAdState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_RewardAdStateCopyWith<_$_RewardAdState> get copyWith =>
-      __$$_RewardAdStateCopyWithImpl<_$_RewardAdState>(this, _$identity);
+  _$$RewardAdStateImplCopyWith<_$RewardAdStateImpl> get copyWith =>
+      __$$RewardAdStateImplCopyWithImpl<_$RewardAdStateImpl>(this, _$identity);
 }
 
 abstract class _RewardAdState implements RewardAdState {
   const factory _RewardAdState(
-      {final RewardedAd? rewardedAd, final bool isLoaded}) = _$_RewardAdState;
+      {final RewardedAd? rewardedAd,
+      final bool isLoaded}) = _$RewardAdStateImpl;
 
   @override
   RewardedAd? get rewardedAd;
@@ -147,6 +148,6 @@ abstract class _RewardAdState implements RewardAdState {
   bool get isLoaded;
   @override
   @JsonKey(ignore: true)
-  _$$_RewardAdStateCopyWith<_$_RewardAdState> get copyWith =>
+  _$$RewardAdStateImplCopyWith<_$RewardAdStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

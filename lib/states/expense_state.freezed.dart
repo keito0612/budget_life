@@ -57,22 +57,22 @@ class _$ExpenseStateCopyWithImpl<$Res, $Val extends ExpenseState>
 }
 
 /// @nodoc
-abstract class _$$_ExpenseStateCopyWith<$Res>
+abstract class _$$ExpenseStateImplCopyWith<$Res>
     implements $ExpenseStateCopyWith<$Res> {
-  factory _$$_ExpenseStateCopyWith(
-          _$_ExpenseState value, $Res Function(_$_ExpenseState) then) =
-      __$$_ExpenseStateCopyWithImpl<$Res>;
+  factory _$$ExpenseStateImplCopyWith(
+          _$ExpenseStateImpl value, $Res Function(_$ExpenseStateImpl) then) =
+      __$$ExpenseStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<Expense> expenses});
 }
 
 /// @nodoc
-class __$$_ExpenseStateCopyWithImpl<$Res>
-    extends _$ExpenseStateCopyWithImpl<$Res, _$_ExpenseState>
-    implements _$$_ExpenseStateCopyWith<$Res> {
-  __$$_ExpenseStateCopyWithImpl(
-      _$_ExpenseState _value, $Res Function(_$_ExpenseState) _then)
+class __$$ExpenseStateImplCopyWithImpl<$Res>
+    extends _$ExpenseStateCopyWithImpl<$Res, _$ExpenseStateImpl>
+    implements _$$ExpenseStateImplCopyWith<$Res> {
+  __$$ExpenseStateImplCopyWithImpl(
+      _$ExpenseStateImpl _value, $Res Function(_$ExpenseStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -80,7 +80,7 @@ class __$$_ExpenseStateCopyWithImpl<$Res>
   $Res call({
     Object? expenses = null,
   }) {
-    return _then(_$_ExpenseState(
+    return _then(_$ExpenseStateImpl(
       expenses: null == expenses
           ? _value._expenses
           : expenses // ignore: cast_nullable_to_non_nullable
@@ -91,8 +91,8 @@ class __$$_ExpenseStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_ExpenseState implements _ExpenseState {
-  const _$_ExpenseState({final List<Expense> expenses = const []})
+class _$ExpenseStateImpl implements _ExpenseState {
+  const _$ExpenseStateImpl({final List<Expense> expenses = const []})
       : _expenses = expenses;
 
   final List<Expense> _expenses;
@@ -113,7 +113,7 @@ class _$_ExpenseState implements _ExpenseState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ExpenseState &&
+            other is _$ExpenseStateImpl &&
             const DeepCollectionEquality().equals(other._expenses, _expenses));
   }
 
@@ -124,17 +124,18 @@ class _$_ExpenseState implements _ExpenseState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ExpenseStateCopyWith<_$_ExpenseState> get copyWith =>
-      __$$_ExpenseStateCopyWithImpl<_$_ExpenseState>(this, _$identity);
+  _$$ExpenseStateImplCopyWith<_$ExpenseStateImpl> get copyWith =>
+      __$$ExpenseStateImplCopyWithImpl<_$ExpenseStateImpl>(this, _$identity);
 }
 
 abstract class _ExpenseState implements ExpenseState {
-  const factory _ExpenseState({final List<Expense> expenses}) = _$_ExpenseState;
+  const factory _ExpenseState({final List<Expense> expenses}) =
+      _$ExpenseStateImpl;
 
   @override
   List<Expense> get expenses;
   @override
   @JsonKey(ignore: true)
-  _$$_ExpenseStateCopyWith<_$_ExpenseState> get copyWith =>
+  _$$ExpenseStateImplCopyWith<_$ExpenseStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

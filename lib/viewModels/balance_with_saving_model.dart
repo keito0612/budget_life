@@ -177,7 +177,11 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
     final previousMonthBalance =
         _getPreviousMonthBalance(previousMonthExpense, previousMonthIncome);
     int saving = _prefs.getInt("saving") ?? 0;
-    _prefs.setInt("saving", saving + previousMonthBalance);
+    if (saving != 0) {
+      _prefs.setInt("saving", saving + previousMonthBalance);
+    } else {
+      _prefs.setInt("saving", saving);
+    }
   }
 
   int _deductExpenses(int income, int expense) {

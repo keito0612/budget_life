@@ -395,9 +395,9 @@ class RecurringIncomePage extends ConsumerWidget {
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: Row(
+          title: const Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: const [
+            children:  [
               Icon(
                 Icons.error_outline_rounded,
                 color: Colors.red,

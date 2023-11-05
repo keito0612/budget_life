@@ -63,22 +63,22 @@ class _$AdBannerStateCopyWithImpl<$Res, $Val extends AdBannerState>
 }
 
 /// @nodoc
-abstract class _$$_AdBannerStateCopyWith<$Res>
+abstract class _$$AdBannerStateImplCopyWith<$Res>
     implements $AdBannerStateCopyWith<$Res> {
-  factory _$$_AdBannerStateCopyWith(
-          _$_AdBannerState value, $Res Function(_$_AdBannerState) then) =
-      __$$_AdBannerStateCopyWithImpl<$Res>;
+  factory _$$AdBannerStateImplCopyWith(
+          _$AdBannerStateImpl value, $Res Function(_$AdBannerStateImpl) then) =
+      __$$AdBannerStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({BannerAd? bannerAd, bool isLoaded});
 }
 
 /// @nodoc
-class __$$_AdBannerStateCopyWithImpl<$Res>
-    extends _$AdBannerStateCopyWithImpl<$Res, _$_AdBannerState>
-    implements _$$_AdBannerStateCopyWith<$Res> {
-  __$$_AdBannerStateCopyWithImpl(
-      _$_AdBannerState _value, $Res Function(_$_AdBannerState) _then)
+class __$$AdBannerStateImplCopyWithImpl<$Res>
+    extends _$AdBannerStateCopyWithImpl<$Res, _$AdBannerStateImpl>
+    implements _$$AdBannerStateImplCopyWith<$Res> {
+  __$$AdBannerStateImplCopyWithImpl(
+      _$AdBannerStateImpl _value, $Res Function(_$AdBannerStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -87,7 +87,7 @@ class __$$_AdBannerStateCopyWithImpl<$Res>
     Object? bannerAd = freezed,
     Object? isLoaded = null,
   }) {
-    return _then(_$_AdBannerState(
+    return _then(_$AdBannerStateImpl(
       bannerAd: freezed == bannerAd
           ? _value.bannerAd
           : bannerAd // ignore: cast_nullable_to_non_nullable
@@ -102,8 +102,8 @@ class __$$_AdBannerStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_AdBannerState implements _AdBannerState {
-  const _$_AdBannerState({this.bannerAd, this.isLoaded = false});
+class _$AdBannerStateImpl implements _AdBannerState {
+  const _$AdBannerStateImpl({this.bannerAd, this.isLoaded = false});
 
   @override
   final BannerAd? bannerAd;
@@ -120,7 +120,7 @@ class _$_AdBannerState implements _AdBannerState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_AdBannerState &&
+            other is _$AdBannerStateImpl &&
             (identical(other.bannerAd, bannerAd) ||
                 other.bannerAd == bannerAd) &&
             (identical(other.isLoaded, isLoaded) ||
@@ -133,13 +133,13 @@ class _$_AdBannerState implements _AdBannerState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_AdBannerStateCopyWith<_$_AdBannerState> get copyWith =>
-      __$$_AdBannerStateCopyWithImpl<_$_AdBannerState>(this, _$identity);
+  _$$AdBannerStateImplCopyWith<_$AdBannerStateImpl> get copyWith =>
+      __$$AdBannerStateImplCopyWithImpl<_$AdBannerStateImpl>(this, _$identity);
 }
 
 abstract class _AdBannerState implements AdBannerState {
   const factory _AdBannerState(
-      {final BannerAd? bannerAd, final bool isLoaded}) = _$_AdBannerState;
+      {final BannerAd? bannerAd, final bool isLoaded}) = _$AdBannerStateImpl;
 
   @override
   BannerAd? get bannerAd;
@@ -147,6 +147,6 @@ abstract class _AdBannerState implements AdBannerState {
   bool get isLoaded;
   @override
   @JsonKey(ignore: true)
-  _$$_AdBannerStateCopyWith<_$_AdBannerState> get copyWith =>
+  _$$AdBannerStateImplCopyWith<_$AdBannerStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

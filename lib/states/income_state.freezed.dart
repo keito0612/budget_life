@@ -57,22 +57,22 @@ class _$IncomeStateCopyWithImpl<$Res, $Val extends IncomeState>
 }
 
 /// @nodoc
-abstract class _$$_IncomeStateCopyWith<$Res>
+abstract class _$$IncomeStateImplCopyWith<$Res>
     implements $IncomeStateCopyWith<$Res> {
-  factory _$$_IncomeStateCopyWith(
-          _$_IncomeState value, $Res Function(_$_IncomeState) then) =
-      __$$_IncomeStateCopyWithImpl<$Res>;
+  factory _$$IncomeStateImplCopyWith(
+          _$IncomeStateImpl value, $Res Function(_$IncomeStateImpl) then) =
+      __$$IncomeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<Income> incomes});
 }
 
 /// @nodoc
-class __$$_IncomeStateCopyWithImpl<$Res>
-    extends _$IncomeStateCopyWithImpl<$Res, _$_IncomeState>
-    implements _$$_IncomeStateCopyWith<$Res> {
-  __$$_IncomeStateCopyWithImpl(
-      _$_IncomeState _value, $Res Function(_$_IncomeState) _then)
+class __$$IncomeStateImplCopyWithImpl<$Res>
+    extends _$IncomeStateCopyWithImpl<$Res, _$IncomeStateImpl>
+    implements _$$IncomeStateImplCopyWith<$Res> {
+  __$$IncomeStateImplCopyWithImpl(
+      _$IncomeStateImpl _value, $Res Function(_$IncomeStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -80,7 +80,7 @@ class __$$_IncomeStateCopyWithImpl<$Res>
   $Res call({
     Object? incomes = null,
   }) {
-    return _then(_$_IncomeState(
+    return _then(_$IncomeStateImpl(
       incomes: null == incomes
           ? _value._incomes
           : incomes // ignore: cast_nullable_to_non_nullable
@@ -91,8 +91,8 @@ class __$$_IncomeStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_IncomeState implements _IncomeState {
-  const _$_IncomeState({final List<Income> incomes = const []})
+class _$IncomeStateImpl implements _IncomeState {
+  const _$IncomeStateImpl({final List<Income> incomes = const []})
       : _incomes = incomes;
 
   final List<Income> _incomes;
@@ -113,7 +113,7 @@ class _$_IncomeState implements _IncomeState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_IncomeState &&
+            other is _$IncomeStateImpl &&
             const DeepCollectionEquality().equals(other._incomes, _incomes));
   }
 
@@ -124,17 +124,17 @@ class _$_IncomeState implements _IncomeState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_IncomeStateCopyWith<_$_IncomeState> get copyWith =>
-      __$$_IncomeStateCopyWithImpl<_$_IncomeState>(this, _$identity);
+  _$$IncomeStateImplCopyWith<_$IncomeStateImpl> get copyWith =>
+      __$$IncomeStateImplCopyWithImpl<_$IncomeStateImpl>(this, _$identity);
 }
 
 abstract class _IncomeState implements IncomeState {
-  const factory _IncomeState({final List<Income> incomes}) = _$_IncomeState;
+  const factory _IncomeState({final List<Income> incomes}) = _$IncomeStateImpl;
 
   @override
   List<Income> get incomes;
   @override
   @JsonKey(ignore: true)
-  _$$_IncomeStateCopyWith<_$_IncomeState> get copyWith =>
+  _$$IncomeStateImplCopyWith<_$IncomeStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

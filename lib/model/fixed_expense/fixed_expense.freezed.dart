@@ -126,11 +126,11 @@ class _$FixedExpenseCopyWithImpl<$Res, $Val extends FixedExpense>
 }
 
 /// @nodoc
-abstract class _$$_FixedExpenseCopyWith<$Res>
+abstract class _$$FixedExpenseImplCopyWith<$Res>
     implements $FixedExpenseCopyWith<$Res> {
-  factory _$$_FixedExpenseCopyWith(
-          _$_FixedExpense value, $Res Function(_$_FixedExpense) then) =
-      __$$_FixedExpenseCopyWithImpl<$Res>;
+  factory _$$FixedExpenseImplCopyWith(
+          _$FixedExpenseImpl value, $Res Function(_$FixedExpenseImpl) then) =
+      __$$FixedExpenseImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -147,11 +147,11 @@ abstract class _$$_FixedExpenseCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_FixedExpenseCopyWithImpl<$Res>
-    extends _$FixedExpenseCopyWithImpl<$Res, _$_FixedExpense>
-    implements _$$_FixedExpenseCopyWith<$Res> {
-  __$$_FixedExpenseCopyWithImpl(
-      _$_FixedExpense _value, $Res Function(_$_FixedExpense) _then)
+class __$$FixedExpenseImplCopyWithImpl<$Res>
+    extends _$FixedExpenseCopyWithImpl<$Res, _$FixedExpenseImpl>
+    implements _$$FixedExpenseImplCopyWith<$Res> {
+  __$$FixedExpenseImplCopyWithImpl(
+      _$FixedExpenseImpl _value, $Res Function(_$FixedExpenseImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -168,7 +168,7 @@ class __$$_FixedExpenseCopyWithImpl<$Res>
     Object? color = freezed,
     Object? categoryIndex = freezed,
   }) {
-    return _then(_$_FixedExpense(
+    return _then(_$FixedExpenseImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -215,8 +215,8 @@ class __$$_FixedExpenseCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_FixedExpense implements _FixedExpense {
-  const _$_FixedExpense(
+class _$FixedExpenseImpl implements _FixedExpense {
+  const _$FixedExpenseImpl(
       {this.id,
       this.amount = "",
       this.autoMaticInputDate = "",
@@ -228,8 +228,8 @@ class _$_FixedExpense implements _FixedExpense {
       this.color,
       this.categoryIndex});
 
-  factory _$_FixedExpense.fromJson(Map<String, dynamic> json) =>
-      _$$_FixedExpenseFromJson(json);
+  factory _$FixedExpenseImpl.fromJson(Map<String, dynamic> json) =>
+      _$$FixedExpenseImplFromJson(json);
 
   @override
   final int? id;
@@ -266,7 +266,7 @@ class _$_FixedExpense implements _FixedExpense {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_FixedExpense &&
+            other is _$FixedExpenseImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.autoMaticInputDate, autoMaticInputDate) ||
@@ -303,12 +303,12 @@ class _$_FixedExpense implements _FixedExpense {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_FixedExpenseCopyWith<_$_FixedExpense> get copyWith =>
-      __$$_FixedExpenseCopyWithImpl<_$_FixedExpense>(this, _$identity);
+  _$$FixedExpenseImplCopyWith<_$FixedExpenseImpl> get copyWith =>
+      __$$FixedExpenseImplCopyWithImpl<_$FixedExpenseImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_FixedExpenseToJson(
+    return _$$FixedExpenseImplToJson(
       this,
     );
   }
@@ -325,10 +325,10 @@ abstract class _FixedExpense implements FixedExpense {
       final String? category,
       final int? icon,
       final int? color,
-      final int? categoryIndex}) = _$_FixedExpense;
+      final int? categoryIndex}) = _$FixedExpenseImpl;
 
   factory _FixedExpense.fromJson(Map<String, dynamic> json) =
-      _$_FixedExpense.fromJson;
+      _$FixedExpenseImpl.fromJson;
 
   @override
   int? get id;
@@ -352,6 +352,6 @@ abstract class _FixedExpense implements FixedExpense {
   int? get categoryIndex;
   @override
   @JsonKey(ignore: true)
-  _$$_FixedExpenseCopyWith<_$_FixedExpense> get copyWith =>
+  _$$FixedExpenseImplCopyWith<_$FixedExpenseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

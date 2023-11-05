@@ -57,22 +57,22 @@ class _$fixedExpenseStateCopyWithImpl<$Res, $Val extends fixedExpenseState>
 }
 
 /// @nodoc
-abstract class _$$_fixedExpenseStateCopyWith<$Res>
+abstract class _$$fixedExpenseStateImplCopyWith<$Res>
     implements $fixedExpenseStateCopyWith<$Res> {
-  factory _$$_fixedExpenseStateCopyWith(_$_fixedExpenseState value,
-          $Res Function(_$_fixedExpenseState) then) =
-      __$$_fixedExpenseStateCopyWithImpl<$Res>;
+  factory _$$fixedExpenseStateImplCopyWith(_$fixedExpenseStateImpl value,
+          $Res Function(_$fixedExpenseStateImpl) then) =
+      __$$fixedExpenseStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<FixedExpense> fixedExpenses});
 }
 
 /// @nodoc
-class __$$_fixedExpenseStateCopyWithImpl<$Res>
-    extends _$fixedExpenseStateCopyWithImpl<$Res, _$_fixedExpenseState>
-    implements _$$_fixedExpenseStateCopyWith<$Res> {
-  __$$_fixedExpenseStateCopyWithImpl(
-      _$_fixedExpenseState _value, $Res Function(_$_fixedExpenseState) _then)
+class __$$fixedExpenseStateImplCopyWithImpl<$Res>
+    extends _$fixedExpenseStateCopyWithImpl<$Res, _$fixedExpenseStateImpl>
+    implements _$$fixedExpenseStateImplCopyWith<$Res> {
+  __$$fixedExpenseStateImplCopyWithImpl(_$fixedExpenseStateImpl _value,
+      $Res Function(_$fixedExpenseStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -80,7 +80,7 @@ class __$$_fixedExpenseStateCopyWithImpl<$Res>
   $Res call({
     Object? fixedExpenses = null,
   }) {
-    return _then(_$_fixedExpenseState(
+    return _then(_$fixedExpenseStateImpl(
       fixedExpenses: null == fixedExpenses
           ? _value._fixedExpenses
           : fixedExpenses // ignore: cast_nullable_to_non_nullable
@@ -91,8 +91,8 @@ class __$$_fixedExpenseStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_fixedExpenseState implements _fixedExpenseState {
-  const _$_fixedExpenseState(
+class _$fixedExpenseStateImpl implements _fixedExpenseState {
+  const _$fixedExpenseStateImpl(
       {final List<FixedExpense> fixedExpenses = const []})
       : _fixedExpenses = fixedExpenses;
 
@@ -114,7 +114,7 @@ class _$_fixedExpenseState implements _fixedExpenseState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_fixedExpenseState &&
+            other is _$fixedExpenseStateImpl &&
             const DeepCollectionEquality()
                 .equals(other._fixedExpenses, _fixedExpenses));
   }
@@ -126,19 +126,19 @@ class _$_fixedExpenseState implements _fixedExpenseState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_fixedExpenseStateCopyWith<_$_fixedExpenseState> get copyWith =>
-      __$$_fixedExpenseStateCopyWithImpl<_$_fixedExpenseState>(
+  _$$fixedExpenseStateImplCopyWith<_$fixedExpenseStateImpl> get copyWith =>
+      __$$fixedExpenseStateImplCopyWithImpl<_$fixedExpenseStateImpl>(
           this, _$identity);
 }
 
 abstract class _fixedExpenseState implements fixedExpenseState {
   const factory _fixedExpenseState({final List<FixedExpense> fixedExpenses}) =
-      _$_fixedExpenseState;
+      _$fixedExpenseStateImpl;
 
   @override
   List<FixedExpense> get fixedExpenses;
   @override
   @JsonKey(ignore: true)
-  _$$_fixedExpenseStateCopyWith<_$_fixedExpenseState> get copyWith =>
+  _$$fixedExpenseStateImplCopyWith<_$fixedExpenseStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

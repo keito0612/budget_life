@@ -6,8 +6,8 @@ part of 'fixed_expense.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_FixedExpense _$$_FixedExpenseFromJson(Map<String, dynamic> json) =>
-    _$_FixedExpense(
+_$FixedExpenseImpl _$$FixedExpenseImplFromJson(Map<String, dynamic> json) =>
+    _$FixedExpenseImpl(
       id: json['id'] as int?,
       amount: json['amount'] as String? ?? "",
       autoMaticInputDate: json['autoMaticInputDate'] as String? ?? "",
@@ -20,7 +20,7 @@ _$_FixedExpense _$$_FixedExpenseFromJson(Map<String, dynamic> json) =>
       categoryIndex: json['categoryIndex'] as int?,
     );
 
-Map<String, dynamic> _$$_FixedExpenseToJson(_$_FixedExpense instance) =>
+Map<String, dynamic> _$$FixedExpenseImplToJson(_$FixedExpenseImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'amount': instance.amount,
