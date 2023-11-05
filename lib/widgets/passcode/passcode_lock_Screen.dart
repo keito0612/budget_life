@@ -75,7 +75,7 @@ class PasscodeLockScreen extends ConsumerWidget {
         displayStrings: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
       ),
       cancelButton: null,
-      deleteButton: Icon(size: 20.0.sh, Icons.delete, color: Colors.white),
+      deleteButton: const Icon(Icons.delete, color: Colors.white),
     );
   }
 }

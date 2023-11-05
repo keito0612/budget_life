@@ -56,6 +56,7 @@ class CupertinoTimePikerTile extends ConsumerWidget {
       context: context,
       builder: (BuildContext context) {
         return Container(
+          width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height / 3,
           child: GestureDetector(
             onTap: () {

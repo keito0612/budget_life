@@ -18,13 +18,13 @@ class HpGauge3Color extends StatelessWidget {
       maxAmount = currentAmount;
     }
     if (maxAmount == 0 && currentAmount == 0) {
-      return zeroAmountGauge(title, currentAmount, maxAmount);
+      return zeroAmountGauge(context, title, currentAmount, maxAmount);
     } else {
-      return amountGauge();
+      return amountGauge(context);
     }
   }
 
-  Widget amountGauge() {
+  Widget amountGauge(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
@@ -52,9 +52,10 @@ class HpGauge3Color extends StatelessWidget {
                       child: Text(
                         title,
                         style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15.sp),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: MediaQuery.of(context).size.width / 30,
+                        ),
                       ),
                     ),
                   ),
@@ -95,7 +96,8 @@ class HpGauge3Color extends StatelessWidget {
     );
   }
 
-  Widget zeroAmountGauge(String title, int currentAmount, int maxAmount) {
+  Widget zeroAmountGauge(
+      BuildContext context, String title, int currentAmount, int maxAmount) {
     return Container(
       decoration: BoxDecoration(
           color: Colors.white,
@@ -123,9 +125,10 @@ class HpGauge3Color extends StatelessWidget {
                       child: Text(
                         title,
                         style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15.sp),
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: MediaQuery.of(context).size.width / 30,
+                        ),
                       ),
                     ),
                   ),

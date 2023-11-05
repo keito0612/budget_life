@@ -132,7 +132,6 @@ class CategoryAddPage extends ConsumerWidget {
     final categoryController = ref.read(categoryProvider.notifier);
     return Container(
       width: 400.w,
-      height: 120.h,
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(30.r)),
       child: Column(
@@ -162,7 +161,7 @@ class CategoryAddPage extends ConsumerWidget {
             endIndent: 20.h,
           ),
           Padding(
-            padding: EdgeInsets.all(8.0.r),
+            padding: EdgeInsets.only(top: 8.h, bottom: 12.h),
             child: _cupertinoSlidingWidget(cupertinoSliderValue, ref),
           )
         ],
@@ -195,7 +194,7 @@ class CategoryAddPage extends ConsumerWidget {
         ref.read(cupertinoSlidingValueProvider.notifier);
     return SizedBox(
       width: 300.w,
-      height: 40.h,
+      height: 50.h,
       child: CupertinoSlidingSegmentedControl(
         children: {
           0: Container(
