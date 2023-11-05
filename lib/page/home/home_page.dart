@@ -27,7 +27,7 @@ class HomePage extends ConsumerWidget {
               color: Colors.white,
               icon: Icon(
                 Icons.settings,
-                size: 25.sp,
+                size: MediaQuery.of(context).size.width / 10,
               ),
               onPressed: () {
                 Navigator.push(

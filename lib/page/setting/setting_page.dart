@@ -13,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingPage extends ConsumerWidget {
   const SettingPage({super.key});
@@ -75,6 +76,39 @@ class SettingPage extends ConsumerWidget {
                             MaterialPageRoute(
                                 builder: (context) =>
                                     const PassCodeRockSetting()));
+                      },
+                    ),
+                  ),
+                  Divider(
+                    color: Colors.grey,
+                    thickness: 2,
+                    height: 1.h,
+                    indent: 0,
+                    endIndent: 0,
+                  ),
+                  Divider(
+                    color: Colors.grey,
+                    thickness: 2,
+                    height: 1.h,
+                    indent: 0,
+                    endIndent: 0,
+                  ),
+                  Container(
+                    height: 70.h,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    alignment: Alignment.centerRight,
+                    child: ListTile(
+                      title: Row(
+                        children: [
+                          Text("お問い合わせ", style: TextStyle(fontSize: 20.sp)),
+                        ],
+                      ),
+                      onTap: () {
+                        final url = Uri.parse(
+                            'https://docs.google.com/forms/d/e/1FAIpQLSdU47nag_nNwO929APfxUZQKrUGCX7SCyCitICaKwXG4nLBoA/viewform');
+                        launchUrl(url);
                       },
                     ),
                   ),

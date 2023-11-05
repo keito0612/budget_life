@@ -44,7 +44,7 @@ class CupertinoSwitchTile extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Transform.scale(
-                scale: 1.0.sp,
+                scale: 1.0,
                 child: CupertinoSwitch(
                   value: value,
                   onChanged: onChanged,

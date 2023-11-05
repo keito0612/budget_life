@@ -187,20 +187,23 @@ class ChartPage extends ConsumerWidget {
                             chartType: ChartType.ring,
                             ringStrokeWidth: 32.w,
                             centerText: "支出",
-                            centerTextStyle: const TextStyle(
+                            centerTextStyle: TextStyle(
+                                fontSize: 15.sp,
                                 color: Colors.green,
                                 fontWeight: FontWeight.bold),
                             emptyColor: Colors.green,
-                            legendOptions: const LegendOptions(
+                            legendOptions: LegendOptions(
                               showLegendsInRow: false,
                               legendPosition: LegendPosition.right,
                               showLegends: true,
                               legendShape: BoxShape.circle,
                               legendTextStyle: TextStyle(
+                                fontSize: 15.sp,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            chartValuesOptions: const ChartValuesOptions(
+                            chartValuesOptions: ChartValuesOptions(
+                              chartValueStyle: TextStyle(fontSize: 15.sp),
                               showChartValueBackground: false,
                               showChartValues: false,
                               showChartValuesInPercentage: false,
@@ -211,8 +214,9 @@ class ChartPage extends ConsumerWidget {
                             // emptyColorGradient: ---Empty Color gradient---
                           )
                         : Padding(
-                            padding:
-                                const EdgeInsets.only(top: 80, bottom: 100),
+                            padding: EdgeInsets.only(
+                                top: 80.h,
+                                bottom: MediaQuery.of(context).size.width / 4),
                             child: Text("現在支出はありません。",
                                 style: TextStyle(
                                     fontSize: 20.sp,
@@ -253,54 +257,58 @@ class ChartPage extends ConsumerWidget {
                 _chartDateWidget(context, ref),
                 _chartCupertinoSlidingWidget(ref),
                 Center(
-                    child:
-                        incomeChartData.income[Util.toDate2(chartDate)] != null
-                            ? PieChart(
-                                dataMap: incomeChartData
-                                    .income[Util.toDate2(chartDate)]!,
-                                animationDuration:
-                                    const Duration(milliseconds: 800),
-                                chartLegendSpacing: 32.w,
-                                chartRadius:
-                                    MediaQuery.of(context).size.width / 3.2,
-                                colorList: colorList,
-                                initialAngleInDegree: 0,
-                                chartType: ChartType.ring,
-                                ringStrokeWidth: 32.w,
-                                centerText: "収入",
-                                centerTextStyle: const TextStyle(
+                    child: incomeChartData.income[Util.toDate2(chartDate)] !=
+                            null
+                        ? PieChart(
+                            dataMap: incomeChartData
+                                .income[Util.toDate2(chartDate)]!,
+                            animationDuration:
+                                const Duration(milliseconds: 800),
+                            chartLegendSpacing: 32.w,
+                            chartRadius:
+                                MediaQuery.of(context).size.width / 3.2,
+                            colorList: colorList,
+                            initialAngleInDegree: 0,
+                            chartType: ChartType.ring,
+                            ringStrokeWidth: 32.w,
+                            centerText: "収入",
+                            centerTextStyle: TextStyle(
+                                fontSize: 15.sp,
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold),
+                            emptyColor: Colors.green,
+                            legendOptions: LegendOptions(
+                              showLegendsInRow: false,
+                              legendPosition: LegendPosition.right,
+                              showLegends: true,
+                              legendShape: BoxShape.circle,
+                              legendTextStyle: TextStyle(
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            chartValuesOptions: ChartValuesOptions(
+                              chartValueStyle: TextStyle(fontSize: 15.sp),
+                              showChartValueBackground: false,
+                              showChartValues: false,
+                              showChartValuesInPercentage: false,
+                              showChartValuesOutside: false,
+                              decimalPlaces: 1,
+                            ),
+                            // gradientList: ---To add gradient colors---
+                            // emptyColorGradient: ---Empty Color gradient---
+                          )
+                        : Padding(
+                            padding: EdgeInsets.only(
+                                top: 80.h,
+                                bottom: MediaQuery.of(context).size.width / 4),
+                            child: Text("現在収入はありません。",
+                                style: TextStyle(
+                                    fontSize: 20.sp,
                                     color: Colors.green,
-                                    fontWeight: FontWeight.bold),
-                                emptyColor: Colors.green,
-                                legendOptions: const LegendOptions(
-                                  showLegendsInRow: false,
-                                  legendPosition: LegendPosition.right,
-                                  showLegends: true,
-                                  legendShape: BoxShape.circle,
-                                  legendTextStyle: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                chartValuesOptions: const ChartValuesOptions(
-                                  showChartValueBackground: false,
-                                  showChartValues: false,
-                                  showChartValuesInPercentage: false,
-                                  showChartValuesOutside: false,
-                                  decimalPlaces: 1,
-                                ),
-                                // gradientList: ---To add gradient colors---
-                                // emptyColorGradient: ---Empty Color gradient---
-                              )
-                            : Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 80, bottom: 100),
-                                child: Text("現在収入はありません。",
-                                    style: TextStyle(
-                                        fontSize: 20.sp,
-                                        color: Colors.green,
-                                        fontWeight: FontWeight.bold)),
-                              )),
-                expeneseChartData.expense[Util.toDate2(chartDate)] != null
+                                    fontWeight: FontWeight.bold)),
+                          )),
+                incomeChartData.income[Util.toDate2(chartDate)] != null
                     ? Padding(
                         padding: EdgeInsets.only(
                             top: 30.h, left: 20.w, right: 10.w, bottom: 10.h),
@@ -414,7 +422,8 @@ class ChartPage extends ConsumerWidget {
                       children: [
                         Text(chart.value.category,
                             style: TextStyle(fontSize: 21.sp)),
-                        Text(chart.value.amount.toInt().toString()),
+                        Text(chart.value.amount.toInt().toString(),
+                            style: TextStyle(fontSize: 21.sp)),
                       ],
                     ),
                   );
