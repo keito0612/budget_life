@@ -163,7 +163,7 @@ class CategorySettingPage extends ConsumerWidget {
   Widget _categoryIncomeListWidget(
       List<Category> list, CategoryIncomeModel model) {
     return Padding(
-        padding: EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(10.0),
         child: Container(
           width: 350.w,
           decoration: BoxDecoration(
@@ -226,3 +226,5 @@ class CategorySettingPage extends ConsumerWidget {
         ));
   }
 }
+
+

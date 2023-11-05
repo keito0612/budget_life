@@ -57,22 +57,22 @@ class _$CategoryIncomeStateCopyWithImpl<$Res, $Val extends CategoryIncomeState>
 }
 
 /// @nodoc
-abstract class _$$_CategoryIncomeStateCopyWith<$Res>
+abstract class _$$CategoryIncomeStateImplCopyWith<$Res>
     implements $CategoryIncomeStateCopyWith<$Res> {
-  factory _$$_CategoryIncomeStateCopyWith(_$_CategoryIncomeState value,
-          $Res Function(_$_CategoryIncomeState) then) =
-      __$$_CategoryIncomeStateCopyWithImpl<$Res>;
+  factory _$$CategoryIncomeStateImplCopyWith(_$CategoryIncomeStateImpl value,
+          $Res Function(_$CategoryIncomeStateImpl) then) =
+      __$$CategoryIncomeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<Category> categoryIncomes});
 }
 
 /// @nodoc
-class __$$_CategoryIncomeStateCopyWithImpl<$Res>
-    extends _$CategoryIncomeStateCopyWithImpl<$Res, _$_CategoryIncomeState>
-    implements _$$_CategoryIncomeStateCopyWith<$Res> {
-  __$$_CategoryIncomeStateCopyWithImpl(_$_CategoryIncomeState _value,
-      $Res Function(_$_CategoryIncomeState) _then)
+class __$$CategoryIncomeStateImplCopyWithImpl<$Res>
+    extends _$CategoryIncomeStateCopyWithImpl<$Res, _$CategoryIncomeStateImpl>
+    implements _$$CategoryIncomeStateImplCopyWith<$Res> {
+  __$$CategoryIncomeStateImplCopyWithImpl(_$CategoryIncomeStateImpl _value,
+      $Res Function(_$CategoryIncomeStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -80,7 +80,7 @@ class __$$_CategoryIncomeStateCopyWithImpl<$Res>
   $Res call({
     Object? categoryIncomes = null,
   }) {
-    return _then(_$_CategoryIncomeState(
+    return _then(_$CategoryIncomeStateImpl(
       categoryIncomes: null == categoryIncomes
           ? _value._categoryIncomes
           : categoryIncomes // ignore: cast_nullable_to_non_nullable
@@ -91,8 +91,8 @@ class __$$_CategoryIncomeStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_CategoryIncomeState implements _CategoryIncomeState {
-  const _$_CategoryIncomeState(
+class _$CategoryIncomeStateImpl implements _CategoryIncomeState {
+  const _$CategoryIncomeStateImpl(
       {final List<Category> categoryIncomes = const []})
       : _categoryIncomes = categoryIncomes;
 
@@ -114,7 +114,7 @@ class _$_CategoryIncomeState implements _CategoryIncomeState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CategoryIncomeState &&
+            other is _$CategoryIncomeStateImpl &&
             const DeepCollectionEquality()
                 .equals(other._categoryIncomes, _categoryIncomes));
   }
@@ -126,19 +126,19 @@ class _$_CategoryIncomeState implements _CategoryIncomeState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CategoryIncomeStateCopyWith<_$_CategoryIncomeState> get copyWith =>
-      __$$_CategoryIncomeStateCopyWithImpl<_$_CategoryIncomeState>(
+  _$$CategoryIncomeStateImplCopyWith<_$CategoryIncomeStateImpl> get copyWith =>
+      __$$CategoryIncomeStateImplCopyWithImpl<_$CategoryIncomeStateImpl>(
           this, _$identity);
 }
 
 abstract class _CategoryIncomeState implements CategoryIncomeState {
   const factory _CategoryIncomeState({final List<Category> categoryIncomes}) =
-      _$_CategoryIncomeState;
+      _$CategoryIncomeStateImpl;
 
   @override
   List<Category> get categoryIncomes;
   @override
   @JsonKey(ignore: true)
-  _$$_CategoryIncomeStateCopyWith<_$_CategoryIncomeState> get copyWith =>
+  _$$CategoryIncomeStateImplCopyWith<_$CategoryIncomeStateImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -58,22 +58,22 @@ class _$CategoryExpenseStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_CategoryExpenseStateCopyWith<$Res>
+abstract class _$$CategoryExpenseStateImplCopyWith<$Res>
     implements $CategoryExpenseStateCopyWith<$Res> {
-  factory _$$_CategoryExpenseStateCopyWith(_$_CategoryExpenseState value,
-          $Res Function(_$_CategoryExpenseState) then) =
-      __$$_CategoryExpenseStateCopyWithImpl<$Res>;
+  factory _$$CategoryExpenseStateImplCopyWith(_$CategoryExpenseStateImpl value,
+          $Res Function(_$CategoryExpenseStateImpl) then) =
+      __$$CategoryExpenseStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<Category> categorys});
 }
 
 /// @nodoc
-class __$$_CategoryExpenseStateCopyWithImpl<$Res>
-    extends _$CategoryExpenseStateCopyWithImpl<$Res, _$_CategoryExpenseState>
-    implements _$$_CategoryExpenseStateCopyWith<$Res> {
-  __$$_CategoryExpenseStateCopyWithImpl(_$_CategoryExpenseState _value,
-      $Res Function(_$_CategoryExpenseState) _then)
+class __$$CategoryExpenseStateImplCopyWithImpl<$Res>
+    extends _$CategoryExpenseStateCopyWithImpl<$Res, _$CategoryExpenseStateImpl>
+    implements _$$CategoryExpenseStateImplCopyWith<$Res> {
+  __$$CategoryExpenseStateImplCopyWithImpl(_$CategoryExpenseStateImpl _value,
+      $Res Function(_$CategoryExpenseStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -81,7 +81,7 @@ class __$$_CategoryExpenseStateCopyWithImpl<$Res>
   $Res call({
     Object? categorys = null,
   }) {
-    return _then(_$_CategoryExpenseState(
+    return _then(_$CategoryExpenseStateImpl(
       categorys: null == categorys
           ? _value._categorys
           : categorys // ignore: cast_nullable_to_non_nullable
@@ -92,8 +92,8 @@ class __$$_CategoryExpenseStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_CategoryExpenseState implements _CategoryExpenseState {
-  const _$_CategoryExpenseState({final List<Category> categorys = const []})
+class _$CategoryExpenseStateImpl implements _CategoryExpenseState {
+  const _$CategoryExpenseStateImpl({final List<Category> categorys = const []})
       : _categorys = categorys;
 
   final List<Category> _categorys;
@@ -114,7 +114,7 @@ class _$_CategoryExpenseState implements _CategoryExpenseState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_CategoryExpenseState &&
+            other is _$CategoryExpenseStateImpl &&
             const DeepCollectionEquality()
                 .equals(other._categorys, _categorys));
   }
@@ -126,19 +126,20 @@ class _$_CategoryExpenseState implements _CategoryExpenseState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_CategoryExpenseStateCopyWith<_$_CategoryExpenseState> get copyWith =>
-      __$$_CategoryExpenseStateCopyWithImpl<_$_CategoryExpenseState>(
-          this, _$identity);
+  _$$CategoryExpenseStateImplCopyWith<_$CategoryExpenseStateImpl>
+      get copyWith =>
+          __$$CategoryExpenseStateImplCopyWithImpl<_$CategoryExpenseStateImpl>(
+              this, _$identity);
 }
 
 abstract class _CategoryExpenseState implements CategoryExpenseState {
   const factory _CategoryExpenseState({final List<Category> categorys}) =
-      _$_CategoryExpenseState;
+      _$CategoryExpenseStateImpl;
 
   @override
   List<Category> get categorys;
   @override
   @JsonKey(ignore: true)
-  _$$_CategoryExpenseStateCopyWith<_$_CategoryExpenseState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$CategoryExpenseStateImplCopyWith<_$CategoryExpenseStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

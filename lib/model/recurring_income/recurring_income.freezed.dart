@@ -126,11 +126,11 @@ class _$RecurringIncomeCopyWithImpl<$Res, $Val extends RecurringIncome>
 }
 
 /// @nodoc
-abstract class _$$_RecurringIncomeCopyWith<$Res>
+abstract class _$$RecurringIncomeImplCopyWith<$Res>
     implements $RecurringIncomeCopyWith<$Res> {
-  factory _$$_RecurringIncomeCopyWith(
-          _$_RecurringIncome value, $Res Function(_$_RecurringIncome) then) =
-      __$$_RecurringIncomeCopyWithImpl<$Res>;
+  factory _$$RecurringIncomeImplCopyWith(_$RecurringIncomeImpl value,
+          $Res Function(_$RecurringIncomeImpl) then) =
+      __$$RecurringIncomeImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -147,11 +147,11 @@ abstract class _$$_RecurringIncomeCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_RecurringIncomeCopyWithImpl<$Res>
-    extends _$RecurringIncomeCopyWithImpl<$Res, _$_RecurringIncome>
-    implements _$$_RecurringIncomeCopyWith<$Res> {
-  __$$_RecurringIncomeCopyWithImpl(
-      _$_RecurringIncome _value, $Res Function(_$_RecurringIncome) _then)
+class __$$RecurringIncomeImplCopyWithImpl<$Res>
+    extends _$RecurringIncomeCopyWithImpl<$Res, _$RecurringIncomeImpl>
+    implements _$$RecurringIncomeImplCopyWith<$Res> {
+  __$$RecurringIncomeImplCopyWithImpl(
+      _$RecurringIncomeImpl _value, $Res Function(_$RecurringIncomeImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -168,7 +168,7 @@ class __$$_RecurringIncomeCopyWithImpl<$Res>
     Object? color = freezed,
     Object? categoryIndex = freezed,
   }) {
-    return _then(_$_RecurringIncome(
+    return _then(_$RecurringIncomeImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -215,8 +215,8 @@ class __$$_RecurringIncomeCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_RecurringIncome implements _RecurringIncome {
-  const _$_RecurringIncome(
+class _$RecurringIncomeImpl implements _RecurringIncome {
+  const _$RecurringIncomeImpl(
       {this.id,
       this.amount = "",
       this.autoMaticInputDate = "",
@@ -228,8 +228,8 @@ class _$_RecurringIncome implements _RecurringIncome {
       this.color,
       this.categoryIndex});
 
-  factory _$_RecurringIncome.fromJson(Map<String, dynamic> json) =>
-      _$$_RecurringIncomeFromJson(json);
+  factory _$RecurringIncomeImpl.fromJson(Map<String, dynamic> json) =>
+      _$$RecurringIncomeImplFromJson(json);
 
   @override
   final int? id;
@@ -266,7 +266,7 @@ class _$_RecurringIncome implements _RecurringIncome {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RecurringIncome &&
+            other is _$RecurringIncomeImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.autoMaticInputDate, autoMaticInputDate) ||
@@ -303,12 +303,13 @@ class _$_RecurringIncome implements _RecurringIncome {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_RecurringIncomeCopyWith<_$_RecurringIncome> get copyWith =>
-      __$$_RecurringIncomeCopyWithImpl<_$_RecurringIncome>(this, _$identity);
+  _$$RecurringIncomeImplCopyWith<_$RecurringIncomeImpl> get copyWith =>
+      __$$RecurringIncomeImplCopyWithImpl<_$RecurringIncomeImpl>(
+          this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_RecurringIncomeToJson(
+    return _$$RecurringIncomeImplToJson(
       this,
     );
   }
@@ -325,10 +326,10 @@ abstract class _RecurringIncome implements RecurringIncome {
       final String? category,
       final int? icon,
       final int? color,
-      final int? categoryIndex}) = _$_RecurringIncome;
+      final int? categoryIndex}) = _$RecurringIncomeImpl;
 
   factory _RecurringIncome.fromJson(Map<String, dynamic> json) =
-      _$_RecurringIncome.fromJson;
+      _$RecurringIncomeImpl.fromJson;
 
   @override
   int? get id;
@@ -352,6 +353,6 @@ abstract class _RecurringIncome implements RecurringIncome {
   int? get categoryIndex;
   @override
   @JsonKey(ignore: true)
-  _$$_RecurringIncomeCopyWith<_$_RecurringIncome> get copyWith =>
+  _$$RecurringIncomeImplCopyWith<_$RecurringIncomeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

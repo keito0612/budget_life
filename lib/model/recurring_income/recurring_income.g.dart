@@ -6,8 +6,9 @@ part of 'recurring_income.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_RecurringIncome _$$_RecurringIncomeFromJson(Map<String, dynamic> json) =>
-    _$_RecurringIncome(
+_$RecurringIncomeImpl _$$RecurringIncomeImplFromJson(
+        Map<String, dynamic> json) =>
+    _$RecurringIncomeImpl(
       id: json['id'] as int?,
       amount: json['amount'] as String? ?? "",
       autoMaticInputDate: json['autoMaticInputDate'] as String? ?? "",
@@ -20,7 +21,8 @@ _$_RecurringIncome _$$_RecurringIncomeFromJson(Map<String, dynamic> json) =>
       categoryIndex: json['categoryIndex'] as int?,
     );
 
-Map<String, dynamic> _$$_RecurringIncomeToJson(_$_RecurringIncome instance) =>
+Map<String, dynamic> _$$RecurringIncomeImplToJson(
+        _$RecurringIncomeImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'amount': instance.amount,

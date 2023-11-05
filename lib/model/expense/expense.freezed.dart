@@ -110,10 +110,10 @@ class _$ExpenseCopyWithImpl<$Res, $Val extends Expense>
 }
 
 /// @nodoc
-abstract class _$$_ExpenseCopyWith<$Res> implements $ExpenseCopyWith<$Res> {
-  factory _$$_ExpenseCopyWith(
-          _$_Expense value, $Res Function(_$_Expense) then) =
-      __$$_ExpenseCopyWithImpl<$Res>;
+abstract class _$$ExpenseImplCopyWith<$Res> implements $ExpenseCopyWith<$Res> {
+  factory _$$ExpenseImplCopyWith(
+          _$ExpenseImpl value, $Res Function(_$ExpenseImpl) then) =
+      __$$ExpenseImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -128,10 +128,11 @@ abstract class _$$_ExpenseCopyWith<$Res> implements $ExpenseCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_ExpenseCopyWithImpl<$Res>
-    extends _$ExpenseCopyWithImpl<$Res, _$_Expense>
-    implements _$$_ExpenseCopyWith<$Res> {
-  __$$_ExpenseCopyWithImpl(_$_Expense _value, $Res Function(_$_Expense) _then)
+class __$$ExpenseImplCopyWithImpl<$Res>
+    extends _$ExpenseCopyWithImpl<$Res, _$ExpenseImpl>
+    implements _$$ExpenseImplCopyWith<$Res> {
+  __$$ExpenseImplCopyWithImpl(
+      _$ExpenseImpl _value, $Res Function(_$ExpenseImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -146,7 +147,7 @@ class __$$_ExpenseCopyWithImpl<$Res>
     Object? color = freezed,
     Object? categoryIndex = freezed,
   }) {
-    return _then(_$_Expense(
+    return _then(_$ExpenseImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -185,8 +186,8 @@ class __$$_ExpenseCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Expense with DiagnosticableTreeMixin implements _Expense {
-  const _$_Expense(
+class _$ExpenseImpl with DiagnosticableTreeMixin implements _Expense {
+  const _$ExpenseImpl(
       {this.id,
       this.amount = "",
       this.date = "",
@@ -196,8 +197,8 @@ class _$_Expense with DiagnosticableTreeMixin implements _Expense {
       this.color,
       this.categoryIndex});
 
-  factory _$_Expense.fromJson(Map<String, dynamic> json) =>
-      _$$_ExpenseFromJson(json);
+  factory _$ExpenseImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ExpenseImplFromJson(json);
 
   @override
   final int? id;
@@ -243,7 +244,7 @@ class _$_Expense with DiagnosticableTreeMixin implements _Expense {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Expense &&
+            other is _$ExpenseImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.date, date) || other.date == date) &&
@@ -264,12 +265,12 @@ class _$_Expense with DiagnosticableTreeMixin implements _Expense {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ExpenseCopyWith<_$_Expense> get copyWith =>
-      __$$_ExpenseCopyWithImpl<_$_Expense>(this, _$identity);
+  _$$ExpenseImplCopyWith<_$ExpenseImpl> get copyWith =>
+      __$$ExpenseImplCopyWithImpl<_$ExpenseImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ExpenseToJson(
+    return _$$ExpenseImplToJson(
       this,
     );
   }
@@ -284,9 +285,9 @@ abstract class _Expense implements Expense {
       final String? category,
       final int? icon,
       final int? color,
-      final int? categoryIndex}) = _$_Expense;
+      final int? categoryIndex}) = _$ExpenseImpl;
 
-  factory _Expense.fromJson(Map<String, dynamic> json) = _$_Expense.fromJson;
+  factory _Expense.fromJson(Map<String, dynamic> json) = _$ExpenseImpl.fromJson;
 
   @override
   int? get id;
@@ -306,6 +307,6 @@ abstract class _Expense implements Expense {
   int? get categoryIndex;
   @override
   @JsonKey(ignore: true)
-  _$$_ExpenseCopyWith<_$_Expense> get copyWith =>
+  _$$ExpenseImplCopyWith<_$ExpenseImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

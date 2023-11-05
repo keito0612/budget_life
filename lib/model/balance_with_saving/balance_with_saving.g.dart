@@ -6,8 +6,9 @@ part of 'balance_with_saving.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_BalanceWithSaving _$$_BalanceWithSavingFromJson(Map<String, dynamic> json) =>
-    _$_BalanceWithSaving(
+_$BalanceWithSavingImpl _$$BalanceWithSavingImplFromJson(
+        Map<String, dynamic> json) =>
+    _$BalanceWithSavingImpl(
       date: json['date'] as String? ?? "",
       balance: json['balance'] as int? ?? 0,
       saving: json['saving'] as int? ?? 0,
@@ -15,8 +16,8 @@ _$_BalanceWithSaving _$$_BalanceWithSavingFromJson(Map<String, dynamic> json) =>
       remainingSaving: json['remainingSaving'] as int? ?? 0,
     );
 
-Map<String, dynamic> _$$_BalanceWithSavingToJson(
-        _$_BalanceWithSaving instance) =>
+Map<String, dynamic> _$$BalanceWithSavingImplToJson(
+        _$BalanceWithSavingImpl instance) =>
     <String, dynamic>{
       'date': instance.date,
       'balance': instance.balance,

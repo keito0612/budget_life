@@ -110,9 +110,10 @@ class _$IncomeCopyWithImpl<$Res, $Val extends Income>
 }
 
 /// @nodoc
-abstract class _$$_IncomeCopyWith<$Res> implements $IncomeCopyWith<$Res> {
-  factory _$$_IncomeCopyWith(_$_Income value, $Res Function(_$_Income) then) =
-      __$$_IncomeCopyWithImpl<$Res>;
+abstract class _$$IncomeImplCopyWith<$Res> implements $IncomeCopyWith<$Res> {
+  factory _$$IncomeImplCopyWith(
+          _$IncomeImpl value, $Res Function(_$IncomeImpl) then) =
+      __$$IncomeImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -127,10 +128,11 @@ abstract class _$$_IncomeCopyWith<$Res> implements $IncomeCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_IncomeCopyWithImpl<$Res>
-    extends _$IncomeCopyWithImpl<$Res, _$_Income>
-    implements _$$_IncomeCopyWith<$Res> {
-  __$$_IncomeCopyWithImpl(_$_Income _value, $Res Function(_$_Income) _then)
+class __$$IncomeImplCopyWithImpl<$Res>
+    extends _$IncomeCopyWithImpl<$Res, _$IncomeImpl>
+    implements _$$IncomeImplCopyWith<$Res> {
+  __$$IncomeImplCopyWithImpl(
+      _$IncomeImpl _value, $Res Function(_$IncomeImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -145,7 +147,7 @@ class __$$_IncomeCopyWithImpl<$Res>
     Object? color = freezed,
     Object? categoryIndex = freezed,
   }) {
-    return _then(_$_Income(
+    return _then(_$IncomeImpl(
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -184,8 +186,8 @@ class __$$_IncomeCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_Income with DiagnosticableTreeMixin implements _Income {
-  const _$_Income(
+class _$IncomeImpl with DiagnosticableTreeMixin implements _Income {
+  const _$IncomeImpl(
       {this.id,
       this.amount = "",
       this.date = "",
@@ -195,8 +197,8 @@ class _$_Income with DiagnosticableTreeMixin implements _Income {
       this.color,
       this.categoryIndex});
 
-  factory _$_Income.fromJson(Map<String, dynamic> json) =>
-      _$$_IncomeFromJson(json);
+  factory _$IncomeImpl.fromJson(Map<String, dynamic> json) =>
+      _$$IncomeImplFromJson(json);
 
   @override
   final int? id;
@@ -242,7 +244,7 @@ class _$_Income with DiagnosticableTreeMixin implements _Income {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_Income &&
+            other is _$IncomeImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.date, date) || other.date == date) &&
@@ -263,12 +265,12 @@ class _$_Income with DiagnosticableTreeMixin implements _Income {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_IncomeCopyWith<_$_Income> get copyWith =>
-      __$$_IncomeCopyWithImpl<_$_Income>(this, _$identity);
+  _$$IncomeImplCopyWith<_$IncomeImpl> get copyWith =>
+      __$$IncomeImplCopyWithImpl<_$IncomeImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_IncomeToJson(
+    return _$$IncomeImplToJson(
       this,
     );
   }
@@ -283,9 +285,9 @@ abstract class _Income implements Income {
       final String? category,
       final int? icon,
       final int? color,
-      final int? categoryIndex}) = _$_Income;
+      final int? categoryIndex}) = _$IncomeImpl;
 
-  factory _Income.fromJson(Map<String, dynamic> json) = _$_Income.fromJson;
+  factory _Income.fromJson(Map<String, dynamic> json) = _$IncomeImpl.fromJson;
 
   @override
   int? get id;
@@ -305,6 +307,6 @@ abstract class _Income implements Income {
   int? get categoryIndex;
   @override
   @JsonKey(ignore: true)
-  _$$_IncomeCopyWith<_$_Income> get copyWith =>
+  _$$IncomeImplCopyWith<_$IncomeImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

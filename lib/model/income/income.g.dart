@@ -6,7 +6,7 @@ part of 'income.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_Income _$$_IncomeFromJson(Map<String, dynamic> json) => _$_Income(
+_$IncomeImpl _$$IncomeImplFromJson(Map<String, dynamic> json) => _$IncomeImpl(
       id: json['id'] as int?,
       amount: json['amount'] as String? ?? "",
       date: json['date'] as String? ?? "",
@@ -17,7 +17,8 @@ _$_Income _$$_IncomeFromJson(Map<String, dynamic> json) => _$_Income(
       categoryIndex: json['categoryIndex'] as int?,
     );
 
-Map<String, dynamic> _$$_IncomeToJson(_$_Income instance) => <String, dynamic>{
+Map<String, dynamic> _$$IncomeImplToJson(_$IncomeImpl instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'amount': instance.amount,
       'date': instance.date,

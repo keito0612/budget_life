@@ -91,11 +91,11 @@ class _$BalanceWithSavingCopyWithImpl<$Res, $Val extends BalanceWithSaving>
 }
 
 /// @nodoc
-abstract class _$$_BalanceWithSavingCopyWith<$Res>
+abstract class _$$BalanceWithSavingImplCopyWith<$Res>
     implements $BalanceWithSavingCopyWith<$Res> {
-  factory _$$_BalanceWithSavingCopyWith(_$_BalanceWithSaving value,
-          $Res Function(_$_BalanceWithSaving) then) =
-      __$$_BalanceWithSavingCopyWithImpl<$Res>;
+  factory _$$BalanceWithSavingImplCopyWith(_$BalanceWithSavingImpl value,
+          $Res Function(_$BalanceWithSavingImpl) then) =
+      __$$BalanceWithSavingImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -107,11 +107,11 @@ abstract class _$$_BalanceWithSavingCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_BalanceWithSavingCopyWithImpl<$Res>
-    extends _$BalanceWithSavingCopyWithImpl<$Res, _$_BalanceWithSaving>
-    implements _$$_BalanceWithSavingCopyWith<$Res> {
-  __$$_BalanceWithSavingCopyWithImpl(
-      _$_BalanceWithSaving _value, $Res Function(_$_BalanceWithSaving) _then)
+class __$$BalanceWithSavingImplCopyWithImpl<$Res>
+    extends _$BalanceWithSavingCopyWithImpl<$Res, _$BalanceWithSavingImpl>
+    implements _$$BalanceWithSavingImplCopyWith<$Res> {
+  __$$BalanceWithSavingImplCopyWithImpl(_$BalanceWithSavingImpl _value,
+      $Res Function(_$BalanceWithSavingImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -123,7 +123,7 @@ class __$$_BalanceWithSavingCopyWithImpl<$Res>
     Object? remainingBalance = null,
     Object? remainingSaving = null,
   }) {
-    return _then(_$_BalanceWithSaving(
+    return _then(_$BalanceWithSavingImpl(
       date: null == date
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
@@ -150,16 +150,16 @@ class __$$_BalanceWithSavingCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_BalanceWithSaving implements _BalanceWithSaving {
-  const _$_BalanceWithSaving(
+class _$BalanceWithSavingImpl implements _BalanceWithSaving {
+  const _$BalanceWithSavingImpl(
       {this.date = "",
       this.balance = 0,
       this.saving = 0,
       this.remainingBalance = 0,
       this.remainingSaving = 0});
 
-  factory _$_BalanceWithSaving.fromJson(Map<String, dynamic> json) =>
-      _$$_BalanceWithSavingFromJson(json);
+  factory _$BalanceWithSavingImpl.fromJson(Map<String, dynamic> json) =>
+      _$$BalanceWithSavingImplFromJson(json);
 
   @override
   @JsonKey()
@@ -186,7 +186,7 @@ class _$_BalanceWithSaving implements _BalanceWithSaving {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_BalanceWithSaving &&
+            other is _$BalanceWithSavingImpl &&
             (identical(other.date, date) || other.date == date) &&
             (identical(other.balance, balance) || other.balance == balance) &&
             (identical(other.saving, saving) || other.saving == saving) &&
@@ -204,13 +204,13 @@ class _$_BalanceWithSaving implements _BalanceWithSaving {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_BalanceWithSavingCopyWith<_$_BalanceWithSaving> get copyWith =>
-      __$$_BalanceWithSavingCopyWithImpl<_$_BalanceWithSaving>(
+  _$$BalanceWithSavingImplCopyWith<_$BalanceWithSavingImpl> get copyWith =>
+      __$$BalanceWithSavingImplCopyWithImpl<_$BalanceWithSavingImpl>(
           this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_BalanceWithSavingToJson(
+    return _$$BalanceWithSavingImplToJson(
       this,
     );
   }
@@ -222,10 +222,10 @@ abstract class _BalanceWithSaving implements BalanceWithSaving {
       final int balance,
       final int saving,
       final int remainingBalance,
-      final int remainingSaving}) = _$_BalanceWithSaving;
+      final int remainingSaving}) = _$BalanceWithSavingImpl;
 
   factory _BalanceWithSaving.fromJson(Map<String, dynamic> json) =
-      _$_BalanceWithSaving.fromJson;
+      _$BalanceWithSavingImpl.fromJson;
 
   @override
   String get date;
@@ -239,6 +239,6 @@ abstract class _BalanceWithSaving implements BalanceWithSaving {
   int get remainingSaving;
   @override
   @JsonKey(ignore: true)
-  _$$_BalanceWithSavingCopyWith<_$_BalanceWithSaving> get copyWith =>
+  _$$BalanceWithSavingImplCopyWith<_$BalanceWithSavingImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

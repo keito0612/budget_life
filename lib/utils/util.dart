@@ -25,4 +25,10 @@ class Util {
     final time = DateFormat.Hm('ja').parse(date);
     return time;
   }
+  static String toDate2(DateTime dateTime){
+    initializeDateFormatting('jp');
+    final toDate = DateFormat.yMMMMEEEEd('ja').format(dateTime);
+    final date = DateFormat.yMMMMEEEEd('ja').parse(toDate);
+    return "${date.year}年${date.month}月";
+  }
 }

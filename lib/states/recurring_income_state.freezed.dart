@@ -59,22 +59,22 @@ class _$RecurringIncomeStateCopyWithImpl<$Res,
 }
 
 /// @nodoc
-abstract class _$$_RecurringIncomeStateCopyWith<$Res>
+abstract class _$$RecurringIncomeStateImplCopyWith<$Res>
     implements $RecurringIncomeStateCopyWith<$Res> {
-  factory _$$_RecurringIncomeStateCopyWith(_$_RecurringIncomeState value,
-          $Res Function(_$_RecurringIncomeState) then) =
-      __$$_RecurringIncomeStateCopyWithImpl<$Res>;
+  factory _$$RecurringIncomeStateImplCopyWith(_$RecurringIncomeStateImpl value,
+          $Res Function(_$RecurringIncomeStateImpl) then) =
+      __$$RecurringIncomeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<RecurringIncome> recurringIncomes});
 }
 
 /// @nodoc
-class __$$_RecurringIncomeStateCopyWithImpl<$Res>
-    extends _$RecurringIncomeStateCopyWithImpl<$Res, _$_RecurringIncomeState>
-    implements _$$_RecurringIncomeStateCopyWith<$Res> {
-  __$$_RecurringIncomeStateCopyWithImpl(_$_RecurringIncomeState _value,
-      $Res Function(_$_RecurringIncomeState) _then)
+class __$$RecurringIncomeStateImplCopyWithImpl<$Res>
+    extends _$RecurringIncomeStateCopyWithImpl<$Res, _$RecurringIncomeStateImpl>
+    implements _$$RecurringIncomeStateImplCopyWith<$Res> {
+  __$$RecurringIncomeStateImplCopyWithImpl(_$RecurringIncomeStateImpl _value,
+      $Res Function(_$RecurringIncomeStateImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -82,7 +82,7 @@ class __$$_RecurringIncomeStateCopyWithImpl<$Res>
   $Res call({
     Object? recurringIncomes = null,
   }) {
-    return _then(_$_RecurringIncomeState(
+    return _then(_$RecurringIncomeStateImpl(
       recurringIncomes: null == recurringIncomes
           ? _value._recurringIncomes
           : recurringIncomes // ignore: cast_nullable_to_non_nullable
@@ -93,8 +93,8 @@ class __$$_RecurringIncomeStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_RecurringIncomeState implements _RecurringIncomeState {
-  const _$_RecurringIncomeState(
+class _$RecurringIncomeStateImpl implements _RecurringIncomeState {
+  const _$RecurringIncomeStateImpl(
       {final List<RecurringIncome> recurringIncomes = const []})
       : _recurringIncomes = recurringIncomes;
 
@@ -117,7 +117,7 @@ class _$_RecurringIncomeState implements _RecurringIncomeState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_RecurringIncomeState &&
+            other is _$RecurringIncomeStateImpl &&
             const DeepCollectionEquality()
                 .equals(other._recurringIncomes, _recurringIncomes));
   }
@@ -129,19 +129,21 @@ class _$_RecurringIncomeState implements _RecurringIncomeState {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_RecurringIncomeStateCopyWith<_$_RecurringIncomeState> get copyWith =>
-      __$$_RecurringIncomeStateCopyWithImpl<_$_RecurringIncomeState>(
-          this, _$identity);
+  _$$RecurringIncomeStateImplCopyWith<_$RecurringIncomeStateImpl>
+      get copyWith =>
+          __$$RecurringIncomeStateImplCopyWithImpl<_$RecurringIncomeStateImpl>(
+              this, _$identity);
 }
 
 abstract class _RecurringIncomeState implements RecurringIncomeState {
   const factory _RecurringIncomeState(
-      {final List<RecurringIncome> recurringIncomes}) = _$_RecurringIncomeState;
+          {final List<RecurringIncome> recurringIncomes}) =
+      _$RecurringIncomeStateImpl;
 
   @override
   List<RecurringIncome> get recurringIncomes;
   @override
   @JsonKey(ignore: true)
-  _$$_RecurringIncomeStateCopyWith<_$_RecurringIncomeState> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$RecurringIncomeStateImplCopyWith<_$RecurringIncomeStateImpl>
+      get copyWith => throw _privateConstructorUsedError;
 }

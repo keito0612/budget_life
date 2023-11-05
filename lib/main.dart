@@ -9,11 +9,13 @@ import 'package:budget/firebase_options.dart';
 import 'package:budget/model/fixed_expense/fixed_expense.dart';
 import 'package:budget/model/recurring_income/recurring_income.dart';
 import 'package:budget/notifications/notification_service.dart';
+import 'package:budget/page/chart%20/chart_page.dart';
 import 'package:budget/page/home/home_page.dart';
 import 'package:budget/page/input/input_page.dart';
 import 'package:budget/page/list/list_page.dart';
 import 'package:budget/page/setting/setting_page.dart';
 import 'package:budget/provider/ad_banner_provider.dart';
+import 'package:budget/provider/expense_chart_provider.dart';
 import 'package:budget/provider/reward_ad._provider.dart';
 import 'package:budget/provider/shared_preferences_provider.dart';
 import 'package:budget/repositorys/category_expense_repository.dart';
@@ -187,7 +189,9 @@ void main() async {
         fixedExpenseViewModelProvider.overrideWith((ref) => fixedExpenseModel),
         recurringIncomeViewModelProvider
             .overrideWith((ref) => recurringIncomeViewModel),
-        rewardAdProvider.overrideWith((ref) => rewardAdNotifier)
+        rewardAdProvider.overrideWith((ref) => rewardAdNotifier),
+        expenseChartProvider
+            .overrideWith((ref) => ExpenseChartProviderNotifier(ref))
       ],
       child: ScreenUtilInit(
         designSize: const Size(390, 844),
@@ -239,6 +243,12 @@ class MyApp extends ConsumerWidget {
       label: 'リスト',
     ),
     BottomNavigationBarItem(
+      icon: Icon(
+        Icons.pie_chart,
+      ),
+      label: '分析',
+    ),
+    BottomNavigationBarItem(
       icon: Icon(Icons.settings),
       label: '設定',
     ),
@@ -258,6 +268,7 @@ class MyApp extends ConsumerWidget {
       const HomePage(),
       const InputPage(),
       const ListPage(),
+      const ChartPage(),
       const SettingPage()
     ];
 
