@@ -48,15 +48,14 @@ class ExpenseEditPage extends ConsumerWidget {
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: SingleChildScrollView(
-          child: Container(
-            child: Column(children: <Widget>[
+          child: Column(
+            children: <Widget>[
               dateBarWidget(),
               SizedBox(height: 10.h),
               Padding(
                 padding: EdgeInsets.all(10.0.r),
                 child: Container(
                     width: 380.w,
-                    height: 500.h,
                     decoration: BoxDecoration(
                       color: Colors.green,
                       borderRadius: BorderRadius.all(Radius.circular(50.r)),
@@ -69,6 +68,7 @@ class ExpenseEditPage extends ConsumerWidget {
                         ),
                       ],
                     ),
+                     
                     child: Column(children: [
                       amountTextField(ref, "支出"),
                       categoryBar(context, ref, "カテゴリー"),
@@ -77,7 +77,6 @@ class ExpenseEditPage extends ConsumerWidget {
                     ])),
               )
             ]),
-          ),
         ),
       ),
     );
@@ -85,7 +84,7 @@ class ExpenseEditPage extends ConsumerWidget {
 
   Widget itemLabel(String itemName) {
     return Padding(
-      padding: EdgeInsets.only(left: 30.w),
+      padding: EdgeInsets.only(left: 20.w, bottom: 5.h),
       child: Container(
         width: double.infinity,
         child: Text(itemName,
@@ -264,7 +263,7 @@ class ExpenseEditPage extends ConsumerWidget {
   //追加ボタン
   Widget editButton(WidgetRef ref, BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 30.h),
+      padding: EdgeInsets.symmetric(vertical: 30.h),
       child: Container(
         height: 50.h,
         width: 100.w,

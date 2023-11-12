@@ -37,9 +37,11 @@ class categoryBottomSheetBarButtom extends ConsumerWidget {
       WidgetRef ref, Function(int index) onSelectedItemChanged) async {
     return await showModalBottomSheet<void>(
       context: context,
+      constraints: BoxConstraints(
+        maxWidth:  MediaQuery.of(context).size.width,              
+      ),
       builder: (BuildContext context) {
         return Container(
-          width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height / 3,
           child: GestureDetector(
             onTap: () {

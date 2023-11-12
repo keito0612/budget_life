@@ -54,7 +54,6 @@ class IncomeEditPage extends ConsumerWidget {
               padding: EdgeInsets.all(10.0.r),
               child: Container(
                   width: 380.w,
-                  height: 500.h,
                   decoration: BoxDecoration(
                     color: Colors.green,
                     borderRadius: BorderRadius.all(Radius.circular(50.r)),
@@ -82,7 +81,7 @@ class IncomeEditPage extends ConsumerWidget {
 
   Widget itemLabel(String itemName) {
     return Padding(
-      padding: EdgeInsets.only(left: 20.w),
+      padding: EdgeInsets.only(left: 20.w, bottom: 5.h),
       child: Container(
         width: double.infinity,
         child: Text(itemName,
@@ -257,7 +256,7 @@ class IncomeEditPage extends ConsumerWidget {
   //追加ボタン
   Widget editButton(WidgetRef ref, BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 30.h),
+      padding: EdgeInsets.symmetric(vertical: 30.h),
       child: Container(
         height: 50.h,
         width: 100.w,

@@ -68,7 +68,7 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
 
   Widget itemLabel(String itemName) {
     return Padding(
-      padding: EdgeInsets.only(left: 30.w),
+      padding: EdgeInsets.only(left: 25.w, bottom: 5.h),
       child: Container(
         width: double.infinity,
         child: Text(itemName,
@@ -88,7 +88,7 @@ class BalanceSavingSettingsPage extends ConsumerWidget {
     textBalanceEditController.text = balance == 0 ? "" : balance.toString();
 
     return Padding(
-      padding: EdgeInsets.only(top: 50.h),
+      padding: EdgeInsets.only(top: 50),
       child: Column(
         children: [
           itemLabel(itemName),

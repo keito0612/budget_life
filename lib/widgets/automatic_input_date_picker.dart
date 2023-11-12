@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AutomaticInputDatePicker {
   static void showModalPicker(
@@ -39,6 +40,9 @@ class AutomaticInputDatePicker {
     ];
     showModalBottomSheet<void>(
       context: context,
+      constraints: BoxConstraints(
+        maxWidth:  MediaQuery.of(context).size.width,              
+      ),
       builder: (BuildContext context) {
         return Container(
           height: MediaQuery.of(context).size.height / 3,
@@ -69,7 +73,7 @@ class AutomaticInputDatePicker {
                       selectedItem(items[index], index);
                     },
                     itemExtent: 40,
-                    children: items.map((item) => Text(item)).toList(),
+                    children: items.map((item) => Text(item,style: TextStyle(fontSize: 15.sp))).toList(),
                   ),
                 ),
               ],
