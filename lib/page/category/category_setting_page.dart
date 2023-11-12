@@ -29,64 +29,69 @@ class CategorySettingPage extends ConsumerWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding:
-              EdgeInsets.only(left: 10.w, right: 8.w, top: 30.h, bottom: 8.h),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 40.h,
-                width: 320.w,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 10,
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                    side: BorderSide(color: Colors.white, width: 3.w),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+          padding: const EdgeInsets.all(8.0),
+          child: SizedBox(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 320.w,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 10,
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                      side: BorderSide(color: Colors.white, width: 3.w),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
                     ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "新規カテゴリー",
+                        style:
+                            TextStyle(fontWeight: FontWeight.bold, fontSize: 15.sp),
+                      ),
+                    ),
+                    onPressed: () async {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              fullscreenDialog: true,
+                              builder: (context) => CategoryAddPage()));
+                    },
                   ),
+                ),
+                SizedBox(height: 30.h),
+                Padding(
+                  padding: EdgeInsets.only(right: 300.w),
                   child: Text(
-                    "新規カテゴリー",
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15.sp),
+                    "支出",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.sp),
                   ),
-                  onPressed: () async {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            fullscreenDialog: true,
-                            builder: (context) => CategoryAddPage()));
-                  },
                 ),
-              ),
-              SizedBox(height: 30.h),
-              Padding(
-                padding: EdgeInsets.only(right: 300.w),
-                child: Text(
-                  "支出",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.sp),
+                _categoryExpenseListWidget(categoryExoenseModel.categorys,
+                    categoryExpenseModelController),
+                SizedBox(height: 30.h),
+                Padding(
+                  padding: EdgeInsets.only(right: 300.w),
+                  child: Text(
+                    "収入",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.sp),
+                  ),
                 ),
-              ),
-              _categoryExpenseListWidget(categoryExoenseModel.categorys,
-                  categoryExpenseModelController),
-              SizedBox(height: 30.h),
-              Padding(
-                padding: EdgeInsets.only(right: 300.w),
-                child: Text(
-                  "収入",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.sp),
-                ),
-              ),
-              _categoryIncomeListWidget(categoryIncomeModel.categoryIncomes,
-                  categoryIncomeModelController)
-            ],
+                _categoryIncomeListWidget(categoryIncomeModel.categoryIncomes,
+                    categoryIncomeModelController)
+              ],
+            ),
           ),
         ),
       ),

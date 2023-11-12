@@ -23,18 +23,23 @@ class HomePage extends ConsumerWidget {
             style: TextStyle(color: Colors.white),
           ),
           actions: [
-            IconButton(
-              color: Colors.white,
-              icon: Icon(
-                Icons.settings,
-                size: MediaQuery.of(context).size.width / 10,
+            Container(
+            
+              height: 70.h,
+              child: FittedBox(
+                child: IconButton(
+                  color: Colors.white,
+                  icon: const  Icon(
+                    Icons.settings,                
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => BalanceSavingSettingsPage()));
+                  },
+                ),
               ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => BalanceSavingSettingsPage()));
-              },
             ),
           ],
           backgroundColor: Colors.green),
@@ -74,7 +79,6 @@ class HomePage extends ConsumerWidget {
           color: Colors.green,
           borderRadius: BorderRadius.circular(10),
         ),
-        height: 50.h,
         child: Center(
           child: Text(
             date,

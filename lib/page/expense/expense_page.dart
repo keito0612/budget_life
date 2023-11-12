@@ -24,42 +24,39 @@ class ExpensePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categoryExoenseModel = ref.watch(categoryExpenseModelProvider);
-    return Container(
-      child: Column(children: <Widget>[
-        dateBarWidget(),
-        SizedBox(height: 10.h),
-        Padding(
-          padding: EdgeInsets.all(10.0.r),
-          child: Container(
-              width: 380.w,
-              height: 500.h,
-              decoration: BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.all(Radius.circular(50.r)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black38,
-                    offset: Offset(2.0.r, 2.0.r),
-                    blurRadius: 4.0.r,
-                    spreadRadius: 4.0.r,
-                  ),
-                ],
-              ),
-              child: Column(children: [
-                amountTextField(ref, "支出"),
-                categoryBar(
-                    context, ref, "カテゴリー", categoryExoenseModel.categorys),
-                memoTextField("メモ", ref),
-                addButton(ref, context)
-              ])),
-        )
-      ]),
-    );
+    return Column(children: <Widget>[
+      dateBarWidget(),
+      SizedBox(height: 10.h),
+      Padding(
+        padding: EdgeInsets.all(10.0.r),
+        child: Container(
+            width: 380.w,
+            decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.all(Radius.circular(50.r)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black38,
+                  offset: Offset(2.0.r, 2.0.r),
+                  blurRadius: 4.0.r,
+                  spreadRadius: 4.0.r,
+                ),
+              ],
+            ),
+            child: Column(children: [
+              amountTextField(ref, "支出"),
+              categoryBar(
+                  context, ref, "カテゴリー", categoryExoenseModel.categorys),
+              memoTextField("メモ", ref),
+              addButton(ref, context)
+            ])),
+      )
+    ]);
   }
 
   Widget itemLabel(String itemName) {
     return Padding(
-      padding: EdgeInsets.only(left: 20.w),
+      padding: EdgeInsets.only(left: 20.w, bottom: 5.h),
       child: Container(
         width: double.infinity,
         child: Text(itemName,
@@ -236,7 +233,7 @@ class ExpensePage extends ConsumerWidget {
   //追加ボタン
   Widget addButton(WidgetRef ref, BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: 30.h),
+      padding: EdgeInsets.symmetric(vertical: 30.h),
       child: Container(
         height: 50.h,
         width: 100.w,

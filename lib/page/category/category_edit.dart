@@ -132,7 +132,6 @@ class categoryEditPage extends ConsumerWidget {
     final categoryController = ref.read(categoryProvider.notifier);
     return Container(
       width: 400.w,
-      height: 120.h,
       decoration: BoxDecoration(
           color: Colors.white, borderRadius: BorderRadius.circular(30.r)),
       child: Column(
@@ -163,7 +162,7 @@ class categoryEditPage extends ConsumerWidget {
             endIndent: 20.h,
           ),
           Padding(
-            padding: EdgeInsets.all(8.0.r),
+          padding: EdgeInsets.only(top: 8.h, bottom: 12.h),
             child: _cupertinoSlidingWidget(cupertinoSliderValue, ref),
           )
         ],
@@ -196,7 +195,7 @@ class categoryEditPage extends ConsumerWidget {
         ref.read(cupertinoSlidingValueProvider.notifier);
     return SizedBox(
       width: 300.w,
-      height: 40.h,
+      height: 50.h,
       child: CupertinoSlidingSegmentedControl(
         children: {
           0: Container(
@@ -280,7 +279,6 @@ class categoryEditPage extends ConsumerWidget {
             padding: EdgeInsets.all(8.0.r),
             child: Container(
               width: 300.w,
-              height: 30.h,
               decoration: BoxDecoration(
                   color: Colors.green,
                   borderRadius: BorderRadius.circular(30.r)),
@@ -327,7 +325,6 @@ class categoryEditPage extends ConsumerWidget {
             padding: const EdgeInsets.all(8.0),
             child: Container(
               width: 300.w,
-              height: 30.h,
               decoration: BoxDecoration(
                   color: Colors.green,
                   borderRadius: BorderRadius.circular(30.r)),
@@ -378,7 +375,7 @@ class categoryEditPage extends ConsumerWidget {
               "保存",
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: 20.sp,
+                  fontSize: 15.sp,
                   fontWeight: FontWeight.bold),
             ))
         : TextButton(
@@ -387,7 +384,7 @@ class categoryEditPage extends ConsumerWidget {
               "保存",
               style: TextStyle(
                   color: Colors.grey[300],
-                  fontSize: 20.sp,
+                  fontSize: 15.sp,
                   fontWeight: FontWeight.bold),
             ),
           );
