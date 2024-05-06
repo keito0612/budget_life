@@ -3,7 +3,7 @@
 家計簿アプリLifeは、ライフゲージを使ってわかりやすく支出と収入を管理できる家計簿アプリです。パスコード機能や自動入力機能、カテゴリー編集機能、通知機能、クラウドにデータをアップロードする機能など、便利な機能が満載です。
 # 画面
 ![Simulator Screenshot - iPhone 8 Plus ![Simulator Screenshot - iPhone 14 Plus - 2023-08-04 at 18 54 09](https://github.com/keito0612/budget_life/assets/93522137/e08c10db-6048-4edf-a318-4dd361a758f1)
-2023-08-04 at 18 00 04](https://github.com/keito0612/budget_life/assets/93522137/d47efdbf-4781-4fe9-a8ef-40c6a584564d)
+![2023-08-04 at 18 00 04](https://github.com/keito0612/budget_life/assets/93522137/d47efdbf-4781-4fe9-a8ef-40c6a584564d)
 ![Simulator Screenshot - iPhone 14 Plus - 2023-08-04 at 18 56 55](https://github.com/keito0612/budget_life/assets/93522137/d2e2558b-7270-4fa9-b524-7bb1be85a307)
 
 
