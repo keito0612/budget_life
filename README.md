@@ -22,6 +22,9 @@
 
 • データベース： Sqlite,Firebase(realtime database)
 
+• 認証： Firebase Authentication
+
+
 
 
 ## 機能一覧
