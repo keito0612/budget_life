@@ -9,7 +9,7 @@ class DateBaseHelper {
   DateBaseHelper._();
   static final DateBaseHelper db = DateBaseHelper._();
   static const _databaseName = "budget.db";
-  static const _databaseVersion = 5;
+  static const _databaseVersion = 2;
   static const columnSavingsAmount = 'savingsAmount';
   static const columnWalletCashAmount = 'walletCashAmount';
   static const columnIsSavings = 'isSavings';
@@ -145,30 +145,22 @@ class DateBaseHelper {
       },
       onUpgrade: (db, oldVersion, newVersion) async {
         if (oldVersion < 2) {
-          // ウォレットテーブルを作成
+          // ウォレットテーブルを作成（isSavingsカラム含む）
           await db.execute(
-              "CREATE TABLE $tableWallet ($columnId INTEGER PRIMARY KEY AUTOINCREMENT, $columnName TEXT, $columnIcon INTEGER, $columnColor INTEGER, $columnBalance INTEGER DEFAULT 0, $columnIsDefault INTEGER DEFAULT 0, $columnSortOrder INTEGER DEFAULT 0)");
+              "CREATE TABLE $tableWallet ($columnId INTEGER PRIMARY KEY AUTOINCREMENT, $columnName TEXT, $columnIcon INTEGER, $columnColor INTEGER, $columnBalance INTEGER DEFAULT 0, $columnIsDefault INTEGER DEFAULT 0, $columnSortOrder INTEGER DEFAULT 0, $columnIsSavings INTEGER DEFAULT 0)");
           // 既存テーブルにwalletIdカラムを追加
           await db.execute("ALTER TABLE $tableExpense ADD COLUMN $columnWalletId INTEGER DEFAULT 1");
           await db.execute("ALTER TABLE $tableIncome ADD COLUMN $columnWalletId INTEGER DEFAULT 1");
           await db.execute("ALTER TABLE $tableFixedExpense ADD COLUMN $columnWalletId INTEGER DEFAULT 1");
           await db.execute("ALTER TABLE $tableRecurringIncome ADD COLUMN $columnWalletId INTEGER DEFAULT 1");
-          // 初期ウォレットを作成
-          await _insertInitialWallets(db);
-        }
-        if (oldVersion < 3) {
-          // 振替テーブルを作成
-          await db.execute(
-              "CREATE TABLE $tableTransfer ($columnId INTEGER PRIMARY KEY AUTOINCREMENT, $columnFromWalletId INTEGER, $columnToWalletId INTEGER, $columnAmount TEXT, $columnDate TEXT, $columnMemo TEXT)");
-        }
-        if (oldVersion < 4) {
-          // ウォレットテーブルにisSavingsカラムを追加
-          await db.execute("ALTER TABLE $tableWallet ADD COLUMN $columnIsSavings INTEGER DEFAULT 0");
-        }
-        if (oldVersion < 5) {
           // 収入テーブルに貯金額と財布入金額カラムを追加
           await db.execute("ALTER TABLE $tableIncome ADD COLUMN $columnSavingsAmount TEXT DEFAULT ''");
           await db.execute("ALTER TABLE $tableIncome ADD COLUMN $columnWalletCashAmount TEXT DEFAULT ''");
+          // 振替テーブルを作成
+          await db.execute(
+              "CREATE TABLE $tableTransfer ($columnId INTEGER PRIMARY KEY AUTOINCREMENT, $columnFromWalletId INTEGER, $columnToWalletId INTEGER, $columnAmount TEXT, $columnDate TEXT, $columnMemo TEXT)");
+          // 初期ウォレットを作成
+          await _insertInitialWallets(db);
         }
       },
       version: _databaseVersion,
