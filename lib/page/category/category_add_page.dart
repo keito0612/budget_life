@@ -3,7 +3,6 @@ import 'package:budget/page/input/input_page.dart';
 import 'package:budget/viewModels/category_expense_model.dart';
 import 'package:budget/viewModels/category_income_model.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -96,131 +95,209 @@ class CategoryAddPage extends ConsumerWidget {
     final cupertinoSlidingValue = ref.watch(cupertinoSlidingValueProvider);
 
     return Scaffold(
-      backgroundColor: Colors.grey,
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text("新規カテゴリー", style: TextStyle(color: Colors.white)),
-        actions: [
-          _saveCategoryButtom(
-              cupertinoSlidingValue, category!, icon!, color!, ref, context),
+      backgroundColor: const Color(0xFFF5F7FA),
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: CustomScrollView(
+          slivers: [
+            SliverToBoxAdapter(
+                child: _buildHeader(context, cupertinoSlidingValue, ref)),
+            SliverToBoxAdapter(
+                child: _buildContent(context, ref, cupertinoSlidingValue)),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader(
+      BuildContext context, int cupertinoSlidingValue, WidgetRef ref) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(20.w, 60.h, 20.w, 24.h),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFF00C853), Color(0xFF00E676)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(32.r),
+          bottomRight: Radius.circular(32.r),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF00C853).withValues(alpha: 0.3),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: 1400.h,
-          child: Padding(
-            padding: EdgeInsets.all(8.0.r),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _categoryTextField(cupertinoSlidingValue, ref),
-                _selectedIconWithColor(icon!, color!),
-                SizedBox(height: 8.0.h),
-                _selectColorWidget(ref),
-                SizedBox(height: 20.0.h),
-                _selectIconsWidget(ref)
-              ],
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Container(
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Icon(Icons.arrow_back_ios_new,
+                  color: Colors.white, size: 20.sp),
             ),
+          ),
+          SizedBox(width: 16.w),
+          Icon(Icons.add_circle_outline, color: Colors.white, size: 28.sp),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: Text(
+              '新規カテゴリー',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24.sp,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          _buildSaveButton(cupertinoSlidingValue, ref, context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSaveButton(
+      int cupertinoSlidingValue, WidgetRef ref, BuildContext context) {
+    final isEnabled = category != "";
+    return GestureDetector(
+      onTap: isEnabled
+          ? () => addDialog(cupertinoSlidingValue, context, ref)
+          : null,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+        decoration: BoxDecoration(
+          color: Colors.white.withValues(alpha: isEnabled ? 1.0 : 0.3),
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+        child: Text(
+          '保存',
+          style: TextStyle(
+            color: isEnabled
+                ? const Color(0xFF00C853)
+                : Colors.white.withValues(alpha: 0.5),
+            fontSize: 16.sp,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
     );
   }
 
-  Widget _categoryTextField(int cupertinoSliderValue, WidgetRef ref) {
-    final categoryController = ref.read(categoryProvider.notifier);
-    return Container(
-      width: 400.w,
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(30.r)),
+  Widget _buildContent(
+      BuildContext context, WidgetRef ref, int cupertinoSlidingValue) {
+    return Padding(
+      padding: EdgeInsets.all(16.w),
       child: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.only(left: 20.w),
-            child: TextField(
-              style: TextStyle(fontSize: 20.sp),
-              cursorHeight: 20.sp,
-              decoration: InputDecoration(
-                labelStyle: TextStyle(fontSize: 20.sp),
-                enabledBorder: InputBorder.none,
-                focusedBorder: InputBorder.none,
-                hintText: "カテゴリー",
-                hintStyle: TextStyle(fontSize: 20.sp),
-              ),
-              onChanged: (category) {
-                categoryController.state = category;
-              },
-            ),
-          ),
-          Divider(
-            color: Colors.grey,
-            thickness: 2.h,
-            height: 1.h,
-            indent: 20.h,
-            endIndent: 20.h,
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 8.h, bottom: 12.h),
-            child: _cupertinoSlidingWidget(cupertinoSliderValue, ref),
-          )
+          _buildCategoryInputCard(cupertinoSlidingValue, ref),
+          SizedBox(height: 16.h),
+          _buildPreviewCard(),
+          SizedBox(height: 16.h),
+          _buildColorCard(ref),
+          SizedBox(height: 16.h),
+          _buildIconCard(ref),
         ],
       ),
     );
   }
 
-  Widget _selectedIconWithColor(IconData icon, Color color) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        width: 200.w,
-        height: 130.h,
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(30.r)),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 0),
-          child: Icon(
-            icon,
-            size: 80.sp,
-            color: color,
+  Widget _buildCategoryInputCard(int cupertinoSlidingValue, WidgetRef ref) {
+    final categoryController = ref.read(categoryProvider.notifier);
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
           ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'カテゴリー名',
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF4A5568),
+              ),
+            ),
+            SizedBox(height: 12.h),
+            Container(
+              decoration: BoxDecoration(
+                color: const Color(0xFFF7FAFC),
+                borderRadius: BorderRadius.circular(12.r),
+                border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
+              ),
+              child: TextField(
+                style:
+                    TextStyle(fontSize: 16.sp, color: const Color(0xFF2D3748)),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'カテゴリー名を入力',
+                  hintStyle: TextStyle(
+                      color: const Color(0xFFA0AEC0), fontSize: 16.sp),
+                  contentPadding: EdgeInsets.all(16.w),
+                ),
+                onChanged: (category) {
+                  categoryController.state = category;
+                },
+              ),
+            ),
+            SizedBox(height: 16.h),
+            _buildSegmentControl(cupertinoSlidingValue, ref),
+          ],
         ),
       ),
     );
   }
 
-  Widget _cupertinoSlidingWidget(int cupertinoSlidingValue, WidgetRef ref) {
+  Widget _buildSegmentControl(int cupertinoSlidingValue, WidgetRef ref) {
     final cupertinoSlidingValueController =
         ref.read(cupertinoSlidingValueProvider.notifier);
-    return SizedBox(
-      width: 300.w,
-      height: 50.h,
-      child: CupertinoSlidingSegmentedControl(
+    return Container(
+      width: double.infinity,
+      child: CupertinoSlidingSegmentedControl<int>(
         children: {
           0: Container(
-            margin: EdgeInsets.symmetric(vertical: 5.h),
+            padding: EdgeInsets.symmetric(vertical: 8.h),
             child: Text(
               "支出",
               style: TextStyle(
-                color: cupertinoSlidingValue == 0 ? Colors.green : Colors.white,
+                color: cupertinoSlidingValue == 0
+                    ? const Color(0xFF00C853)
+                    : const Color(0xFF718096),
                 fontSize: 15.sp,
-                fontWeight: FontWeight.w400,
-                fontFamily: "SFProRounded",
+                fontWeight: FontWeight.w600,
               ),
-              textAlign: TextAlign.center,
             ),
           ),
           1: Container(
-            margin: EdgeInsets.symmetric(vertical: 5.h),
+            padding: EdgeInsets.symmetric(vertical: 8.h),
             child: Text(
               "収入",
               style: TextStyle(
-                color: cupertinoSlidingValue == 1 ? Colors.green : Colors.white,
+                color: cupertinoSlidingValue == 1
+                    ? const Color(0xFF00C853)
+                    : const Color(0xFF718096),
                 fontSize: 15.sp,
-                fontWeight: FontWeight.w400,
-                fontFamily: "SFProRounded",
+                fontWeight: FontWeight.w600,
               ),
-              textAlign: TextAlign.center,
             ),
           ),
         },
@@ -229,167 +306,204 @@ class CategoryAddPage extends ConsumerWidget {
           cupertinoSlidingValueController.state = index!;
         },
         thumbColor: Colors.white,
-        backgroundColor: Colors.green,
+        backgroundColor: const Color(0xFFE8F5E9),
       ),
     );
   }
 
-  Widget _buildIconButton(IconData iconData, WidgetRef ref) {
-    final selectedIconController = ref.read(selectedIconProvider.notifier);
-    return InkWell(
-      onTap: () {
-        selectedIconController.state = iconData;
-      },
-      child: Icon(iconData,
-          size: 40.0.sp,
-          color: selectedIconController.state == iconData
-              ? Colors.green
-              : Colors.black),
+  Widget _buildPreviewCard() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(20.w),
+        child: Column(
+          children: [
+            Text(
+              'プレビュー',
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF4A5568),
+              ),
+            ),
+            SizedBox(height: 16.h),
+            Container(
+              padding: EdgeInsets.all(24.w),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF7FAFC),
+                borderRadius: BorderRadius.circular(16.r),
+              ),
+              child: Icon(
+                icon!,
+                size: 64.sp,
+                color: color!,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _buildColorButton(Color color, WidgetRef ref) {
+  Widget _buildColorCard(WidgetRef ref) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.palette,
+                    color: const Color(0xFF00C853), size: 24.sp),
+                SizedBox(width: 8.w),
+                Text(
+                  'カラー',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF2D3748),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16.h),
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 12.w,
+              runSpacing: 12.h,
+              children:
+                  colorList.map((c) => _buildColorButton(c, ref)).toList(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildColorButton(Color buttonColor, WidgetRef ref) {
     final selectedColorController = ref.read(selectedColorProvider.notifier);
-    return InkWell(
+    final isSelected = selectedColorController.state == buttonColor;
+    return GestureDetector(
       onTap: () {
-        selectedColorController.state = color;
+        selectedColorController.state = buttonColor;
       },
       child: Container(
-        width: 40.0.w,
-        height: 40.0.h,
+        width: 40.w,
+        height: 40.w,
         decoration: BoxDecoration(
-          color: color,
+          color: buttonColor,
           shape: BoxShape.circle,
-          border: selectedColorController.state == color
-              ? Border.all(color: Colors.white, width: 2.0.w)
+          border: isSelected
+              ? Border.all(color: const Color(0xFF00C853), width: 3.w)
+              : null,
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: buttonColor.withValues(alpha: 0.4),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
               : null,
         ),
       ),
     );
   }
 
-  Widget _selectColorWidget(WidgetRef ref) {
+  Widget _buildIconCard(WidgetRef ref) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(30.r)),
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(8.0.r),
-            child: Container(
-              width: 300.w,
-              decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(30.r)),
-              child: Center(
-                child: Text(
-                  "カラー",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.sp),
-                ),
-              ),
-            ),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
           ),
-          Padding(
-            padding: const EdgeInsets.all(15),
-            child: Row(
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
               children: [
-                Expanded(
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    spacing: 20.0,
-                    runSpacing: 20.0,
-                    children: colorList
-                        .map((color) => _buildColorButton(color, ref))
-                        .toList(),
+                Icon(Icons.emoji_emotions,
+                    color: const Color(0xFF00C853), size: 24.sp),
+                SizedBox(width: 8.w),
+                Text(
+                  'アイコン',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF2D3748),
                   ),
                 ),
               ],
             ),
-          ),
-        ],
+            SizedBox(height: 16.h),
+            Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 12.w,
+              runSpacing: 12.h,
+              children: iconList.map((i) => _buildIconButton(i, ref)).toList(),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _selectIconsWidget(WidgetRef ref) {
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(30)),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              width: 300.w,
-              decoration: BoxDecoration(
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(30.r)),
-              child: Center(
-                child: Text(
-                  "アイコン",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.sp),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Wrap(
-                      alignment: WrapAlignment.center,
-                      spacing: 20.0,
-                      runSpacing: 20.0,
-                      children: iconList
-                          .map((icon) => _buildIconButton(icon, ref))
-                          .toList(),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+  Widget _buildIconButton(IconData iconData, WidgetRef ref) {
+    final selectedIconController = ref.read(selectedIconProvider.notifier);
+    final isSelected = selectedIconController.state == iconData;
+    return GestureDetector(
+      onTap: () {
+        selectedIconController.state = iconData;
+      },
+      child: Container(
+        width: 48.w,
+        height: 48.w,
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFFE8F5E9) : const Color(0xFFF7FAFC),
+          borderRadius: BorderRadius.circular(12.r),
+          border: isSelected
+              ? Border.all(color: const Color(0xFF00C853), width: 2)
+              : null,
+        ),
+        child: Icon(
+          iconData,
+          size: 28.sp,
+          color: isSelected ? const Color(0xFF00C853) : const Color(0xFF718096),
+        ),
       ),
     );
   }
 
-  Widget _saveCategoryButtom(int cupertinoSliderValue, String category,
-      IconData icon, Color color, WidgetRef ref, BuildContext context) {
-    return category != ""
-        ? TextButton(
-            onPressed: () {
-              addDialog(cupertinoSliderValue, context, ref);
-            },
-            child: Text(
-              "保存",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.bold),
-            ))
-        : TextButton(
-            onPressed: () {},
-            child: Text(
-              "保存",
-              style: TextStyle(
-                  color: Colors.grey[300],
-                  fontSize: 15.sp,
-                  fontWeight: FontWeight.bold),
-            ),
-          );
-  }
-
-  //追加ダイアログ
   Future addDialog(
       int cupertinoSliderValue, BuildContext context, WidgetRef ref) async {
     final categoryExpenseModel =
@@ -409,17 +523,28 @@ class CategoryAddPage extends ConsumerWidget {
     }
   }
 
-  //成功した時のダイアログー
   Future dialogResult(BuildContext context) async {
     await showCupertinoDialog(
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: const Text('保存しました。'),
-          content: const Text(''),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.check_circle,
+                  color: const Color(0xFF00C853), size: 24.sp),
+              SizedBox(width: 8.w),
+              const Text('完了'),
+            ],
+          ),
+          content: Padding(
+            padding: EdgeInsets.only(top: 12.h),
+            child: const Text('保存しました。'),
+          ),
           actions: <Widget>[
             TextButton(
-              child: const Text('OK'),
+              child:
+                  const Text('OK', style: TextStyle(color: Color(0xFF00C853))),
               onPressed: () async {
                 Navigator.of(context).pop();
               },
@@ -430,37 +555,25 @@ class CategoryAddPage extends ConsumerWidget {
     );
   }
 
-  //エラーダイアログ
   Future dialogError(String error, BuildContext context) async {
     await showCupertinoDialog(
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
           title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: const [
-              Icon(
-                Icons.error_outline_rounded,
-                color: Colors.red,
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("エラーが発生しました"),
-              )
-            ],
-          ),
-          content: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(error),
+              Icon(Icons.error_outline, color: Colors.red, size: 24.sp),
+              SizedBox(width: 8.w),
+              const Text('エラー'),
             ],
           ),
+          content:
+              Padding(padding: EdgeInsets.only(top: 12.h), child: Text(error)),
           actions: <Widget>[
             TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )
+                child: const Text('OK'),
+                onPressed: () => Navigator.of(context).pop())
           ],
         );
       },

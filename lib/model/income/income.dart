@@ -13,6 +13,9 @@ class Income with _$Income {
       String? category,
       int? icon,
       int? color,
-      int? categoryIndex}) = _Income;
+      int? categoryIndex,
+      @Default(1) int walletId,
+      @Default("") String savingsAmount,
+      @Default("") String walletCashAmount}) = _Income;
   factory Income.fromJson(Map<String, dynamic> json) => _$IncomeFromJson(json);
 }

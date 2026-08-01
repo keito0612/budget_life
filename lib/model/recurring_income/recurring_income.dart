@@ -15,6 +15,7 @@ abstract class RecurringIncome with _$RecurringIncome {
     int? icon,
     int? color,
     int? categoryIndex,
+    @Default(1) int walletId,
   }) = _RecurringIncome;
   factory RecurringIncome.fromJson(Map<String, dynamic> json) =>
       _$RecurringIncomeFromJson(json);

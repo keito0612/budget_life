@@ -28,6 +28,7 @@ mixin _$Expense {
   int? get icon => throw _privateConstructorUsedError;
   int? get color => throw _privateConstructorUsedError;
   int? get categoryIndex => throw _privateConstructorUsedError;
+  int get walletId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -47,7 +48,8 @@ abstract class $ExpenseCopyWith<$Res> {
       String? category,
       int? icon,
       int? color,
-      int? categoryIndex});
+      int? categoryIndex,
+      int walletId});
 }
 
 /// @nodoc
@@ -71,6 +73,7 @@ class _$ExpenseCopyWithImpl<$Res, $Val extends Expense>
     Object? icon = freezed,
     Object? color = freezed,
     Object? categoryIndex = freezed,
+    Object? walletId = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -105,6 +108,10 @@ class _$ExpenseCopyWithImpl<$Res, $Val extends Expense>
           ? _value.categoryIndex
           : categoryIndex // ignore: cast_nullable_to_non_nullable
               as int?,
+      walletId: null == walletId
+          ? _value.walletId
+          : walletId // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -124,7 +131,8 @@ abstract class _$$ExpenseImplCopyWith<$Res> implements $ExpenseCopyWith<$Res> {
       String? category,
       int? icon,
       int? color,
-      int? categoryIndex});
+      int? categoryIndex,
+      int walletId});
 }
 
 /// @nodoc
@@ -146,6 +154,7 @@ class __$$ExpenseImplCopyWithImpl<$Res>
     Object? icon = freezed,
     Object? color = freezed,
     Object? categoryIndex = freezed,
+    Object? walletId = null,
   }) {
     return _then(_$ExpenseImpl(
       id: freezed == id
@@ -180,6 +189,10 @@ class __$$ExpenseImplCopyWithImpl<$Res>
           ? _value.categoryIndex
           : categoryIndex // ignore: cast_nullable_to_non_nullable
               as int?,
+      walletId: null == walletId
+          ? _value.walletId
+          : walletId // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -195,7 +208,8 @@ class _$ExpenseImpl with DiagnosticableTreeMixin implements _Expense {
       this.category,
       this.icon,
       this.color,
-      this.categoryIndex});
+      this.categoryIndex,
+      this.walletId = 1});
 
   factory _$ExpenseImpl.fromJson(Map<String, dynamic> json) =>
       _$$ExpenseImplFromJson(json);
@@ -219,10 +233,13 @@ class _$ExpenseImpl with DiagnosticableTreeMixin implements _Expense {
   final int? color;
   @override
   final int? categoryIndex;
+  @override
+  @JsonKey()
+  final int walletId;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Expense(id: $id, amount: $amount, date: $date, memo: $memo, category: $category, icon: $icon, color: $color, categoryIndex: $categoryIndex)';
+    return 'Expense(id: $id, amount: $amount, date: $date, memo: $memo, category: $category, icon: $icon, color: $color, categoryIndex: $categoryIndex, walletId: $walletId)';
   }
 
   @override
@@ -237,7 +254,8 @@ class _$ExpenseImpl with DiagnosticableTreeMixin implements _Expense {
       ..add(DiagnosticsProperty('category', category))
       ..add(DiagnosticsProperty('icon', icon))
       ..add(DiagnosticsProperty('color', color))
-      ..add(DiagnosticsProperty('categoryIndex', categoryIndex));
+      ..add(DiagnosticsProperty('categoryIndex', categoryIndex))
+      ..add(DiagnosticsProperty('walletId', walletId));
   }
 
   @override
@@ -254,13 +272,15 @@ class _$ExpenseImpl with DiagnosticableTreeMixin implements _Expense {
             (identical(other.icon, icon) || other.icon == icon) &&
             (identical(other.color, color) || other.color == color) &&
             (identical(other.categoryIndex, categoryIndex) ||
-                other.categoryIndex == categoryIndex));
+                other.categoryIndex == categoryIndex) &&
+            (identical(other.walletId, walletId) ||
+                other.walletId == walletId));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, amount, date, memo, category,
-      icon, color, categoryIndex);
+      icon, color, categoryIndex, walletId);
 
   @JsonKey(ignore: true)
   @override
@@ -285,7 +305,8 @@ abstract class _Expense implements Expense {
       final String? category,
       final int? icon,
       final int? color,
-      final int? categoryIndex}) = _$ExpenseImpl;
+      final int? categoryIndex,
+      final int walletId}) = _$ExpenseImpl;
 
   factory _Expense.fromJson(Map<String, dynamic> json) = _$ExpenseImpl.fromJson;
 
@@ -305,6 +326,8 @@ abstract class _Expense implements Expense {
   int? get color;
   @override
   int? get categoryIndex;
+  @override
+  int get walletId;
   @override
   @JsonKey(ignore: true)
   _$$ExpenseImplCopyWith<_$ExpenseImpl> get copyWith =>

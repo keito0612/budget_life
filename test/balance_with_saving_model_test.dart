@@ -1,77 +1,169 @@
-import 'package:budget/model/balance_with_saving/balance_with_saving.dart';
-import 'package:budget/model/expense/expense.dart';
-import 'package:budget/model/income/income.dart';
-import 'package:budget/provider/shared_preferences_provider.dart';
-import 'package:budget/states/expense_state.dart';
-import 'package:budget/states/income_state.dart';
-import 'package:budget/viewModels/balance_with_saving_model.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:budget/utils/balance_calculator.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:mockito/mockito.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-final mocBalanceWithSavingModelProvider =
-    StateNotifierProvider<BalanceWithSavingModel, BalanceWithSaving>((ref) {
-  final prefs = ref.watch(sharedPreferencesProvider);
-  return BalanceWithSavingModel(ref, prefs);
-});
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  group('BalanceWithSavingModel', () {
-    late SharedPreferences mockPrefs;
-    late ExpenseState expenseState;
-    late IncomeState incomeState;
-    late BalanceWithSavingModel model;
-    late ProviderContainer container;
+  group('BalanceCalculator.adjustBalances', () {
+    test('財布がマイナスになったら、残高から払う', () {
+      // 財布: 10,000円、財布残高: -5,000円（支出15,000円後）
+      // → 財布: 0円、残高から5,000円引く
+      final result = BalanceCalculator.adjustBalances(
+        balance: 100000,
+        remainingBalance: 100000,
+        saving: 50000,
+        remainingSaving: 50000,
+        walletCash: 10000,
+        remainingWalletCash: -5000, // 財布からの支出で-5000になった
+      );
 
-    setUp(() async {
-      // Set up mocks
-      container = ProviderContainer();
-      SharedPreferences.setMockInitialValues({});
-      mockPrefs = await SharedPreferences.getInstance();
-      expenseState = ExpenseState();
-      incomeState = const IncomeState();
-
-      when(expenseState.expenses).thenReturn([]);
-      when(incomeState.incomes).thenReturn([]);
-      // Set up the model
-      model = container.read(balanceWithSavingModelProvider.notifier);
-    });
-    test('sharedPreferencesに貯金金額と月の金額をセットするテスト', () async {
-      // 初期データ
-      const balanceWithSaving =
-          BalanceWithSaving(balance: 50000, saving: 20000);
-      // Call the method to be tested
-      await model.setBalanseWithSaving(balanceWithSaving);
-
-      // Verify that SharedPreferences was called correctly
-      expect(mockPrefs.getInt('balanse'), equals(50000),
-          reason: 'SharedPreferencesに残高が正しくセットされていません');
-      expect(mockPrefs.getInt('saving'), equals(20000),
-          reason: 'SharedPreferencesに貯金金額が正しくセットされていません');
+      expect(result.remainingWalletCash, equals(0),
+          reason: '財布残高が0になるべき');
+      expect(result.remainingBalance, equals(95000),
+          reason: '残高から5000引かれるべき（100000 - 5000 = 95000）');
     });
 
-    test('月の収入から支出を引き、もし収入が余れば、その分を残高を足す、余らなければ残高を引くという処理が出来ているかを確認するテスト',
-        () async {
-      expenseState =
-          expenseState.copyWith(expenses: const [Expense(amount: "10000")]);
-      incomeState =
-          incomeState.copyWith(incomes: const [Income(amount: "30000")]);
-      mockPrefs.setInt('balanse', 50000);
-      mockPrefs.setInt('saving', 20000);
-      await model.getBalanseWithSaving();
-      final balance = model.debugState.balance;
-      final saving = model.debugState.saving;
-      final remainingSaving = model.debugState.remainingSaving;
-      final remainingBalance = model.debugState.remainingBalance;
+    test('残高がマイナスになったら、貯金から払う', () {
+      // 残高: -10,000円 → 貯金から10,000円引く
+      final result = BalanceCalculator.adjustBalances(
+        balance: 50000,
+        remainingBalance: -10000, // 支出で-10000になった
+        saving: 100000,
+        remainingSaving: 100000,
+        walletCash: 10000,
+        remainingWalletCash: 10000,
+      );
 
-      // Verify that the balance with saving was calculated correctly
-      expect(balance, equals(50000), reason: '残高が違います。');
-      expect(saving, equals(20000), reason: '貯金額が違います。');
-      expect(remainingBalance, equals(55000), reason: '計算された残高が違います。');
-      expect(remainingSaving, equals(20000), reason: '計算された貯金が違います。');
+      expect(result.remainingBalance, equals(0),
+          reason: '残高が0になるべき');
+      expect(result.remainingSaving, equals(90000),
+          reason: '貯金から10000引かれるべき（100000 - 10000 = 90000）');
+    });
+
+    test('貯金がマイナスになったら0にする', () {
+      // 残高: -20,000円、貯金: 5,000円
+      // → 貯金: 5,000 - 20,000 = -15,000 → 0
+      final result = BalanceCalculator.adjustBalances(
+        balance: 50000,
+        remainingBalance: -20000,
+        saving: 50000,
+        remainingSaving: 5000, // 少ない貯金
+        walletCash: 10000,
+        remainingWalletCash: 10000,
+      );
+
+      expect(result.remainingBalance, equals(0),
+          reason: '残高が0になるべき');
+      expect(result.remainingSaving, equals(0),
+          reason: '貯金がマイナスにならず0になるべき');
+    });
+
+    test('残高が最大残高より増えたら、最大残高を更新', () {
+      // 残高: 250,000円、最大残高: 100,000円
+      // → 最大残高も250,000円に更新
+      final result = BalanceCalculator.adjustBalances(
+        balance: 100000, // 最大残高
+        remainingBalance: 250000, // 収入で増えた残高
+        saving: 50000,
+        remainingSaving: 50000,
+        walletCash: 10000,
+        remainingWalletCash: 10000,
+      );
+
+      expect(result.remainingBalance, equals(250000),
+          reason: '残高が250000のまま');
+      expect(result.balance, equals(250000),
+          reason: '最大残高が残高に更新されるべき');
+    });
+
+    test('財布残高が設定額より増えたら、設定額を更新', () {
+      // 財布残高: 30,000円、設定額: 10,000円
+      // → 設定額も30,000円に更新
+      final result = BalanceCalculator.adjustBalances(
+        balance: 100000,
+        remainingBalance: 100000,
+        saving: 50000,
+        remainingSaving: 50000,
+        walletCash: 10000, // 設定額
+        remainingWalletCash: 30000, // 入金で増えた
+      );
+
+      expect(result.remainingWalletCash, equals(30000),
+          reason: '財布残高が30000のまま');
+      expect(result.walletCash, equals(30000),
+          reason: '設定額が財布残高に更新されるべき');
+    });
+
+    test('複合テスト: 財布マイナス → 残高マイナス → 貯金から払う', () {
+      // 財布: 10,000円、財布残高: -40,000円（支出50,000円後）
+      // 残高: 20,000円 - 40,000円 = -20,000円
+      // 貯金: 100,000円 - 20,000円 = 80,000円
+      final result = BalanceCalculator.adjustBalances(
+        balance: 20000,
+        remainingBalance: 20000,
+        saving: 100000,
+        remainingSaving: 100000,
+        walletCash: 10000,
+        remainingWalletCash: -40000, // 財布から50,000円使った
+      );
+
+      expect(result.remainingWalletCash, equals(0),
+          reason: '財布残高が0になるべき');
+      expect(result.remainingBalance, equals(0),
+          reason: '残高が0になるべき');
+      expect(result.remainingSaving, equals(80000),
+          reason: '貯金が80000になるべき（100000 - 20000 = 80000）');
+    });
+
+    test('複合テスト: 財布マイナス → 残高マイナス → 貯金マイナス → 全て0', () {
+      // 財布: 10,000円、財布残高: -100,000円
+      // 残高: 20,000円 - 100,000円 = -80,000円
+      // 貯金: 50,000円 - 80,000円 = -30,000円 → 0
+      final result = BalanceCalculator.adjustBalances(
+        balance: 20000,
+        remainingBalance: 20000,
+        saving: 50000,
+        remainingSaving: 50000, // 少ない貯金
+        walletCash: 10000,
+        remainingWalletCash: -100000, // 大きな支出
+      );
+
+      expect(result.remainingWalletCash, equals(0),
+          reason: '財布残高が0になるべき');
+      expect(result.remainingBalance, equals(0),
+          reason: '残高が0になるべき');
+      expect(result.remainingSaving, equals(0),
+          reason: '貯金が0になるべき（マイナスにならない）');
+    });
+
+    test('全てプラスの場合は変更なし', () {
+      final result = BalanceCalculator.adjustBalances(
+        balance: 100000,
+        remainingBalance: 80000,
+        saving: 50000,
+        remainingSaving: 50000,
+        walletCash: 30000,
+        remainingWalletCash: 20000,
+      );
+
+      expect(result.balance, equals(100000));
+      expect(result.remainingBalance, equals(80000));
+      expect(result.saving, equals(50000));
+      expect(result.remainingSaving, equals(50000));
+      expect(result.walletCash, equals(30000));
+      expect(result.remainingWalletCash, equals(20000));
+    });
+
+    test('walletCashがマイナスの場合は0にする', () {
+      final result = BalanceCalculator.adjustBalances(
+        balance: 100000,
+        remainingBalance: 100000,
+        saving: 50000,
+        remainingSaving: 50000,
+        walletCash: -5000, // マイナスの設定額（異常値）
+        remainingWalletCash: 10000,
+      );
+
+      expect(result.walletCash, equals(10000),
+          reason: 'walletCashが0になり、remainingWalletCashが大きいので更新される');
     });
   });
 }

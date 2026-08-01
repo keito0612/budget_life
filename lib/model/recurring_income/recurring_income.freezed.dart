@@ -30,6 +30,7 @@ mixin _$RecurringIncome {
   int? get icon => throw _privateConstructorUsedError;
   int? get color => throw _privateConstructorUsedError;
   int? get categoryIndex => throw _privateConstructorUsedError;
+  int get walletId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -53,7 +54,8 @@ abstract class $RecurringIncomeCopyWith<$Res> {
       String? category,
       int? icon,
       int? color,
-      int? categoryIndex});
+      int? categoryIndex,
+      int walletId});
 }
 
 /// @nodoc
@@ -79,6 +81,7 @@ class _$RecurringIncomeCopyWithImpl<$Res, $Val extends RecurringIncome>
     Object? icon = freezed,
     Object? color = freezed,
     Object? categoryIndex = freezed,
+    Object? walletId = null,
   }) {
     return _then(_value.copyWith(
       id: freezed == id
@@ -121,6 +124,10 @@ class _$RecurringIncomeCopyWithImpl<$Res, $Val extends RecurringIncome>
           ? _value.categoryIndex
           : categoryIndex // ignore: cast_nullable_to_non_nullable
               as int?,
+      walletId: null == walletId
+          ? _value.walletId
+          : walletId // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -143,7 +150,8 @@ abstract class _$$RecurringIncomeImplCopyWith<$Res>
       String? category,
       int? icon,
       int? color,
-      int? categoryIndex});
+      int? categoryIndex,
+      int walletId});
 }
 
 /// @nodoc
@@ -167,6 +175,7 @@ class __$$RecurringIncomeImplCopyWithImpl<$Res>
     Object? icon = freezed,
     Object? color = freezed,
     Object? categoryIndex = freezed,
+    Object? walletId = null,
   }) {
     return _then(_$RecurringIncomeImpl(
       id: freezed == id
@@ -209,6 +218,10 @@ class __$$RecurringIncomeImplCopyWithImpl<$Res>
           ? _value.categoryIndex
           : categoryIndex // ignore: cast_nullable_to_non_nullable
               as int?,
+      walletId: null == walletId
+          ? _value.walletId
+          : walletId // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -226,7 +239,8 @@ class _$RecurringIncomeImpl implements _RecurringIncome {
       this.category,
       this.icon,
       this.color,
-      this.categoryIndex});
+      this.categoryIndex,
+      this.walletId = 1});
 
   factory _$RecurringIncomeImpl.fromJson(Map<String, dynamic> json) =>
       _$$RecurringIncomeImplFromJson(json);
@@ -256,10 +270,13 @@ class _$RecurringIncomeImpl implements _RecurringIncome {
   final int? color;
   @override
   final int? categoryIndex;
+  @override
+  @JsonKey()
+  final int walletId;
 
   @override
   String toString() {
-    return 'RecurringIncome(id: $id, amount: $amount, autoMaticInputDate: $autoMaticInputDate, autoMaticInputDay: $autoMaticInputDay, autoMaticInuputDateIndex: $autoMaticInuputDateIndex, memo: $memo, category: $category, icon: $icon, color: $color, categoryIndex: $categoryIndex)';
+    return 'RecurringIncome(id: $id, amount: $amount, autoMaticInputDate: $autoMaticInputDate, autoMaticInputDay: $autoMaticInputDay, autoMaticInuputDateIndex: $autoMaticInuputDateIndex, memo: $memo, category: $category, icon: $icon, color: $color, categoryIndex: $categoryIndex, walletId: $walletId)';
   }
 
   @override
@@ -282,7 +299,9 @@ class _$RecurringIncomeImpl implements _RecurringIncome {
             (identical(other.icon, icon) || other.icon == icon) &&
             (identical(other.color, color) || other.color == color) &&
             (identical(other.categoryIndex, categoryIndex) ||
-                other.categoryIndex == categoryIndex));
+                other.categoryIndex == categoryIndex) &&
+            (identical(other.walletId, walletId) ||
+                other.walletId == walletId));
   }
 
   @JsonKey(ignore: true)
@@ -298,7 +317,8 @@ class _$RecurringIncomeImpl implements _RecurringIncome {
       category,
       icon,
       color,
-      categoryIndex);
+      categoryIndex,
+      walletId);
 
   @JsonKey(ignore: true)
   @override
@@ -326,7 +346,8 @@ abstract class _RecurringIncome implements RecurringIncome {
       final String? category,
       final int? icon,
       final int? color,
-      final int? categoryIndex}) = _$RecurringIncomeImpl;
+      final int? categoryIndex,
+      final int walletId}) = _$RecurringIncomeImpl;
 
   factory _RecurringIncome.fromJson(Map<String, dynamic> json) =
       _$RecurringIncomeImpl.fromJson;
@@ -351,6 +372,8 @@ abstract class _RecurringIncome implements RecurringIncome {
   int? get color;
   @override
   int? get categoryIndex;
+  @override
+  int get walletId;
   @override
   @JsonKey(ignore: true)
   _$$RecurringIncomeImplCopyWith<_$RecurringIncomeImpl> get copyWith =>

@@ -25,37 +25,80 @@ class RecurringIncomePage extends ConsumerWidget {
   int autoMaticInputDay = 1;
   int autoMaticInputDateIndex = 0;
   int categoryIncomeIndex = 0;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categoryExpenseModel = ref.watch(categoryExpenseModelProvider);
     return SingleChildScrollView(
-        child: Container(
       child: Padding(
-        padding: EdgeInsets.all(10.0.r),
-        child: Container(
-            width: 380.w,
+        padding: EdgeInsets.all(16.w),
+        child: _buildInputCard(context, ref, categoryExpenseModel.categorys),
+      ),
+    );
+  }
+
+  Widget _buildInputCard(BuildContext context, WidgetRef ref, List<Category> categorys) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(20.w),
             decoration: BoxDecoration(
-              color: Colors.green,
-              borderRadius: BorderRadius.all(Radius.circular(50.r)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black38,
-                  offset: Offset(2.0.r, 2.0.r),
-                  blurRadius: 4.0.r,
-                  spreadRadius: 4.0.r,
+              gradient: const LinearGradient(
+                colors: [Color(0xFF00C853), Color(0xFF00E676)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(24.r),
+                topRight: Radius.circular(24.r),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.repeat, color: Colors.white, size: 28.sp),
+                SizedBox(width: 12.w),
+                Text(
+                  '定期収入',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
-            child: Column(children: [
-              automaticInputDate(context, ref, "自動入力"),
-              amountTextField(ref, "収入"),
-              categoryBar(
-                  context, ref, "カテゴリー", categoryExpenseModel.categorys),
-              memoTextField("メモ", ref),
-              addButton(ref, context)
-            ])),
+          ),
+          Padding(
+            padding: EdgeInsets.all(20.w),
+            child: Column(
+              children: [
+                _buildAutomaticInputDateField(context, ref),
+                SizedBox(height: 16.h),
+                _buildAmountField(ref),
+                SizedBox(height: 16.h),
+                _buildCategoryField(context, ref, categorys),
+                SizedBox(height: 16.h),
+                _buildMemoField(ref),
+                SizedBox(height: 24.h),
+                _buildAddButton(ref, context),
+              ],
+            ),
+          ),
+        ],
       ),
-    ));
+    );
   }
 
   void _selectedAutoMaticDate(String autoMaticDate) {
@@ -77,270 +120,255 @@ class RecurringIncomePage extends ConsumerWidget {
     }
   }
 
-  Widget itemLabel(String itemName) {
-    return Padding(
-      padding: EdgeInsets.only(left: 20.w, bottom: 5.h),
-      child: Container(
-        width: double.infinity,
-        child: Text(itemName,
-            textAlign: TextAlign.left,
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20.sp)),
-      ),
-    );
-  }
-
-  Widget automaticInputDate(
-      BuildContext context, WidgetRef ref, String itemName) {
+  Widget _buildAutomaticInputDateField(BuildContext context, WidgetRef ref) {
     autoMaticInputDate = ref.watch(automaticInputDateProvider);
     final automaticInputDateController =
         ref.read(automaticInputDateProvider.notifier);
     autoMaticInputDateIndex = ref.watch(automaticInputDateIndexProvider);
     final automaticInputDateIndexController =
         ref.read(automaticInputDateIndexProvider.notifier);
-    return Padding(
-      padding: EdgeInsets.only(top: 40.h),
-      child: Column(
-        children: [
-          itemLabel(itemName),
-          Container(
-              height: 60.h,
-              width: 320.w,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black38,
-                    offset: Offset(2.0.r, 2.0.r),
-                    blurRadius: 4.0.r,
-                    spreadRadius: 4.0.r,
-                  ),
-                ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 4.w, bottom: 8.h),
+          child: Text(
+            '自動入力日',
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF4A5568),
+            ),
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFF7FAFC),
+            borderRadius: BorderRadius.circular(12.r),
+            border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(14.w),
+                child: Icon(Icons.calendar_today, size: 24.sp, color: const Color(0xFF00C853)),
               ),
-              child: Row(children: <Widget>[
-                SizedBox(width: 20.w),
-                Expanded(
-                  flex: 7,
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 14.h),
                   child: Text(
                     autoMaticInputDate,
-                    style: TextStyle(fontSize: 20.sp),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_downward,
-                      size: 25.sp,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      color: const Color(0xFF2D3748),
                     ),
-                    onPressed: () {
-                      AutomaticInputDatePicker.showModalPicker(context,
-                          (selectedItem, index) {
-                        automaticInputDateIndexController.state = index;
-                        automaticInputDateController.state = selectedItem;
-                      });
-                    },
                   ),
                 ),
-              ])),
-        ],
-      ),
+              ),
+              IconButton(
+                icon: Icon(Icons.expand_more, size: 24.sp, color: const Color(0xFF718096)),
+                onPressed: () {
+                  AutomaticInputDatePicker.showModalPicker(context, (selectedItem, index) {
+                    automaticInputDateIndexController.state = index;
+                    automaticInputDateController.state = selectedItem;
+                  });
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
-  //支出欄
-  Widget amountTextField(WidgetRef ref, String itemName) {
+  Widget _buildAmountField(WidgetRef ref) {
     amount = ref.watch(amountProvider);
     final amountController = ref.read(amountProvider.notifier);
-    return Padding(
-      padding: EdgeInsets.only(top: 40.h),
-      child: Column(
-        children: [
-          itemLabel(itemName),
-          Container(
-            height: 60.h,
-            width: 320.w,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(
-                Radius.circular(20.r),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black38,
-                  offset: Offset(2.0.r, 2.0.r),
-                  blurRadius: 4.0.r,
-                  spreadRadius: 4.0.r,
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(flex: 1, child: Icon(Icons.currency_yen, size: 25.sp)),
-                Expanded(
-                  flex: 5,
-                  child: TextField(
-                    style: TextStyle(fontSize: 20.sp),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                    onChanged: (amountText) {
-                      amountController.state = amountText;
-                    },
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "金額",
-                    ),
-                  ),
-                ),
-              ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 4.w, bottom: 8.h),
+          child: Text(
+            '金額',
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF4A5568),
             ),
           ),
-        ],
-      ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFF7FAFC),
+            borderRadius: BorderRadius.circular(12.r),
+            border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(14.w),
+                child: Icon(Icons.currency_yen, size: 24.sp, color: const Color(0xFF00C853)),
+              ),
+              Expanded(
+                child: TextField(
+                  style: TextStyle(fontSize: 16.sp, color: const Color(0xFF2D3748)),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: '金額を入力',
+                    hintStyle: TextStyle(color: const Color(0xFFA0AEC0), fontSize: 16.sp),
+                    contentPadding: EdgeInsets.symmetric(vertical: 14.h),
+                  ),
+                  onChanged: (amountText) {
+                    amountController.state = amountText;
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
-  //カテゴリ欄
-  Widget categoryBar(BuildContext context, WidgetRef ref, String itemName,
-      List<Category> categorys) {
+  Widget _buildCategoryField(BuildContext context, WidgetRef ref, List<Category> categorys) {
     categoryIncomeIndex = ref.watch(categoryIncomeIndexProvider);
     category = categorys[categoryIncomeIndex];
-    return Padding(
-      padding: EdgeInsets.only(top: 40.h),
-      child: Column(
-        children: [
-          itemLabel(itemName),
-          Container(
-              height: 60.h,
-              width: 320.w,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(20.r)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black38,
-                    offset: Offset(2.0.r, 2.0.r),
-                    blurRadius: 4.0.r,
-                    spreadRadius: 4.0.r,
-                  ),
-                ],
-              ),
-              child: Row(children: <Widget>[
-                SizedBox(width: 15.w),
-                Icon(IconData(category!.icon!, fontFamily: 'MaterialIcons'),
-                    size: 25.sp, color: Color(category!.color!)),
-                SizedBox(width: 20.w),
-                Expanded(
-                  flex: 8,
-                  child: Text(category!.category,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20.sp)),
-                ),
-                categoryBottomSheetBarButtom(
-                  categorys: categorys,
-                  onSelectedItemChanged: (index) {
-                    ref.read(categoryIncomeIndexProvider.notifier).state =
-                        index;
-                  },
-                )
-              ])),
-        ],
-      ),
-    );
-  }
-
-  //メモ欄
-  Widget memoTextField(String itemName, WidgetRef ref) {
-    memo = ref.watch(memoProvider);
-    final memoController = ref.read(memoProvider.notifier);
-    return Padding(
-      padding: EdgeInsets.only(top: 40.h),
-      child: Column(
-        children: [
-          itemLabel(itemName),
-          Container(
-            height: 60.h,
-            width: 320.w,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(
-                Radius.circular(20.r),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black38,
-                  offset: Offset(2.0.r, 2.0.r),
-                  blurRadius: 4.0.r,
-                  spreadRadius: 4.0.r,
-                ),
-              ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 4.w, bottom: 8.h),
+          child: Text(
+            'カテゴリー',
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF4A5568),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                    flex: 1,
-                    child: Icon(
-                      Icons.edit,
-                      size: 25.sp,
-                    )),
-                Expanded(
-                  flex: 5,
-                  child: TextField(
-                    style: TextStyle(fontSize: 20.sp),
-                    onChanged: (memoText) {
-                      memoController.state = memoText;
-                    },
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "メモ",
+          ),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFF7FAFC),
+            borderRadius: BorderRadius.circular(12.r),
+            border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(14.w),
+                child: Icon(
+                  IconData(category!.icon!, fontFamily: 'MaterialIcons'),
+                  size: 24.sp,
+                  color: Color(category!.color!),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 14.h),
+                  child: Text(
+                    category!.category,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFF2D3748),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+              categoryBottomSheetBarButtom(
+                categorys: categorys,
+                onSelectedItemChanged: (index) {
+                  ref.read(categoryIncomeIndexProvider.notifier).state = index;
+                },
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  //追加ボタン
-  Widget addButton(WidgetRef ref, BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 30.h),
-      child: Container(
-        height: 50.h,
-        width: 100.w,
-        color: Colors.green,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            elevation: 10,
-            backgroundColor: Colors.green,
-            foregroundColor: Colors.white,
-            side: BorderSide(color: Colors.white, width: 3.w),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.r),
+  Widget _buildMemoField(WidgetRef ref) {
+    memo = ref.watch(memoProvider);
+    final memoController = ref.read(memoProvider.notifier);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 4.w, bottom: 8.h),
+          child: Text(
+            'メモ',
+            style: TextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF4A5568),
             ),
           ),
-          child: Text(
-            "追加",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20.sp),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFF7FAFC),
+            borderRadius: BorderRadius.circular(12.r),
+            border: Border.all(color: const Color(0xFFE2E8F0), width: 1),
           ),
-          onPressed: () async {
-            _selectedAutoMaticDate(autoMaticInputDate);
-            await addDialog(context, ref);
-          },
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(14.w),
+                child: Icon(Icons.edit_note, size: 24.sp, color: const Color(0xFF718096)),
+              ),
+              Expanded(
+                child: TextField(
+                  style: TextStyle(fontSize: 16.sp, color: const Color(0xFF2D3748)),
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'メモを入力',
+                    hintStyle: TextStyle(color: const Color(0xFFA0AEC0), fontSize: 16.sp),
+                    contentPadding: EdgeInsets.symmetric(vertical: 14.h),
+                  ),
+                  onChanged: (memoText) {
+                    memoController.state = memoText;
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAddButton(WidgetRef ref, BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 56.h,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF00C853),
+          foregroundColor: Colors.white,
+          elevation: 0,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.r)),
+        ),
+        onPressed: () async {
+          _selectedAutoMaticDate(autoMaticInputDate);
+          await addDialog(context, ref);
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.add_circle_outline, size: 24.sp),
+            SizedBox(width: 8.w),
+            Text('追加', style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold)),
+          ],
         ),
       ),
     );
   }
 
-  //追加ダイアログ
   Future addDialog(BuildContext context, WidgetRef ref) async {
     final recurringIncomeModel =
         ref.read(recurringIncomeViewModelProvider.notifier);
@@ -357,26 +385,35 @@ class RecurringIncomePage extends ConsumerWidget {
     try {
       await recurringIncomeModel.addRecurringIncome(recurringIncomeAddData);
       await recurringIncomeModel.getRecurringIncomes();
-      await dialogResult(context, recurringIncomeModel, ref);
+      if (context.mounted) await dialogResult(context, recurringIncomeModel, ref);
     } on Exception catch (e) {
-      await dialogError(e.toString(), context);
+      if (context.mounted) await dialogError(e.toString(), context);
     } catch (e) {
-      await dialogError(e.toString(), context);
+      if (context.mounted) await dialogError(e.toString(), context);
     }
   }
 
-  //成功した時のダイアログー
   Future dialogResult(
       BuildContext context, RecurringIncomeModel model, WidgetRef ref) async {
     await showCupertinoDialog(
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: const Text('追加しました。'),
-          content: const Text(''),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.check_circle, color: const Color(0xFF00C853), size: 24.sp),
+              SizedBox(width: 8.w),
+              const Text('完了'),
+            ],
+          ),
+          content: Padding(
+            padding: EdgeInsets.only(top: 12.h),
+            child: const Text('追加しました。'),
+          ),
           actions: <Widget>[
             TextButton(
-              child: const Text('OK'),
+              child: const Text('OK', style: TextStyle(color: Color(0xFF00C853))),
               onPressed: () async {
                 int count = 0;
                 Navigator.popUntil(context, (_) => count++ >= 2);
@@ -388,37 +425,22 @@ class RecurringIncomePage extends ConsumerWidget {
     );
   }
 
-  //エラーダイアログ
   Future dialogError(String error, BuildContext context) async {
     await showCupertinoDialog(
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: const Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children:  [
-              Icon(
-                Icons.error_outline_rounded,
-                color: Colors.red,
-              ),
-              Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text("エラーが発生しました"),
-              )
-            ],
-          ),
-          content: Column(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(error),
+              Icon(Icons.error_outline, color: Colors.red, size: 24.sp),
+              SizedBox(width: 8.w),
+              const Text('エラー'),
             ],
           ),
+          content: Padding(padding: EdgeInsets.only(top: 12.h), child: Text(error)),
           actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )
+            TextButton(child: const Text('OK'), onPressed: () => Navigator.of(context).pop())
           ],
         );
       },

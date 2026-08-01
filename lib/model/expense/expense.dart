@@ -14,6 +14,7 @@ abstract class Expense with _$Expense {
     int? icon,
     int? color,
     int? categoryIndex,
+    @Default(1) int walletId,
   }) = _Expense;
   factory Expense.fromJson(Map<String, dynamic> json) =>
       _$ExpenseFromJson(json);

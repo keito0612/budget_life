@@ -17,309 +17,432 @@ class FixedExpenseWithRecurringIncomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      backgroundColor: Colors.grey,
-      appBar: AppBar(
-        title: const Text("月の固定費•定期収入", style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.green,
-        iconTheme: const IconThemeData(color: Colors.white),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(10.r),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  labelWidget(
-                      text: "支出",
-                      right: 0.0.w,
-                      left: 0.0.w,
-                      top: 0.0.h,
-                      bottom: 10.h),
-                ],
-              ),
-              _fixedExpenseWidget(ref, context),
-              Row(
-                children: [
-                  labelWidget(
-                      text: "収入",
-                      right: 120.0.w,
-                      left: 0.0.w,
-                      top: 10.0.h,
-                      bottom: 10.h),
-                ],
-              ),
-              _recurringIncomeWidget(ref, context)
-            ],
-          ),
-        ),
+      backgroundColor: const Color(0xFFF5F7FA),
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(child: _buildHeader(context)),
+          SliverToBoxAdapter(child: _buildContent(context, ref)),
+        ],
       ),
       floatingActionButton: Container(
-        width: 60.0.sp,
-        height: 60.0.sp,
-        child: FloatingActionButton(
-          child: Icon(
-            color: Colors.white,
-            Icons.add,
-            size: 20.sp,
+        width: 60.sp,
+        height: 60.sp,
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [Color(0xFF00C853), Color(0xFF00E676)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF00C853).withValues(alpha: 0.3),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: FloatingActionButton(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: Icon(Icons.add, color: Colors.white, size: 28.sp),
           onPressed: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(
-                    fullscreenDialog: true,
-                    builder: (context) =>
-                        const fixedExpenseWithRecurringIncomeAddPage()));
+              context,
+              MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (context) => const fixedExpenseWithRecurringIncomeAddPage(),
+              ),
+            );
           },
         ),
       ),
     );
   }
 
-  Widget labelWidget(
-      {String? text,
-      double? right,
-      double? left,
-      double? top,
-      double? bottom}) {
-    return Padding(
-      padding: EdgeInsets.only(
-          right: right!, left: left!, top: top!, bottom: bottom!),
-      child: Text(
-        text!,
-        style: TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.sp),
-      ),
-    );
-  }
-
-  Widget _fixedExpenseWidget(WidgetRef ref, BuildContext context) {
-    final fixedExpenses = ref.watch(fixedExpenseViewModelProvider);
-    final fixedExpenseModel = ref.read(fixedExpenseViewModelProvider.notifier);
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minHeight: 100.h,
-      ),
-      child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: Colors.green,
-              borderRadius: BorderRadius.all(Radius.circular(20.r))),
-          child: _fixedExpenseList(
-              fixedExpenses.fixedExpenses, fixedExpenseModel, context)),
-    );
-  }
-
-  Widget _fixedExpenseList(List<FixedExpense> fixedExpenses,
-      FixedExpenseModel fixedExpenseModel, BuildContext context) {
-    return ListView(
-        padding: EdgeInsets.zero,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        children: fixedExpenses
-            .map((fixedExpnese) =>
-                _fixedExpenseItem(context, fixedExpenseModel, fixedExpnese))
-            .toList());
-  }
-
-  Widget _fixedExpenseItem(BuildContext context,
-      FixedExpenseModel fixedExpenseModel, FixedExpense fixedExpnese) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(6.0.r),
-      ),
-      elevation: 8.0,
-      margin: EdgeInsets.symmetric(horizontal: 10.0.r, vertical: 6.0.r),
-      child: SizedBox(
-        child: Slidable(
-          endActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            children: [
-              SlidableAction(
-                  backgroundColor: Colors.black38,
-                  foregroundColor: Colors.white,
-                  icon: Icons.edit,
-                  label: '編集',
-                  onPressed: (context) async {
-                    await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => FixedExpenseEditPage(
-                                id: fixedExpnese.id!,
-                                amount: fixedExpnese.amount,
-                                category: Category(
-                                    category: fixedExpnese.category!,
-                                    icon: fixedExpnese.icon,
-                                    color: fixedExpnese.color),
-                                memo: fixedExpnese.memo,
-                                autoMaticInputDate:
-                                    fixedExpnese.autoMaticInputDate,
-                                autoMaticInputDateIndex:
-                                    fixedExpnese.autoMaticInuputDateIndex,
-                                autoMaticInputDay:
-                                    fixedExpnese.autoMaticInputDay,
-                                categoryExpenseIndex:
-                                    fixedExpnese.categoryIndex)));
-                  }),
-              SlidableAction(
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
-                  icon: Icons.error_sharp,
-                  label: '消去',
-                  onPressed: (context) async {
-                    fixedExpenseModel.deleteExpense(fixedExpnese.id!);
-                  }),
-            ],
+  Widget _buildHeader(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(20.w, 60.h, 20.w, 24.h),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFF00C853), Color(0xFF00E676)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(32.r),
+          bottomRight: Radius.circular(32.r),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF00C853).withValues(alpha: 0.3),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
           ),
-          child: ListTile(
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      IconData(
-                        fixedExpnese.icon!,
-                        fontFamily: 'MaterialIcons',
-                      ),
-                      color: Color(fixedExpnese.color!),
-                      size: 25.sp,
-                    ),
-                    const SizedBox(width: 5),
-                    Text(
-                      fixedExpnese.category!,
-                      style: TextStyle(fontSize: 20.sp),
-                    ),
-                  ],
-                ),
-                Text(
-                  "金額：${fixedExpnese.amount}円",
-                  style: TextStyle(fontSize: 20.sp),
-                ),
-                Text("自動入力：${fixedExpnese.autoMaticInputDate}",
-                    style: TextStyle(fontSize: 20.sp)),
-                Text("メモ：${fixedExpnese.memo}",
-                    style: TextStyle(fontSize: 20.sp)),
-              ],
+        ],
+      ),
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Container(
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20.sp),
             ),
           ),
+          SizedBox(width: 16.w),
+          Icon(Icons.repeat, color: Colors.white, size: 28.sp),
+          SizedBox(width: 12.w),
+          Expanded(
+            child: Text(
+              '固定費・定期収入',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 22.sp,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContent(BuildContext context, WidgetRef ref) {
+    return Padding(
+      padding: EdgeInsets.all(16.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 8.h),
+          _buildSectionLabel('固定支出', const Color(0xFFFF5252)),
+          SizedBox(height: 12.h),
+          _buildFixedExpenseCard(ref, context),
+          SizedBox(height: 24.h),
+          _buildSectionLabel('定期収入', const Color(0xFF00C853)),
+          SizedBox(height: 12.h),
+          _buildRecurringIncomeCard(ref, context),
+          SizedBox(height: 80.h),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionLabel(String text, Color color) {
+    return Row(
+      children: [
+        Container(
+          width: 4.w,
+          height: 24.h,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(2.r),
+          ),
+        ),
+        SizedBox(width: 12.w),
+        Text(
+          text,
+          style: TextStyle(
+            color: const Color(0xFF2D3748),
+            fontWeight: FontWeight.bold,
+            fontSize: 18.sp,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFixedExpenseCard(WidgetRef ref, BuildContext context) {
+    final fixedExpenses = ref.watch(fixedExpenseViewModelProvider);
+    final fixedExpenseModel = ref.read(fixedExpenseViewModelProvider.notifier);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: fixedExpenses.fixedExpenses.isEmpty
+          ? Padding(
+              padding: EdgeInsets.all(24.w),
+              child: Center(
+                child: Text(
+                  '固定支出がありません',
+                  style: TextStyle(
+                    color: const Color(0xFFA0AEC0),
+                    fontSize: 14.sp,
+                  ),
+                ),
+              ),
+            )
+          : ListView.separated(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: fixedExpenses.fixedExpenses.length,
+              separatorBuilder: (context, index) => Divider(
+                height: 1,
+                color: const Color(0xFFE2E8F0),
+                indent: 16.w,
+                endIndent: 16.w,
+              ),
+              itemBuilder: (context, index) {
+                final expense = fixedExpenses.fixedExpenses[index];
+                return _buildExpenseItem(context, fixedExpenseModel, expense);
+              },
+            ),
+    );
+  }
+
+  Widget _buildExpenseItem(
+      BuildContext context, FixedExpenseModel model, FixedExpense expense) {
+    return Slidable(
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        children: [
+          SlidableAction(
+            backgroundColor: const Color(0xFF718096),
+            foregroundColor: Colors.white,
+            icon: Icons.edit,
+            label: '編集',
+            onPressed: (context) async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FixedExpenseEditPage(
+                    id: expense.id!,
+                    amount: expense.amount,
+                    category: Category(
+                      category: expense.category!,
+                      icon: expense.icon,
+                      color: expense.color,
+                    ),
+                    memo: expense.memo,
+                    autoMaticInputDate: expense.autoMaticInputDate,
+                    autoMaticInputDateIndex: expense.autoMaticInuputDateIndex,
+                    autoMaticInputDay: expense.autoMaticInputDay,
+                    categoryExpenseIndex: expense.categoryIndex,
+                  ),
+                ),
+              );
+            },
+          ),
+          SlidableAction(
+            backgroundColor: const Color(0xFFFF5252),
+            foregroundColor: Colors.white,
+            icon: Icons.delete,
+            label: '削除',
+            onPressed: (context) async {
+              model.deleteExpense(expense.id!);
+            },
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(16.w),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(10.w),
+              decoration: BoxDecoration(
+                color: Color(expense.color!).withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Icon(
+                IconData(expense.icon!, fontFamily: 'MaterialIcons'),
+                color: Color(expense.color!),
+                size: 24.sp,
+              ),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    expense.category!,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFF2D3748),
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    expense.autoMaticInputDate ?? '',
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: const Color(0xFF718096),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Text(
+              '¥${expense.amount}',
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFFFF5252),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _recurringIncomeWidget(WidgetRef ref, BuildContext context) {
+  Widget _buildRecurringIncomeCard(WidgetRef ref, BuildContext context) {
     final recurringIncomes = ref.watch(recurringIncomeViewModelProvider);
-    final recurringIncomeModel =
-        ref.read(recurringIncomeViewModelProvider.notifier);
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minHeight: 100.h,
+    final recurringIncomeModel = ref.read(recurringIncomeViewModelProvider.notifier);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-            color: Colors.green,
-            borderRadius: BorderRadius.all(Radius.circular(20.r))),
-        child: _recurringIncomeList(
-            recurringIncomes.recurringIncomes, recurringIncomeModel, context),
-      ),
+      child: recurringIncomes.recurringIncomes.isEmpty
+          ? Padding(
+              padding: EdgeInsets.all(24.w),
+              child: Center(
+                child: Text(
+                  '定期収入がありません',
+                  style: TextStyle(
+                    color: const Color(0xFFA0AEC0),
+                    fontSize: 14.sp,
+                  ),
+                ),
+              ),
+            )
+          : ListView.separated(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: recurringIncomes.recurringIncomes.length,
+              separatorBuilder: (context, index) => Divider(
+                height: 1,
+                color: const Color(0xFFE2E8F0),
+                indent: 16.w,
+                endIndent: 16.w,
+              ),
+              itemBuilder: (context, index) {
+                final income = recurringIncomes.recurringIncomes[index];
+                return _buildIncomeItem(context, recurringIncomeModel, income);
+              },
+            ),
     );
   }
 
-  Widget _recurringIncomeList(List<RecurringIncome> recurringIncomes,
-      RecurringIncomeModel recurringIncomeModel, BuildContext context) {
-    return ListView(
-        padding: EdgeInsets.zero,
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        children: recurringIncomes
-            .map((recurringIncome) => _recurringIncomeItem(
-                recurringIncome, recurringIncomeModel, context))
-            .toList());
-  }
-
-  Widget _recurringIncomeItem(RecurringIncome recurringIncome,
-      RecurringIncomeModel recurringIncomeModel, BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(6.0.r),
-      ),
-      elevation: 8.0,
-      margin: EdgeInsets.symmetric(horizontal: 10.0.r, vertical: 6.0.r),
-      child: SizedBox(
-        child: Slidable(
-          endActionPane: ActionPane(
-            motion: const ScrollMotion(),
-            children: [
-              SlidableAction(
-                  backgroundColor: Colors.black38,
-                  foregroundColor: Colors.white,
-                  icon: Icons.edit,
-                  label: '編集',
-                  onPressed: (context) async {
-                    await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => RecurringIncomeEditPage(
-                                id: recurringIncome.id!,
-                                amount: recurringIncome.amount,
-                                category: Category(
-                                    category: recurringIncome.category!,
-                                    icon: recurringIncome.icon,
-                                    color: recurringIncome.color),
-                                memo: recurringIncome.memo,
-                                autoMaticInputDate:
-                                    recurringIncome.autoMaticInputDate,
-                                autoMaticInputDateIndex:
-                                    recurringIncome.autoMaticInuputDateIndex,
-                                autoMaticInputDay:
-                                    recurringIncome.autoMaticInputDay,
-                                categoryIncomeIndex:
-                                    recurringIncome.categoryIndex)));
-                  }),
-              SlidableAction(
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
-                  icon: Icons.error_sharp,
-                  label: '消去',
-                  onPressed: (context) async {
-                    recurringIncomeModel
-                        .deleteRecurringIncome(recurringIncome.id!);
-                  }),
-            ],
-          ),
-          child: ListTile(
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      IconData(recurringIncome.icon!,
-                          fontFamily: 'MaterialIcons'),
-                      color: Color(recurringIncome.color!),
-                      size: 25.sp,
+  Widget _buildIncomeItem(
+      BuildContext context, RecurringIncomeModel model, RecurringIncome income) {
+    return Slidable(
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        children: [
+          SlidableAction(
+            backgroundColor: const Color(0xFF718096),
+            foregroundColor: Colors.white,
+            icon: Icons.edit,
+            label: '編集',
+            onPressed: (context) async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RecurringIncomeEditPage(
+                    id: income.id!,
+                    amount: income.amount,
+                    category: Category(
+                      category: income.category!,
+                      icon: income.icon,
+                      color: income.color,
                     ),
-                    SizedBox(width: 5.w),
-                    Text(recurringIncome.category!,
-                        style: TextStyle(fontSize: 20.sp)),
-                  ],
+                    memo: income.memo,
+                    autoMaticInputDate: income.autoMaticInputDate,
+                    autoMaticInputDateIndex: income.autoMaticInuputDateIndex,
+                    autoMaticInputDay: income.autoMaticInputDay,
+                    categoryIncomeIndex: income.categoryIndex,
+                  ),
                 ),
-                Text(
-                  "金額：${recurringIncome.amount}円",
-                  style: TextStyle(fontSize: 20.sp),
-                ),
-                Text("自動入力：${recurringIncome.autoMaticInputDate}",
-                    style: TextStyle(fontSize: 20.sp)),
-                Text(
-                  "メモ：${recurringIncome.memo}",
-                  style: TextStyle(fontSize: 20.sp),
-                ),
-              ],
-            ),
+              );
+            },
           ),
+          SlidableAction(
+            backgroundColor: const Color(0xFFFF5252),
+            foregroundColor: Colors.white,
+            icon: Icons.delete,
+            label: '削除',
+            onPressed: (context) async {
+              model.deleteRecurringIncome(income.id!);
+            },
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(16.w),
+        child: Row(
+          children: [
+            Container(
+              padding: EdgeInsets.all(10.w),
+              decoration: BoxDecoration(
+                color: Color(income.color!).withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Icon(
+                IconData(income.icon!, fontFamily: 'MaterialIcons'),
+                color: Color(income.color!),
+                size: 24.sp,
+              ),
+            ),
+            SizedBox(width: 12.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    income.category!,
+                    style: TextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFF2D3748),
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    income.autoMaticInputDate ?? '',
+                    style: TextStyle(
+                      fontSize: 12.sp,
+                      color: const Color(0xFF718096),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Text(
+              '¥${income.amount}',
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF00C853),
+              ),
+            ),
+          ],
         ),
       ),
     );

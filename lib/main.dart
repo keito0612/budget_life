@@ -1,4 +1,5 @@
-import 'dart:async';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:background_fetch/background_fetch.dart';
 import 'package:budget/background/background_task_manager.dart';
 import 'package:budget/datebases/category_expense_database.dart';
 import 'package:budget/datebases/category_income_database.dart';
@@ -62,59 +63,80 @@ final lockProvider =
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-Future _automaticInputExpense() async {
+/// 固定支出の自動入力（重複チェック付き）
+Future _automaticInputExpense(SharedPreferences prefs) async {
   final db = await DateBaseHelper.db.database;
-  String tableName = 'fixed_expense';
+  const String tableName = 'fixed_expense';
   final res = await db.query(tableName);
-  if (res.isEmpty) return [];
+  if (res.isEmpty) return;
+
   final fixedExpenses = res.map((res) => FixedExpense.fromJson(res)).toList();
-  List<dynamic> mutableFixedExpneses = fixedExpenses.cast<dynamic>();
   final now = DateTime.now();
-  if (fixedExpenses.isNotEmpty) {
-    for (final fixedExpense in mutableFixedExpneses) {
-      final day = fixedExpense.autoMaticInputDay;
-      if (day == now.day) {
-        final date = DateTime(now.year, now.month, day);
-        Map<String, dynamic> expense = {
-          'amount': fixedExpense.amount,
-          'date': Util.toDate(date),
-          'memo': fixedExpense.memo,
-          'category': fixedExpense.category,
-          'icon': fixedExpense.icon,
-          'color': fixedExpense.color,
-          'categoryIndex': fixedExpense.categoryIndex
-        };
-        await db.insert('expense', expense);
-      }
+
+  for (final fixedExpense in fixedExpenses) {
+    final day = fixedExpense.autoMaticInputDay;
+
+    // この固定支出が今月既に処理されたかチェック
+    final processedKey = 'fixed_expense_${fixedExpense.id}_${now.year}_${now.month}';
+    final alreadyProcessed = prefs.getBool(processedKey) ?? false;
+
+    if (alreadyProcessed) continue;
+
+    // 今日がその日か、または今月のその日が既に過ぎているかチェック
+    if (day <= now.day) {
+      final date = DateTime(now.year, now.month, day);
+      Map<String, dynamic> expense = {
+        'amount': fixedExpense.amount,
+        'date': Util.toDate(date),
+        'memo': fixedExpense.memo,
+        'category': fixedExpense.category,
+        'icon': fixedExpense.icon,
+        'color': fixedExpense.color,
+        'categoryIndex': fixedExpense.categoryIndex,
+        'walletId': fixedExpense.walletId ?? 0,
+      };
+      await db.insert('expense', expense);
+      // 処理済みとしてマーク
+      await prefs.setBool(processedKey, true);
     }
   }
 }
 
-Future _automaticInputIncome() async {
+/// 定期収入の自動入力（重複チェック付き）
+Future _automaticInputIncome(SharedPreferences prefs) async {
   final db = await DateBaseHelper.db.database;
   const String tableName = 'recurring_income';
   final res = await db.query(tableName);
-  if (res.isEmpty) return [];
-  final recurringIncomes =
-      List.from(res.map((res) => RecurringIncome.fromJson(res)));
-  List<dynamic> mutableRecurringIncomes = recurringIncomes.cast<dynamic>();
+  if (res.isEmpty) return;
+
+  final recurringIncomes = res.map((res) => RecurringIncome.fromJson(res)).toList();
   final now = DateTime.now();
-  if (recurringIncomes.isNotEmpty) {
-    for (final recurringIncomes in mutableRecurringIncomes) {
-      final day = recurringIncomes.autoMaticInputDay;
-      if (day == now.day) {
-        final date = DateTime(now.year, now.month, day);
-        final income = {
-          'amount': recurringIncomes.amount,
-          'date': Util.toDate(date),
-          'memo': recurringIncomes.memo,
-          'category': recurringIncomes.category,
-          'icon': recurringIncomes.icon,
-          'color': recurringIncomes.color,
-          'categoryIndex': recurringIncomes.categoryIndex
-        };
-        await db.insert('income', income);
-      }
+
+  for (final recurringIncome in recurringIncomes) {
+    final day = recurringIncome.autoMaticInputDay;
+
+    // この定期収入が今月既に処理されたかチェック
+    final processedKey = 'recurring_income_${recurringIncome.id}_${now.year}_${now.month}';
+    final alreadyProcessed = prefs.getBool(processedKey) ?? false;
+
+    if (alreadyProcessed) continue;
+
+    // 今日がその日か、または今月のその日が既に過ぎているかチェック
+    if (day <= now.day) {
+      final date = DateTime(now.year, now.month, day);
+      final income = {
+        'amount': recurringIncome.amount,
+        'date': Util.toDate(date),
+        'memo': recurringIncome.memo,
+        'category': recurringIncome.category,
+        'icon': recurringIncome.icon,
+        'color': recurringIncome.color,
+        'categoryIndex': recurringIncome.categoryIndex,
+        'walletId': recurringIncome.walletId ?? 1,
+      };
+      await db.insert('income', income);
+      // 処理済みとしてマーク
+      await prefs.setBool(processedKey, true);
     }
   }
 }
@@ -130,6 +152,7 @@ Future<void> initPlugin() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   LoadingWidget.configLoading();
+  await dotenv.load(fileName: ".env");
   await MobileAds.instance.initialize();
   WidgetsBinding.instance.addPostFrameCallback((_) => initPlugin());
   await Firebase.initializeApp(
@@ -149,30 +172,27 @@ void main() async {
     DeviceOrientation.portraitUp,
   ]);
 
+  // SharedPreferencesのインスタンスを取得
+  final prefs = await SharedPreferences.getInstance();
+
+  // アプリ起動時に自動入力を実行
+  await _automaticInputExpense(prefs);
+  await _automaticInputIncome(prefs);
+
   await BackgroundTaskManager.initBackgroundFech(
       onFetch: (String taskId) async {
-    Timer.periodic(
-      const Duration(hours: 10),
-      (Timer timer) async {
-        await _automaticInputExpense();
-        await _automaticInputIncome();
-      },
-    );
-    print('[BackgroundFetch] received task: $taskId');
+    // バックグラウンドでも自動入力を実行
+    final bgPrefs = await SharedPreferences.getInstance();
+    await _automaticInputExpense(bgPrefs);
+    await _automaticInputIncome(bgPrefs);
+    BackgroundFetch.finish(taskId);
   });
   await BackgroundTaskManager.backgroundFechStart(
     fetch: (int status) async {
-      print('[BackgroundFetch] start success: $status');
-      Timer.periodic(
-        const Duration(hours: 10),
-        (Timer timer) async {
-          await _automaticInputExpense();
-          await _automaticInputIncome();
-        },
-      );
+      // バックグラウンドフェッチ開始成功
     },
     catchError: (error, p1) async {
-      print(error);
+      // エラー時は何もしない
     },
   );
 
@@ -240,7 +260,7 @@ class MyApp extends ConsumerWidget {
     ),
     BottomNavigationBarItem(
       icon: Icon(Icons.list),
-      label: 'リスト',
+      label: '履歴',
     ),
     BottomNavigationBarItem(
       icon: Icon(

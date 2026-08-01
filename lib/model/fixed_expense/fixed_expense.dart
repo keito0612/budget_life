@@ -15,6 +15,7 @@ abstract class FixedExpense with _$FixedExpense {
     int? icon,
     int? color,
     int? categoryIndex,
+    @Default(1) int walletId,
   }) = _FixedExpense;
   factory FixedExpense.fromJson(Map<String, dynamic> json) =>
       _$FixedExpenseFromJson(json);
