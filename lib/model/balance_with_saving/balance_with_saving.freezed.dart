@@ -25,6 +25,8 @@ mixin _$BalanceWithSaving {
   int get saving => throw _privateConstructorUsedError;
   int get remainingBalance => throw _privateConstructorUsedError;
   int get remainingSaving => throw _privateConstructorUsedError;
+  int get walletCash => throw _privateConstructorUsedError;
+  int get remainingWalletCash => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +45,9 @@ abstract class $BalanceWithSavingCopyWith<$Res> {
       int balance,
       int saving,
       int remainingBalance,
-      int remainingSaving});
+      int remainingSaving,
+      int walletCash,
+      int remainingWalletCash});
 }
 
 /// @nodoc
@@ -64,6 +68,8 @@ class _$BalanceWithSavingCopyWithImpl<$Res, $Val extends BalanceWithSaving>
     Object? saving = null,
     Object? remainingBalance = null,
     Object? remainingSaving = null,
+    Object? walletCash = null,
+    Object? remainingWalletCash = null,
   }) {
     return _then(_value.copyWith(
       date: null == date
@@ -86,6 +92,14 @@ class _$BalanceWithSavingCopyWithImpl<$Res, $Val extends BalanceWithSaving>
           ? _value.remainingSaving
           : remainingSaving // ignore: cast_nullable_to_non_nullable
               as int,
+      walletCash: null == walletCash
+          ? _value.walletCash
+          : walletCash // ignore: cast_nullable_to_non_nullable
+              as int,
+      remainingWalletCash: null == remainingWalletCash
+          ? _value.remainingWalletCash
+          : remainingWalletCash // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -103,7 +117,9 @@ abstract class _$$BalanceWithSavingImplCopyWith<$Res>
       int balance,
       int saving,
       int remainingBalance,
-      int remainingSaving});
+      int remainingSaving,
+      int walletCash,
+      int remainingWalletCash});
 }
 
 /// @nodoc
@@ -122,6 +138,8 @@ class __$$BalanceWithSavingImplCopyWithImpl<$Res>
     Object? saving = null,
     Object? remainingBalance = null,
     Object? remainingSaving = null,
+    Object? walletCash = null,
+    Object? remainingWalletCash = null,
   }) {
     return _then(_$BalanceWithSavingImpl(
       date: null == date
@@ -144,6 +162,14 @@ class __$$BalanceWithSavingImplCopyWithImpl<$Res>
           ? _value.remainingSaving
           : remainingSaving // ignore: cast_nullable_to_non_nullable
               as int,
+      walletCash: null == walletCash
+          ? _value.walletCash
+          : walletCash // ignore: cast_nullable_to_non_nullable
+              as int,
+      remainingWalletCash: null == remainingWalletCash
+          ? _value.remainingWalletCash
+          : remainingWalletCash // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -156,7 +182,9 @@ class _$BalanceWithSavingImpl implements _BalanceWithSaving {
       this.balance = 0,
       this.saving = 0,
       this.remainingBalance = 0,
-      this.remainingSaving = 0});
+      this.remainingSaving = 0,
+      this.walletCash = 0,
+      this.remainingWalletCash = 0});
 
   factory _$BalanceWithSavingImpl.fromJson(Map<String, dynamic> json) =>
       _$$BalanceWithSavingImplFromJson(json);
@@ -176,14 +204,20 @@ class _$BalanceWithSavingImpl implements _BalanceWithSaving {
   @override
   @JsonKey()
   final int remainingSaving;
+  @override
+  @JsonKey()
+  final int walletCash;
+  @override
+  @JsonKey()
+  final int remainingWalletCash;
 
   @override
   String toString() {
-    return 'BalanceWithSaving(date: $date, balance: $balance, saving: $saving, remainingBalance: $remainingBalance, remainingSaving: $remainingSaving)';
+    return 'BalanceWithSaving(date: $date, balance: $balance, saving: $saving, remainingBalance: $remainingBalance, remainingSaving: $remainingSaving, walletCash: $walletCash, remainingWalletCash: $remainingWalletCash)';
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$BalanceWithSavingImpl &&
@@ -193,13 +227,17 @@ class _$BalanceWithSavingImpl implements _BalanceWithSaving {
             (identical(other.remainingBalance, remainingBalance) ||
                 other.remainingBalance == remainingBalance) &&
             (identical(other.remainingSaving, remainingSaving) ||
-                other.remainingSaving == remainingSaving));
+                other.remainingSaving == remainingSaving) &&
+            (identical(other.walletCash, walletCash) ||
+                other.walletCash == walletCash) &&
+            (identical(other.remainingWalletCash, remainingWalletCash) ||
+                other.remainingWalletCash == remainingWalletCash));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, date, balance, saving, remainingBalance, remainingSaving);
+      runtimeType, date, balance, saving, remainingBalance, remainingSaving, walletCash, remainingWalletCash);
 
   @JsonKey(ignore: true)
   @override
@@ -222,7 +260,9 @@ abstract class _BalanceWithSaving implements BalanceWithSaving {
       final int balance,
       final int saving,
       final int remainingBalance,
-      final int remainingSaving}) = _$BalanceWithSavingImpl;
+      final int remainingSaving,
+      final int walletCash,
+      final int remainingWalletCash}) = _$BalanceWithSavingImpl;
 
   factory _BalanceWithSaving.fromJson(Map<String, dynamic> json) =
       _$BalanceWithSavingImpl.fromJson;
@@ -237,6 +277,10 @@ abstract class _BalanceWithSaving implements BalanceWithSaving {
   int get remainingBalance;
   @override
   int get remainingSaving;
+  @override
+  int get walletCash;
+  @override
+  int get remainingWalletCash;
   @override
   @JsonKey(ignore: true)
   _$$BalanceWithSavingImplCopyWith<_$BalanceWithSavingImpl> get copyWith =>

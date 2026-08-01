@@ -2,12 +2,10 @@ import 'package:budget/provider/chart_date_provider.dart';
 import 'package:budget/provider/expense_chart_provider.dart';
 import 'package:budget/provider/income_chart_provider.dart';
 import 'package:budget/utils/util.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:budget/widgets/common_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:graphic/graphic.dart';
-import 'package:path/path.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 final chartCupertinoSlidingValueProvider = StateProvider.autoDispose((ref) {
@@ -20,106 +18,231 @@ class ChartPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      backgroundColor: Colors.grey,
-      appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: Colors.green,
-        title: const Text("分析", style: TextStyle(color: Colors.white)),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _chartContainerWidget(context, ref),
-              _categoryListWidget(ref)
-            ],
+      backgroundColor: const Color(0xFFF5F7FA),
+      body: CustomScrollView(
+        slivers: [
+          const SliverToBoxAdapter(
+            child: CommonHeader(
+              title: '分析',
+              icon: Icons.pie_chart,
+            ),
           ),
-        ),
+          SliverToBoxAdapter(
+            child: _buildContent(context, ref),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _chartCupertinoSlidingWidget(WidgetRef ref) {
-    final cupertinoSlidingValue = ref.watch(chartCupertinoSlidingValueProvider);
-    final cupertinoSlidingValueController =
-        ref.read(chartCupertinoSlidingValueProvider.notifier);
+  Widget _buildContent(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 25.h),
-      child: SizedBox(
-        width: 300.w,
-        child: CupertinoSlidingSegmentedControl(
-          children: {
-            0: Text(
-              "支出",
-              style: TextStyle(
-                color: cupertinoSlidingValue == 0 ? Colors.green : Colors.white,
-                fontSize: 15.sp,
-                fontWeight: FontWeight.bold,
-                fontFamily: "SFProRounded",
-              ),
-              textAlign: TextAlign.center,
-            ),
-            1: Text(
-              "収入",
-              style: TextStyle(
-                color: cupertinoSlidingValue == 1 ? Colors.green : Colors.white,
-                fontSize: 15.sp,
-                fontWeight: FontWeight.bold,
-                fontFamily: "SFProRounded",
-              ),
-              textAlign: TextAlign.center,
-            ),
-          },
-          groupValue: cupertinoSlidingValue,
-          onValueChanged: (index) {
-            cupertinoSlidingValueController.state = index!;
-          },
-          thumbColor: Colors.white,
-          backgroundColor: Colors.green,
-        ),
+      padding: EdgeInsets.all(16.w),
+      child: Column(
+        children: [
+          SizedBox(height: 8.h),
+          _buildChartCard(context, ref),
+          SizedBox(height: 16.h),
+          _buildCategoryListCard(ref),
+          SizedBox(height: 32.h),
+        ],
       ),
     );
   }
 
-  Widget _chartDateWidget(BuildContext context, WidgetRef ref) {
+  Widget _buildChartCard(BuildContext context, WidgetRef ref) {
+    final incomeChartData = ref.watch(incomeChartProvider);
+    final selectedIndex = ref.watch(chartCupertinoSlidingValueProvider);
+    final expenseChartData = ref.watch(expenseChartProvider);
+    final chartDate = ref.watch(chartDateProvider);
+
+    late List<Color> colorList;
+    late int totalAmount;
+    late Map<String, double>? chartData;
+    late String emptyMessage;
+    late String totalLabel;
+    late Color accentColor;
+
+    if (selectedIndex == 0) {
+      colorList = (expenseChartData.colorList[Util.toDate2(chartDate)] ?? [])
+          .map((color) => Color(color))
+          .toList();
+      totalAmount = expenseChartData.totalAmount[Util.toDate2(chartDate)] ?? 0;
+      chartData = expenseChartData.expense[Util.toDate2(chartDate)];
+      emptyMessage = '支出データがありません';
+      totalLabel = '合計支出';
+      accentColor = const Color(0xFFFF5252);
+    } else {
+      colorList = (incomeChartData.colorList[Util.toDate2(chartDate)] ?? [])
+          .map((color) => Color(color))
+          .toList();
+      totalAmount = incomeChartData.totalAmount[Util.toDate2(chartDate)] ?? 0;
+      chartData = incomeChartData.income[Util.toDate2(chartDate)];
+      emptyMessage = '収入データがありません';
+      totalLabel = '合計収入';
+      accentColor = const Color(0xFF00C853);
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          _buildDateSelector(ref),
+          _buildSegmentControl(ref, selectedIndex),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+            child: chartData != null
+                ? Column(
+                    children: [
+                      PieChart(
+                        dataMap: chartData,
+                        animationDuration: const Duration(milliseconds: 800),
+                        chartLegendSpacing: 32.w,
+                        chartRadius: MediaQuery.of(context).size.width / 3.2,
+                        colorList: colorList.isEmpty ? [Colors.grey] : colorList,
+                        initialAngleInDegree: 0,
+                        chartType: ChartType.ring,
+                        ringStrokeWidth: 32.w,
+                        centerText: selectedIndex == 0 ? "支出" : "収入",
+                        centerTextStyle: TextStyle(
+                          fontSize: 15.sp,
+                          color: accentColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        emptyColor: Colors.grey.shade300,
+                        legendOptions: LegendOptions(
+                          showLegendsInRow: false,
+                          legendPosition: LegendPosition.right,
+                          showLegends: true,
+                          legendShape: BoxShape.circle,
+                          legendTextStyle: TextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                            color: const Color(0xFF2D3748),
+                          ),
+                        ),
+                        chartValuesOptions: ChartValuesOptions(
+                          chartValueStyle: TextStyle(fontSize: 14.sp),
+                          showChartValueBackground: false,
+                          showChartValues: false,
+                          showChartValuesInPercentage: false,
+                          showChartValuesOutside: false,
+                          decimalPlaces: 1,
+                        ),
+                      ),
+                      SizedBox(height: 24.h),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                        decoration: BoxDecoration(
+                          color: accentColor.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(12.r),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              totalLabel,
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xFF2D3748),
+                              ),
+                            ),
+                            Text(
+                              '${_formatNumber(totalAmount)}円',
+                              style: TextStyle(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.bold,
+                                color: accentColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                : Container(
+                    padding: EdgeInsets.symmetric(vertical: 48.h),
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.pie_chart_outline,
+                          size: 64.sp,
+                          color: const Color(0xFFA0AEC0),
+                        ),
+                        SizedBox(height: 16.h),
+                        Text(
+                          emptyMessage,
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            color: const Color(0xFF718096),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDateSelector(WidgetRef ref) {
     final chartDate = ref.watch(chartDateProvider);
     final chartDateController = ref.read(chartDateProvider.notifier);
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
+
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 16.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Padding(
-            padding: EdgeInsets.only(right: 10.w),
-            child: IconButton(
-              onPressed: () {
-                chartDateController.decrementDate();
-              },
-              icon: Icon(
+          GestureDetector(
+            onTap: () => chartDateController.decrementDate(),
+            child: Container(
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF7FAFC),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Icon(
                 Icons.chevron_left,
-                color: Colors.green,
-                size: 30.sp,
+                color: const Color(0xFF00C853),
+                size: 24.sp,
               ),
             ),
           ),
-          Text(Util.toDate2(chartDate),
-              style: TextStyle(
-                  fontSize: 20.sp,
-                  color: Colors.green,
-                  fontWeight: FontWeight.bold)),
-          Padding(
-            padding: EdgeInsets.only(left: 10.w),
-            child: IconButton(
-              onPressed: () {
-                chartDateController.incrementChartDate();
-              },
-              icon: Icon(
+          SizedBox(width: 16.w),
+          Text(
+            Util.toDate2(chartDate),
+            style: TextStyle(
+              fontSize: 18.sp,
+              color: const Color(0xFF2D3748),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(width: 16.w),
+          GestureDetector(
+            onTap: () => chartDateController.incrementChartDate(),
+            child: Container(
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF7FAFC),
+                borderRadius: BorderRadius.circular(8.r),
+              ),
+              child: Icon(
                 Icons.chevron_right,
-                color: Colors.green,
-                size: 30.sp,
+                color: const Color(0xFF00C853),
+                size: 24.sp,
               ),
             ),
           ),
@@ -128,308 +251,222 @@ class ChartPage extends ConsumerWidget {
     );
   }
 
-  Widget _chartContainerWidget(BuildContext context, WidgetRef ref) {
-    final incomeChartData = ref.watch(incomeChartProvider);
-    final cupertinoSlidingValue = ref.watch(chartCupertinoSlidingValueProvider);
-    final expeneseChartData = ref.watch(expenseChartProvider);
-    final expenseChartColors = ref.watch(expenseChartProvider);
-    final chartDate = ref.watch(chartDateProvider);
-    late List<Color> colorList;
-    late int totalAmount;
-
-    if (cupertinoSlidingValue == 0) {
-      if (expenseChartColors.colorList[Util.toDate2(chartDate)] != null) {
-        colorList = expenseChartColors.colorList[Util.toDate2(chartDate)]!
-            .map((color) => Color(color))
-            .toList();
-      } else {
-        colorList = [];
-      }
-      if (expeneseChartData.totalAmount[Util.toDate2(chartDate)] != null) {
-        totalAmount = expeneseChartData.totalAmount[Util.toDate2(chartDate)]!;
-      }
-    } else {
-      if (incomeChartData.colorList[Util.toDate2(chartDate)] != null) {
-        colorList = incomeChartData.colorList[Util.toDate2(chartDate)]!
-            .map((color) => Color(color))
-            .toList();
-      } else {
-        colorList = [];
-      }
-      if (incomeChartData.totalAmount[Util.toDate2(chartDate)] != null) {
-        totalAmount = incomeChartData.totalAmount[Util.toDate2(chartDate)]!;
-      }
-    }
-
-    if (cupertinoSlidingValue == 0) {
-      return Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Container(
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(20)),
-            child: Column(
-              children: [
-                _chartDateWidget(context, ref),
-                _chartCupertinoSlidingWidget(ref),
-                Center(
-                    child: expeneseChartData.expense[Util.toDate2(chartDate)] !=
-                            null
-                        ? PieChart(
-                            dataMap: expeneseChartData
-                                .expense[Util.toDate2(chartDate)]!,
-                            animationDuration:
-                                const Duration(milliseconds: 800),
-                            chartLegendSpacing: 32.w,
-                            chartRadius:
-                                MediaQuery.of(context).size.width / 3.2,
-                            colorList: colorList,
-                            initialAngleInDegree: 0,
-                            chartType: ChartType.ring,
-                            ringStrokeWidth: 32.w,
-                            centerText: "支出",
-                            centerTextStyle: TextStyle(
-                                fontSize: 15.sp,
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold),
-                            emptyColor: Colors.green,
-                            legendOptions: LegendOptions(
-                              showLegendsInRow: false,
-                              legendPosition: LegendPosition.right,
-                              showLegends: true,
-                              legendShape: BoxShape.circle,
-                              legendTextStyle: TextStyle(
-                                fontSize: 15.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            chartValuesOptions: ChartValuesOptions(
-                              chartValueStyle: TextStyle(fontSize: 15.sp),
-                              showChartValueBackground: false,
-                              showChartValues: false,
-                              showChartValuesInPercentage: false,
-                              showChartValuesOutside: false,
-                              decimalPlaces: 1,
-                            ),
-                            // gradientList: ---To add gradient colors---
-                            // emptyColorGradient: ---Empty Color gradient---
-                          )
-                        : Padding(
-                            padding: EdgeInsets.only(
-                                top: 80.h,
-                                bottom: MediaQuery.of(context).size.width / 4),
-                            child: Text("現在支出はありません。",
-                                style: TextStyle(
-                                    fontSize: 20.sp,
-                                    color: Colors.green,
-                                    fontWeight: FontWeight.bold)),
-                          )),
-                expeneseChartData.expense[Util.toDate2(chartDate)] != null
-                    ? Padding(
-                        padding: EdgeInsets.only(
-                            top: 30.h, left: 20.w, right: 10.w, bottom: 10.h),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("合計支出:",
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20.sp)),
-                              Text(totalAmount.toString(),
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20.sp))
-                            ]),
-                      )
-                    : const SizedBox()
-              ],
-            )),
-      );
-    } else {
-      return Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Container(
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(20)),
-            child: Column(
-              children: [
-                _chartDateWidget(context, ref),
-                _chartCupertinoSlidingWidget(ref),
-                Center(
-                    child: incomeChartData.income[Util.toDate2(chartDate)] !=
-                            null
-                        ? PieChart(
-                            dataMap: incomeChartData
-                                .income[Util.toDate2(chartDate)]!,
-                            animationDuration:
-                                const Duration(milliseconds: 800),
-                            chartLegendSpacing: 32.w,
-                            chartRadius:
-                                MediaQuery.of(context).size.width / 3.2,
-                            colorList: colorList,
-                            initialAngleInDegree: 0,
-                            chartType: ChartType.ring,
-                            ringStrokeWidth: 32.w,
-                            centerText: "収入",
-                            centerTextStyle: TextStyle(
-                                fontSize: 15.sp,
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold),
-                            emptyColor: Colors.green,
-                            legendOptions: LegendOptions(
-                              showLegendsInRow: false,
-                              legendPosition: LegendPosition.right,
-                              showLegends: true,
-                              legendShape: BoxShape.circle,
-                              legendTextStyle: TextStyle(
-                                fontSize: 15.sp,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            chartValuesOptions: ChartValuesOptions(
-                              chartValueStyle: TextStyle(fontSize: 15.sp),
-                              showChartValueBackground: false,
-                              showChartValues: false,
-                              showChartValuesInPercentage: false,
-                              showChartValuesOutside: false,
-                              decimalPlaces: 1,
-                            ),
-                            // gradientList: ---To add gradient colors---
-                            // emptyColorGradient: ---Empty Color gradient---
-                          )
-                        : Padding(
-                            padding: EdgeInsets.only(
-                                top: 80.h,
-                                bottom: MediaQuery.of(context).size.width / 4),
-                            child: Text("現在収入はありません。",
-                                style: TextStyle(
-                                    fontSize: 20.sp,
-                                    color: Colors.green,
-                                    fontWeight: FontWeight.bold)),
-                          )),
-                incomeChartData.income[Util.toDate2(chartDate)] != null
-                    ? Padding(
-                        padding: EdgeInsets.only(
-                            top: 30.h, left: 20.w, right: 10.w, bottom: 10.h),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("合計収入:",
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20.sp)),
-                              Text(totalAmount.toString(),
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20.sp))
-                            ]),
-                      )
-                    : const SizedBox()
-              ],
-            )),
-      );
-    }
+  Widget _buildSegmentControl(WidgetRef ref, int selectedIndex) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.w),
+      padding: EdgeInsets.all(4.w),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF7FAFC),
+        borderRadius: BorderRadius.circular(12.r),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildSegmentButton(
+              ref: ref,
+              index: 0,
+              selectedIndex: selectedIndex,
+              icon: Icons.arrow_downward,
+              label: '支出',
+              activeColor: const Color(0xFFFF5252),
+            ),
+          ),
+          Expanded(
+            child: _buildSegmentButton(
+              ref: ref,
+              index: 1,
+              selectedIndex: selectedIndex,
+              icon: Icons.arrow_upward,
+              label: '収入',
+              activeColor: const Color(0xFF00C853),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
-  Widget _categoryListWidget(WidgetRef ref) {
-    final expeneseChartData = ref.watch(expenseChartProvider).expense;
-    final expenseChartColors = ref.watch(expenseChartProvider);
-    final expenseChartIcons = ref.watch(expenseChartProvider);
+  Widget _buildSegmentButton({
+    required WidgetRef ref,
+    required int index,
+    required int selectedIndex,
+    required IconData icon,
+    required String label,
+    required Color activeColor,
+  }) {
+    final isSelected = selectedIndex == index;
+    return GestureDetector(
+      onTap: () {
+        ref.read(chartCupertinoSlidingValueProvider.notifier).state = index;
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: EdgeInsets.symmetric(vertical: 12.h),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.white : Colors.transparent,
+          borderRadius: BorderRadius.circular(10.r),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : null,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              icon,
+              size: 18.sp,
+              color: isSelected ? activeColor : const Color(0xFF718096),
+            ),
+            SizedBox(width: 6.w),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 15.sp,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                color: isSelected ? activeColor : const Color(0xFF718096),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryListCard(WidgetRef ref) {
+    final expenseChartData = ref.watch(expenseChartProvider);
     final incomeChartData = ref.watch(incomeChartProvider);
-    final cupertinoSlidingValue = ref.watch(chartCupertinoSlidingValueProvider);
+    final selectedIndex = ref.watch(chartCupertinoSlidingValueProvider);
     final chartDate = ref.watch(chartDateProvider);
+
     late List<Color> colorList;
-    late List<ChartData> chartDateList;
+    late List<ChartData> chartDataList;
     late List<IconData> iconDataList;
+    late String title;
 
-    if (cupertinoSlidingValue == 0) {
-      if (expenseChartColors.colorList[Util.toDate2(chartDate)] != null) {
-        colorList = expenseChartColors.colorList[Util.toDate2(chartDate)]!
-            .map((color) => Color(color))
-            .toList();
-      } else {
-        colorList = [];
-      }
-
-      if (expenseChartIcons.iconList[Util.toDate2(chartDate)] != null) {
-        iconDataList = expenseChartIcons.iconList[Util.toDate2(chartDate)]!
-            .map((icon) => IconData(icon, fontFamily: 'MaterialIcons'))
-            .toList();
-      } else {
-        iconDataList = [];
-      }
-
-      if (expeneseChartData[Util.toDate2(chartDate)] != null) {
-        chartDateList = expeneseChartData[Util.toDate2(chartDate)]!
-            .entries
-            .map((expense) => ChartData(expense.key, expense.value))
-            .toList();
-      } else {
-        chartDateList = [];
-      }
+    if (selectedIndex == 0) {
+      colorList = (expenseChartData.colorList[Util.toDate2(chartDate)] ?? [])
+          .map((color) => Color(color))
+          .toList();
+      iconDataList = (expenseChartData.iconList[Util.toDate2(chartDate)] ?? [])
+          .map((icon) => IconData(icon, fontFamily: 'MaterialIcons'))
+          .toList();
+      chartDataList = (expenseChartData.expense[Util.toDate2(chartDate)] ?? {})
+          .entries
+          .map((e) => ChartData(e.key, e.value))
+          .toList();
+      title = 'カテゴリー別支出';
     } else {
-      if (incomeChartData.colorList[Util.toDate2(chartDate)] != null) {
-        colorList = incomeChartData.colorList[Util.toDate2(chartDate)]!
-            .map((color) => Color(color))
-            .toList();
-      } else {
-        colorList = [];
-      }
-
-      if (incomeChartData.iconList[Util.toDate2(chartDate)] != null) {
-        iconDataList = incomeChartData.iconList[Util.toDate2(chartDate)]!
-            .map((icon) => IconData(icon, fontFamily: 'MaterialIcons'))
-            .toList();
-      } else {
-        iconDataList = [];
-      }
-
-      if (incomeChartData.income[Util.toDate2(chartDate)] != null) {
-        chartDateList = incomeChartData.income[Util.toDate2(chartDate)]!.entries
-            .map((income) => ChartData(income.key, income.value))
-            .toList();
-      } else {
-        chartDateList = [];
-      }
+      colorList = (incomeChartData.colorList[Util.toDate2(chartDate)] ?? [])
+          .map((color) => Color(color))
+          .toList();
+      iconDataList = (incomeChartData.iconList[Util.toDate2(chartDate)] ?? [])
+          .map((icon) => IconData(icon, fontFamily: 'MaterialIcons'))
+          .toList();
+      chartDataList = (incomeChartData.income[Util.toDate2(chartDate)] ?? {})
+          .entries
+          .map((e) => ChartData(e.key, e.value))
+          .toList();
+      title = 'カテゴリー別収入';
     }
 
-    return Padding(
-        padding: const EdgeInsets.all(10),
-        child: Container(
-          width: 380.w,
-          height: 200.h,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20.r)),
-            color: Colors.white,
+    if (chartDataList.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
           ),
-          child: SingleChildScrollView(
-            child: ListView(
-                padding: EdgeInsets.zero,
-                shrinkWrap: true,
-                children: chartDateList.asMap().entries.map((chart) {
-                  int index = chart.key;
-                  return ListTile(
-                    leading: Icon(
-                      iconDataList[index],
-                      size: 25.sp,
-                      color: colorList[index],
-                    ),
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(chart.value.category,
-                            style: TextStyle(fontSize: 21.sp)),
-                        Text(chart.value.amount.toInt().toString(),
-                            style: TextStyle(fontSize: 21.sp)),
-                      ],
-                    ),
-                  );
-                }).toList()),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(16.w),
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF2D3748),
+              ),
+            ),
           ),
-        ));
+          const Divider(height: 1, color: Color(0xFFE2E8F0)),
+          ListView.separated(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: chartDataList.length,
+            separatorBuilder: (context, index) => Padding(
+              padding: EdgeInsets.only(left: 64.w),
+              child: const Divider(height: 1, color: Color(0xFFE2E8F0)),
+            ),
+            itemBuilder: (context, index) {
+              final data = chartDataList[index];
+              return Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(10.w),
+                      decoration: BoxDecoration(
+                        color: colorList[index].withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      child: Icon(
+                        iconDataList[index],
+                        size: 22.sp,
+                        color: colorList[index],
+                      ),
+                    ),
+                    SizedBox(width: 16.w),
+                    Expanded(
+                      child: Text(
+                        data.category,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xFF2D3748),
+                        ),
+                      ),
+                    ),
+                    Text(
+                      '${_formatNumber(data.amount.toInt())}円',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF2D3748),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatNumber(int number) {
+    return number.toString().replaceAllMapped(
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (Match m) => '${m[1]},',
+    );
   }
 }
 

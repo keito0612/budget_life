@@ -15,6 +15,9 @@ _$IncomeImpl _$$IncomeImplFromJson(Map<String, dynamic> json) => _$IncomeImpl(
       icon: json['icon'] as int?,
       color: json['color'] as int?,
       categoryIndex: json['categoryIndex'] as int?,
+      walletId: json['walletId'] as int? ?? 1,
+      savingsAmount: json['savingsAmount'] as String? ?? "",
+      walletCashAmount: json['walletCashAmount'] as String? ?? "",
     );
 
 Map<String, dynamic> _$$IncomeImplToJson(_$IncomeImpl instance) =>
@@ -27,4 +30,7 @@ Map<String, dynamic> _$$IncomeImplToJson(_$IncomeImpl instance) =>
       'icon': instance.icon,
       'color': instance.color,
       'categoryIndex': instance.categoryIndex,
+      'walletId': instance.walletId,
+      'savingsAmount': instance.savingsAmount,
+      'walletCashAmount': instance.walletCashAmount,
     };

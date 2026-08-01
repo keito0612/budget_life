@@ -1,5 +1,6 @@
 import 'package:budget/states/ad_banner_state.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -36,9 +37,9 @@ class AdBannerNotifier extends StateNotifier<AdBannerState> {
 
   String get _bannerAdUnitId {
     if (kDebugMode) {
-      return "ca-app-pub-3940256099942544/6300978111";
+      return dotenv.env['BANNER_AD_UNIT_ID_DEBUG'] ?? '';
     } else {
-      return "ca-app-pub-8369847853540237/5141266914";
+      return dotenv.env['BANNER_AD_UNIT_ID_PROD'] ?? '';
     }
   }
 

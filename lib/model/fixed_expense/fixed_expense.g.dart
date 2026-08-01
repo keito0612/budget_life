@@ -18,6 +18,7 @@ _$FixedExpenseImpl _$$FixedExpenseImplFromJson(Map<String, dynamic> json) =>
       icon: json['icon'] as int?,
       color: json['color'] as int?,
       categoryIndex: json['categoryIndex'] as int?,
+      walletId: json['walletId'] as int? ?? 1,
     );
 
 Map<String, dynamic> _$$FixedExpenseImplToJson(_$FixedExpenseImpl instance) =>
@@ -32,4 +33,5 @@ Map<String, dynamic> _$$FixedExpenseImplToJson(_$FixedExpenseImpl instance) =>
       'icon': instance.icon,
       'color': instance.color,
       'categoryIndex': instance.categoryIndex,
+      'walletId': instance.walletId,
     };

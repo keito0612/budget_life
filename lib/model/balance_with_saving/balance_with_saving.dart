@@ -10,6 +10,8 @@ abstract class BalanceWithSaving with _$BalanceWithSaving {
     @Default(0) int saving,
     @Default(0) int remainingBalance,
     @Default(0) int remainingSaving,
+    @Default(0) int walletCash,
+    @Default(0) int remainingWalletCash,
   }) = _BalanceWithSaving;
   factory BalanceWithSaving.fromJson(Map<String, dynamic> json) =>
       _$BalanceWithSavingFromJson(json);

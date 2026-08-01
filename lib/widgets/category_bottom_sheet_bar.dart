@@ -22,8 +22,8 @@ class categoryBottomSheetBarButtom extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Expanded(
-      flex: 3,
+    return Padding(
+      padding: EdgeInsets.only(right: 8.w),
       child: IconButton(
           onPressed: () async {
             await showBottomModelSheet(
@@ -38,7 +38,7 @@ class categoryBottomSheetBarButtom extends ConsumerWidget {
     return await showModalBottomSheet<void>(
       context: context,
       constraints: BoxConstraints(
-        maxWidth:  MediaQuery.of(context).size.width,              
+        maxWidth: MediaQuery.of(context).size.width,
       ),
       builder: (BuildContext context) {
         return Container(

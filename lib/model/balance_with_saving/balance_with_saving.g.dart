@@ -14,6 +14,8 @@ _$BalanceWithSavingImpl _$$BalanceWithSavingImplFromJson(
       saving: json['saving'] as int? ?? 0,
       remainingBalance: json['remainingBalance'] as int? ?? 0,
       remainingSaving: json['remainingSaving'] as int? ?? 0,
+      walletCash: json['walletCash'] as int? ?? 0,
+      remainingWalletCash: json['remainingWalletCash'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$$BalanceWithSavingImplToJson(
@@ -24,4 +26,6 @@ Map<String, dynamic> _$$BalanceWithSavingImplToJson(
       'saving': instance.saving,
       'remainingBalance': instance.remainingBalance,
       'remainingSaving': instance.remainingSaving,
+      'walletCash': instance.walletCash,
+      'remainingWalletCash': instance.remainingWalletCash,
     };

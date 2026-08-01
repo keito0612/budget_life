@@ -62,58 +62,294 @@ class PassCodeRockSetting extends ConsumerWidget {
     final passcodeController = ref.read(passcodeProvider.notifier);
     final faceId = ref.watch(faceProvider);
     final faceIdController = ref.read(faceProvider.notifier);
+
     return Scaffold(
-      backgroundColor: Colors.grey,
-      appBar: AppBar(
-        title: const Text("パスコードロック", style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.green,
-        iconTheme: const IconThemeData(color: Colors.white),
+      backgroundColor: const Color(0xFFF5F7FA),
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: _buildHeader(context),
+          ),
+          SliverToBoxAdapter(
+            child: _buildContent(
+              context,
+              ref,
+              passcode,
+              passcodeController,
+              faceId,
+              faceIdController,
+            ),
+          ),
+        ],
       ),
-      body: Center(
-        child: Container(
-          width: 380.w,
-          height: 230.h,
-          decoration: BoxDecoration(
-            color: Colors.green,
-            borderRadius: BorderRadius.all(Radius.circular(50.r)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black38,
-                offset: Offset(2.0.r, 2.0.r),
-                blurRadius: 4.0.r,
-                spreadRadius: 4.0.r,
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(20.0.r),
-                child: CupertinoSwitchTile(
-                    title: "パスコードロック",
-                    value: passcode,
-                    onChanged: (bool value) {
-                      passcodeController.setPasscode(value);
-                      if (value == true) {
-                        PasscodeLockSettingScreen.passcodeLockSettingScreen(
-                            context, ref);
-                      }
-                    }),
-              ),
-              passcode == true
-                  ? Padding(
-                      padding: EdgeInsets.all(20.0.r),
-                      child: CupertinoSwitchTile(
-                          title: "顔認証",
-                          value: passcode == true ? faceId : false,
-                          onChanged: (bool value) {
-                            faceIdController.setFaceId(value);
-                          }),
-                    )
-                  : const SizedBox()
-            ],
-          ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(20.w, 60.h, 20.w, 24.h),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFF00C853), Color(0xFF00E676)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(32.r),
+          bottomRight: Radius.circular(32.r),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF00C853).withValues(alpha: 0.3),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Container(
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20.sp),
+            ),
+          ),
+          SizedBox(width: 16.w),
+          Icon(Icons.lock, color: Colors.white, size: 28.sp),
+          SizedBox(width: 12.w),
+          Text(
+            'パスコードロック',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24.sp,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContent(
+    BuildContext context,
+    WidgetRef ref,
+    bool passcode,
+    PasscodeNotifier passcodeController,
+    bool faceId,
+    FaceIdNotifier faceIdController,
+  ) {
+    return Padding(
+      padding: EdgeInsets.all(16.w),
+      child: Column(
+        children: [
+          SizedBox(height: 8.h),
+          _buildSettingsCard(
+            context,
+            ref,
+            passcode,
+            passcodeController,
+            faceId,
+            faceIdController,
+          ),
+          SizedBox(height: 24.h),
+          _buildInfoCard(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSettingsCard(
+    BuildContext context,
+    WidgetRef ref,
+    bool passcode,
+    PasscodeNotifier passcodeController,
+    bool faceId,
+    FaceIdNotifier faceIdController,
+  ) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+            child: Row(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(10.w),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF7E57C2).withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  child: Icon(
+                    Icons.lock_outline,
+                    color: const Color(0xFF7E57C2),
+                    size: 22.sp,
+                  ),
+                ),
+                SizedBox(width: 16.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'パスコードロック',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF2D3748),
+                        ),
+                      ),
+                      SizedBox(height: 2.h),
+                      Text(
+                        passcode ? '有効' : '無効',
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          color: const Color(0xFF718096),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                CupertinoSwitchTile(
+                  title: "",
+                  value: passcode,
+                  onChanged: (bool value) {
+                    passcodeController.setPasscode(value);
+                    if (value == true) {
+                      PasscodeLockSettingScreen.passcodeLockSettingScreen(context, ref);
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+          if (passcode) ...[
+            Padding(
+              padding: EdgeInsets.only(left: 64.w),
+              child: const Divider(height: 1, color: Color(0xFFE2E8F0)),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+              child: Row(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(10.w),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF42A5F5).withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Icon(
+                      Icons.face,
+                      color: const Color(0xFF42A5F5),
+                      size: 22.sp,
+                    ),
+                  ),
+                  SizedBox(width: 16.w),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '顔認証 / Touch ID',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF2D3748),
+                          ),
+                        ),
+                        SizedBox(height: 2.h),
+                        Text(
+                          faceId ? '有効' : '無効',
+                          style: TextStyle(
+                            fontSize: 13.sp,
+                            color: const Color(0xFF718096),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  CupertinoSwitchTile(
+                    title: "",
+                    value: faceId,
+                    onChanged: (bool value) {
+                      faceIdController.setFaceId(value);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoCard() {
+    return Container(
+      padding: EdgeInsets.all(16.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(
+          color: const Color(0xFFE2E8F0),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: EdgeInsets.all(10.w),
+            decoration: BoxDecoration(
+              color: const Color(0xFF00C853).withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            child: Icon(
+              Icons.security,
+              color: const Color(0xFF00C853),
+              size: 22.sp,
+            ),
+          ),
+          SizedBox(width: 16.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'セキュリティについて',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF2D3748),
+                  ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  'パスコードを設定すると、アプリ起動時にロックがかかります。顔認証を有効にすると、より便利にご利用いただけます。',
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    color: const Color(0xFF718096),
+                    height: 1.4,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -9,7 +9,10 @@ class DateBaseHelper {
   DateBaseHelper._();
   static final DateBaseHelper db = DateBaseHelper._();
   static const _databaseName = "budget.db";
-  static const _databaseVersion = 1;
+  static const _databaseVersion = 5;
+  static const columnSavingsAmount = 'savingsAmount';
+  static const columnWalletCashAmount = 'walletCashAmount';
+  static const columnIsSavings = 'isSavings';
   static const tableExpense = 'expense';
   static const tableIncome = 'income';
   static const tableRecurringIncome = 'recurring_income';
@@ -18,6 +21,8 @@ class DateBaseHelper {
   static const tableCategoryIncome = 'category_income';
   static const tableAccounts = 'accounts';
   static const tableUsers = 'users';
+  static const tableWallet = 'wallet';
+  static const tableTransfer = 'transfer';
   static const columnId = 'id';
   static const columnAmount = 'amount';
   static const columnAutoMaticInputDate = "autoMaticInputDate";
@@ -39,6 +44,11 @@ class DateBaseHelper {
   static const columnIcon = 'icon';
   static const columnColor = 'color';
   static const columnCategoryIndex = 'categoryIndex';
+  static const columnWalletId = 'walletId';
+  static const columnIsDefault = 'isDefault';
+  static const columnSortOrder = 'sortOrder';
+  static const columnFromWalletId = 'fromWalletId';
+  static const columnToWalletId = 'toWalletId';
   static Database? _database;
 
   final List<Category> initializeCategoryExpenses = [
@@ -104,31 +114,84 @@ class DateBaseHelper {
     //データベースを作成
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
-    final Future<Database> _database = openDatabase(
+    final Future<Database> database = openDatabase(
       path,
       onCreate: (db, version) async {
         await db.execute(
             // テーブルの作成
-            "CREATE TABLE $tableExpense ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnAmount TEXT , $columnDate TEXT,$columnMemo TEXT, $columnCategory  TEXT, $columnIcon INTEGER , $columnColor INTEGER , $columnCategoryIndex  INTEGER  )");
+            "CREATE TABLE $tableExpense ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnAmount TEXT , $columnDate TEXT,$columnMemo TEXT, $columnCategory  TEXT, $columnIcon INTEGER , $columnColor INTEGER , $columnCategoryIndex  INTEGER, $columnWalletId INTEGER DEFAULT 1  )");
         await db.execute(
-            "CREATE TABLE $tableIncome ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnAmount TEXT , $columnDate TEXT,$columnMemo TEXT, $columnCategory  TEXT, $columnIcon INTEGER, $columnColor INTEGER , $columnCategoryIndex INTEGER  )");
+            "CREATE TABLE $tableIncome ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnAmount TEXT , $columnDate TEXT,$columnMemo TEXT, $columnCategory  TEXT, $columnIcon INTEGER, $columnColor INTEGER , $columnCategoryIndex INTEGER, $columnWalletId INTEGER DEFAULT 1, $columnSavingsAmount TEXT DEFAULT '', $columnWalletCashAmount TEXT DEFAULT ''  )");
         await db.execute(
             "CREATE TABLE $tableCategoryExpense ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnCategory TEXT , $columnIcon INTEGER,$columnColor INTEGER )");
         await db.execute(
             "CREATE TABLE $tableCategoryIncome ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnCategory TEXT , $columnIcon INTEGER,$columnColor INTEGER )");
         await db.execute(
-            "CREATE TABLE $tableFixedExpense ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnAmount TEXT , $columnAutoMaticInputDate TEXT,$columnAutoMaticInputDay INTEGER , $columnAutoMaticInputDateIndex INTEGER ,  $columnMemo TEXT, $columnCategory  TEXT, $columnIcon INTEGER , $columnColor INTEGER , $columnCategoryIndex  INTEGER  )");
+            "CREATE TABLE $tableFixedExpense ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnAmount TEXT , $columnAutoMaticInputDate TEXT,$columnAutoMaticInputDay INTEGER , $columnAutoMaticInputDateIndex INTEGER ,  $columnMemo TEXT, $columnCategory  TEXT, $columnIcon INTEGER , $columnColor INTEGER , $columnCategoryIndex  INTEGER, $columnWalletId INTEGER DEFAULT 1  )");
         await db.execute(
-            "CREATE TABLE $tableRecurringIncome  ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnAmount TEXT , $columnAutoMaticInputDate TEXT,$columnAutoMaticInputDay INTEGER , $columnAutoMaticInputDateIndex INTEGER , $columnMemo TEXT, $columnCategory  TEXT, $columnIcon INTEGER , $columnColor INTEGER , $columnCategoryIndex  INTEGER  )");
+            "CREATE TABLE $tableRecurringIncome  ($columnId INTEGER PRIMARY KEY AUTOINCREMENT,$columnAmount TEXT , $columnAutoMaticInputDate TEXT,$columnAutoMaticInputDay INTEGER , $columnAutoMaticInputDateIndex INTEGER , $columnMemo TEXT, $columnCategory  TEXT, $columnIcon INTEGER , $columnColor INTEGER , $columnCategoryIndex  INTEGER, $columnWalletId INTEGER DEFAULT 1  )");
+        await db.execute(
+            "CREATE TABLE $tableWallet ($columnId INTEGER PRIMARY KEY AUTOINCREMENT, $columnName TEXT, $columnIcon INTEGER, $columnColor INTEGER, $columnBalance INTEGER DEFAULT 0, $columnIsDefault INTEGER DEFAULT 0, $columnSortOrder INTEGER DEFAULT 0, $columnIsSavings INTEGER DEFAULT 0)");
+        await db.execute(
+            "CREATE TABLE $tableTransfer ($columnId INTEGER PRIMARY KEY AUTOINCREMENT, $columnFromWalletId INTEGER, $columnToWalletId INTEGER, $columnAmount TEXT, $columnDate TEXT, $columnMemo TEXT)");
         for (var category in initializeCategoryExpenses) {
           await db.insert(tableCategoryExpense, category.toJson());
         }
         for (var category in initializeCategoryIncomes) {
           await db.insert(tableCategoryIncome, category.toJson());
         }
+        // 初期ウォレットを作成
+        await _insertInitialWallets(db);
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          // ウォレットテーブルを作成
+          await db.execute(
+              "CREATE TABLE $tableWallet ($columnId INTEGER PRIMARY KEY AUTOINCREMENT, $columnName TEXT, $columnIcon INTEGER, $columnColor INTEGER, $columnBalance INTEGER DEFAULT 0, $columnIsDefault INTEGER DEFAULT 0, $columnSortOrder INTEGER DEFAULT 0)");
+          // 既存テーブルにwalletIdカラムを追加
+          await db.execute("ALTER TABLE $tableExpense ADD COLUMN $columnWalletId INTEGER DEFAULT 1");
+          await db.execute("ALTER TABLE $tableIncome ADD COLUMN $columnWalletId INTEGER DEFAULT 1");
+          await db.execute("ALTER TABLE $tableFixedExpense ADD COLUMN $columnWalletId INTEGER DEFAULT 1");
+          await db.execute("ALTER TABLE $tableRecurringIncome ADD COLUMN $columnWalletId INTEGER DEFAULT 1");
+          // 初期ウォレットを作成
+          await _insertInitialWallets(db);
+        }
+        if (oldVersion < 3) {
+          // 振替テーブルを作成
+          await db.execute(
+              "CREATE TABLE $tableTransfer ($columnId INTEGER PRIMARY KEY AUTOINCREMENT, $columnFromWalletId INTEGER, $columnToWalletId INTEGER, $columnAmount TEXT, $columnDate TEXT, $columnMemo TEXT)");
+        }
+        if (oldVersion < 4) {
+          // ウォレットテーブルにisSavingsカラムを追加
+          await db.execute("ALTER TABLE $tableWallet ADD COLUMN $columnIsSavings INTEGER DEFAULT 0");
+        }
+        if (oldVersion < 5) {
+          // 収入テーブルに貯金額と財布入金額カラムを追加
+          await db.execute("ALTER TABLE $tableIncome ADD COLUMN $columnSavingsAmount TEXT DEFAULT ''");
+          await db.execute("ALTER TABLE $tableIncome ADD COLUMN $columnWalletCashAmount TEXT DEFAULT ''");
+        }
       },
       version: _databaseVersion,
     );
-    return _database;
+    return database;
+  }
+
+  Future<void> _insertInitialWallets(Database db) async {
+    await db.insert(tableWallet, {
+      columnName: '財布',
+      columnIcon: Icons.account_balance_wallet.codePoint,
+      columnColor: Colors.green.toARGB32(),
+      columnBalance: 0,
+      columnIsDefault: 1,
+      columnSortOrder: 0,
+    });
+    await db.insert(tableWallet, {
+      columnName: '銀行',
+      columnIcon: Icons.account_balance.codePoint,
+      columnColor: Colors.blue.toARGB32(),
+      columnBalance: 0,
+      columnIsDefault: 0,
+      columnSortOrder: 1,
+    });
   }
 }

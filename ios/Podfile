@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-platform :ios, '12.0'
+platform :ios, '14.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -44,7 +44,11 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
     target.build_configurations.each do |config|
-       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
+      # Force C++17/20 for all targets to fix template issues with newer Xcode
+      config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++20'
+      # Fix for gRPC template issues in Xcode 15+
+      config.build_settings['OTHER_CPLUSPLUSFLAGS'] = '$(inherited) -DGRPC_ARES=0 -fno-cxx-modules'
     end
     if target.name == 'BoringSSL-GRPC'
       target.source_build_phase.files.each do |file|
@@ -53,6 +57,15 @@ post_install do |installer|
           flags.reject! { |flag| flag == '-GCC_WARN_INHIBIT_ALL_WARNINGS' }
           file.settings['COMPILER_FLAGS'] = flags.join(' ')
         end
+      end
+    end
+    # Additional fix for gRPC
+    if target.name.start_with?('gRPC')
+      target.build_configurations.each do |config|
+        config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++20'
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'GRPC_ARES=0'
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'GRPC_XDS_USER_AGENT_IS_CSHARP=1'
       end
     end
   end

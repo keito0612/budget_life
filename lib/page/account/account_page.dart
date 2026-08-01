@@ -18,253 +18,377 @@ class AccountPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userState = ref.watch(userStateProvider);
     return Scaffold(
-        backgroundColor: Colors.grey,
-        appBar: AppBar(
-          backgroundColor: Colors.green,
-          iconTheme: const IconThemeData(color: Colors.white),
-          title: const Text("アカウント", style: TextStyle(color: Colors.white)),
-        ),
-        body: userState.when(
-          data: (user) {
-            if (user != null) {
-              return _loggedInScreen(context, ref, user);
-            } else {
-              return _sinInScreen(context);
-            }
-          },
-          error: (error, stackTrace) => Center(child: Text("$errorが出ています。")),
-          loading: () => const CircularProgressIndicator(
-            color: Colors.green,
-            backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF5F7FA),
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: _buildHeader(context),
           ),
-        ));
+          SliverToBoxAdapter(
+            child: userState.when(
+              data: (user) {
+                if (user != null) {
+                  return _buildLoggedInContent(context, ref, user);
+                } else {
+                  return _buildSignInContent(context);
+                }
+              },
+              error: (error, stackTrace) => Center(
+                child: Padding(
+                  padding: EdgeInsets.all(32.w),
+                  child: Text(
+                    "エラー: $error",
+                    style: TextStyle(
+                      fontSize: 14.sp,
+                      color: const Color(0xFFFF5252),
+                    ),
+                  ),
+                ),
+              ),
+              loading: () => Padding(
+                padding: EdgeInsets.all(32.w),
+                child: const Center(
+                  child: CircularProgressIndicator(color: Color(0xFF00C853)),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
-  Widget _loggedInScreen(BuildContext context, WidgetRef ref, User user) {
-    return Center(
-        child: Column(
-      children: [
-        _userEmailWidget(user, context),
-        Container(
-          width: double.infinity,
-          child: Column(
+  Widget _buildHeader(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(20.w, 60.h, 20.w, 24.h),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFF00C853), Color(0xFF00E676)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(32.r),
+          bottomRight: Radius.circular(32.r),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF00C853).withValues(alpha: 0.3),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Container(
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20.sp),
+            ),
+          ),
+          SizedBox(width: 16.w),
+          Icon(Icons.person, color: Colors.white, size: 28.sp),
+          SizedBox(width: 12.w),
+          Text(
+            'アカウント',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24.sp,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLoggedInContent(BuildContext context, WidgetRef ref, User user) {
+    return Padding(
+      padding: EdgeInsets.all(16.w),
+      child: Column(
+        children: [
+          SizedBox(height: 8.h),
+          _buildUserCard(user),
+          SizedBox(height: 24.h),
+          _buildActionButtons(context, ref),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUserCard(User user) {
+    return Container(
+      padding: EdgeInsets.all(24.w),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(
+              color: const Color(0xFF00C853).withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(50.r),
+            ),
+            child: Icon(
+              Icons.person,
+              color: const Color(0xFF00C853),
+              size: 32.sp,
+            ),
+          ),
+          SizedBox(width: 16.w),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'ログイン中',
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: const Color(0xFF718096),
+                  ),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  user.email ?? 'メールアドレス未設定',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF2D3748),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButtons(BuildContext context, WidgetRef ref) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          _buildActionButton(
+            icon: Icons.sync,
+            iconColor: const Color(0xFF42A5F5),
+            title: 'データを同期する',
+            onTap: () => _syncDialog(context, ref),
+          ),
+          _buildDivider(),
+          _buildActionButton(
+            icon: Icons.logout,
+            iconColor: const Color(0xFFFFB300),
+            title: 'サインアウト',
+            onTap: () async {
+              await ref.watch(authRepositoryImplProvider).signOut();
+            },
+          ),
+          _buildDivider(),
+          _buildActionButton(
+            icon: Icons.delete_forever,
+            iconColor: const Color(0xFFFF5252),
+            title: '退会',
+            titleColor: const Color(0xFFFF5252),
+            onTap: () => _unsubscribeDialog(context, ref),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButton({
+    required IconData icon,
+    required Color iconColor,
+    required String title,
+    Color? titleColor,
+    required VoidCallback onTap,
+  }) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+          child: Row(
             children: [
-              _dateSyncButton(context, ref),
-              _signOutButton(ref),
-              _unsubscribeButton(context, ref)
+              Container(
+                padding: EdgeInsets.all(10.w),
+                decoration: BoxDecoration(
+                  color: iconColor.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+                child: Icon(icon, color: iconColor, size: 22.sp),
+              ),
+              SizedBox(width: 16.w),
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: titleColor ?? const Color(0xFF2D3748),
+                  ),
+                ),
+              ),
+              Icon(
+                Icons.chevron_right,
+                color: const Color(0xFFA0AEC0),
+                size: 24.sp,
+              ),
             ],
           ),
-        )
-      ],
-    ));
+        ),
+      ),
+    );
   }
 
-  Widget _sinInScreen(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(8.0.r),
-        child: Column(
-          children: [
-            Icon(
-              Icons.cloud_rounded,
+  Widget _buildDivider() {
+    return Padding(
+      padding: EdgeInsets.only(left: 64.w),
+      child: const Divider(height: 1, color: Color(0xFFE2E8F0)),
+    );
+  }
+
+  Widget _buildSignInContent(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(16.w),
+      child: Column(
+        children: [
+          SizedBox(height: 32.h),
+          Container(
+            padding: EdgeInsets.all(24.w),
+            decoration: BoxDecoration(
               color: Colors.white,
-              size: 100.sp,
+              borderRadius: BorderRadius.circular(24.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.05),
+                  blurRadius: 20,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 10.h),
-              child: Text(
-                "データをバックアップ",
-                style: TextStyle(fontSize: 30.sp, color: Colors.white),
-              ),
-            ),
-            SizedBox(height: 50.h),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.green,
-                borderRadius: BorderRadius.all(Radius.circular(50.r)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black38,
-                    offset: Offset(2.0.r, 2.0.r),
-                    blurRadius: 4.0.r,
-                    spreadRadius: 4.0.r,
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(24.w),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF00C853).withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(50.r),
                   ),
-                ],
-              ),
-              width: 300.w,
-              height: 250.h,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 50.h, bottom: 50.h),
-                    child: SizedBox(
-                      width: 250.w,
-                      height: 50.h,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AccountCreatePage()));
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r),
-                          ),
-                          side: BorderSide(
-                            color: Colors.white, //色
-                            width: 3.w, //太さ
-                          ),
-                        ),
-                        child: Text(
-                          "アカウント作成",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20.sp),
-                        ),
+                  child: Icon(
+                    Icons.cloud,
+                    color: const Color(0xFF00C853),
+                    size: 64.sp,
+                  ),
+                ),
+                SizedBox(height: 24.h),
+                Text(
+                  'データをバックアップ',
+                  style: TextStyle(
+                    fontSize: 22.sp,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF2D3748),
+                  ),
+                ),
+                SizedBox(height: 8.h),
+                Text(
+                  'アカウントを作成してデータを安全に保存しましょう',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: const Color(0xFF718096),
+                  ),
+                ),
+                SizedBox(height: 32.h),
+                SizedBox(
+                  width: double.infinity,
+                  height: 56.h,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF00C853),
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AccountCreatePage()),
+                      );
+                    },
+                    child: Text(
+                      'アカウント作成',
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  SizedBox(
-                    width: 250.w,
-                    height: 50.h,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AccountLoginPage()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                        side: BorderSide(
-                          color: Colors.white,
-                          width: 3.w,
-                        ),
+                ),
+                SizedBox(height: 12.h),
+                SizedBox(
+                  width: double.infinity,
+                  height: 56.h,
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: const Color(0xFF00C853),
+                      side: const BorderSide(color: Color(0xFF00C853), width: 2),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.r),
                       ),
-                      child: Text(
-                        "ログイン",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.sp),
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AccountLoginPage()),
+                      );
+                    },
+                    child: Text(
+                      'ログイン',
+                      style: TextStyle(
+                        fontSize: 18.sp,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  Widget _dateSyncButton(BuildContext context, WidgetRef ref) {
-    return Padding(
-        padding: EdgeInsets.only(top: 50.h),
-        child: SizedBox(
-          width: 300.w,
-          height: 50.h,
-          child: ElevatedButton(
-            onPressed: () async {
-              _syncDialog(context, ref);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-              side: BorderSide(
-                color: Colors.white, //色
-                width: 3.w, //太さ
-              ),
-            ),
-            child: Text(
-              "データを同期する",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.sp),
-            ),
-          ),
-        ));
-  }
-
-  Widget _signOutButton(WidgetRef ref) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: 30.h,
-      ),
-      child: SizedBox(
-        width: 300.w,
-        height: 50.h,
-        child: ElevatedButton(
-          onPressed: () async {
-            await ref.watch(authRepositoryImplProvider).signOut();
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.r),
-            ),
-            side: BorderSide(
-              color: Colors.white, //色
-              width: 3.w, //太さ
-            ),
-          ),
-          child: Text(
-            "サインアウト",
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20.sp),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _unsubscribeButton(BuildContext context, WidgetRef ref) {
-    return Padding(
-      padding: EdgeInsets.only(
-        top: 30.h,
-      ),
-      child: SizedBox(
-        width: 300.w,
-        height: 50.h,
-        child: ElevatedButton(
-          onPressed: () async {
-            await _unsubscribeDialog(context, ref);
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.green,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.r),
-            ),
-            side: BorderSide(
-              color: Colors.white, //色
-              width: 3.w, //太さ
-            ),
-          ),
-          child: Text(
-            "退会",
-            style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 20.sp),
-          ),
-        ),
-      ),
-    );
-  }
-
-  //追加ダイアログ
   Future _syncDialog(BuildContext context, WidgetRef ref) async {
     final rewardNotifier = ref.watch(rewardAdProvider.notifier)..loadRewardAd();
     final isLoaded = ref.read(rewardAdProvider).isLoaded;
@@ -278,28 +402,42 @@ class AccountPage extends ConsumerWidget {
         });
       }
       await LoadingWidget.easyLoadingDismiss();
-      await _dialogResult(context);
+      if (context.mounted) {
+        await _showSuccessDialog(context);
+      }
     } on Exception catch (e) {
-      print(e);
       await LoadingWidget.easyLoadingDismiss();
-      await _dialogError(e.toString(), context);
+      if (context.mounted) {
+        await _showErrorDialog(e.toString(), context);
+      }
     } catch (e) {
       await LoadingWidget.easyLoadingDismiss();
-      await _dialogError(e.toString(), context);
+      if (context.mounted) {
+        await _showErrorDialog(e.toString(), context);
+      }
     }
   }
 
-  //成功した時のダイアログー
-  Future _dialogResult(BuildContext context) async {
+  Future _showSuccessDialog(BuildContext context) async {
     await showCupertinoDialog(
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: const Text('データを同期しました。'),
-          content: const Text(''),
-          actions: <Widget>[
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.check_circle, color: const Color(0xFF00C853), size: 24.sp),
+              SizedBox(width: 8.w),
+              const Text('完了'),
+            ],
+          ),
+          content: Padding(
+            padding: EdgeInsets.only(top: 12.h),
+            child: const Text('データを同期しました。'),
+          ),
+          actions: [
             TextButton(
-              child: const Text('OK'),
+              child: const Text('OK', style: TextStyle(color: Color(0xFF00C853))),
               onPressed: () async {
                 Navigator.of(context).pop();
                 Navigator.of(context).pop();
@@ -311,56 +449,32 @@ class AccountPage extends ConsumerWidget {
     );
   }
 
-  //エラーダイアログ
-  Future _dialogError(String error, BuildContext context) async {
+  Future _showErrorDialog(String error, BuildContext context) async {
     await showCupertinoDialog(
-        context: context,
-        builder: (context) {
-          return CupertinoAlertDialog(
-            title: const Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children:  [
-                Icon(
-                  Icons.error_outline_rounded,
-                  color: Colors.red,
-                ),
-                Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("エラーが発生しました"),
-                )
-              ],
-            ),
-            content: Column(
-              children: [
-                Text(error),
-              ],
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.error_outline, color: Colors.red, size: 24.sp),
+              SizedBox(width: 8.w),
+              const Text('エラー'),
             ],
-          );
-        });
-  }
-
-  Widget _userEmailWidget(User user, BuildContext context) {
-    return Container(
-        width: double.infinity,
-        height: MediaQuery.of(context).size.height / 3,
-        color: Colors.white,
-        child: Center(
-          child: Text(
-            "メールアドレス：${user.email}",
-            style: TextStyle(
-                color: Colors.green,
-                fontWeight: FontWeight.bold,
-                fontSize: 20.sp),
           ),
-        ));
+          content: Padding(
+            padding: EdgeInsets.only(top: 12.h),
+            child: Text(error),
+          ),
+          actions: [
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () => Navigator.of(context).pop(),
+            )
+          ],
+        );
+      },
+    );
   }
 
   Future _unsubscribeDialog(BuildContext context, WidgetRef ref) async {
@@ -368,17 +482,25 @@ class AccountPage extends ConsumerWidget {
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: const Text('退会しますか?'),
-          content: const Text(
-            '退会するとあなたのアカウントはクラウドから削除され、使用できなくなります。',
-            textAlign: TextAlign.left,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.warning_amber_rounded, color: const Color(0xFFFFB300), size: 24.sp),
+              SizedBox(width: 8.w),
+              const Text('確認'),
+            ],
           ),
-          actions: <Widget>[
+          content: Padding(
+            padding: EdgeInsets.only(top: 12.h),
+            child: const Text(
+              '退会するとアカウントはクラウドから削除され、使用できなくなります。',
+              textAlign: TextAlign.center,
+            ),
+          ),
+          actions: [
             TextButton(
-              child: const Text('キョンセル'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              child: const Text('キャンセル'),
+              onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
               child: const Text('退会する', style: TextStyle(color: Colors.red)),
