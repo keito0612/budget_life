@@ -404,6 +404,7 @@ class _BalanceSavingSettingsPageState
     try {
       await prefs.setInt("balanse", _balance);
       await prefs.setInt("total_savings", _saving);
+      await prefs.setInt("saving", _saving); // 初期貯金額をゲージの最大値として設定
       await prefs.setInt("wallet_cash", _walletCash);
       await model.getBalanseWithSaving();
       if (mounted) {
