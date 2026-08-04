@@ -212,6 +212,8 @@ class BalanceWithSavingModel extends StateNotifier<BalanceWithSaving> {
 
     // 次の月のために現在の残高を保存
     await _saveCurrentBalanceForNextMonth(result.remainingBalance, result.remainingWalletCash);
+    // 貯金額を保存（切り崩しが反映されるように）
+    await _prefs.setInt("total_savings", result.remainingSaving);
   }
 
   int _deductExpenses(int income, int expense) {
