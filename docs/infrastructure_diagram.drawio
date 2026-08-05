@@ -1,0 +1,263 @@
+<mxfile host="app.diagrams.net" modified="2026-08-05T10:00:00.000Z" agent="draw.io" version="21.0.0">
+  <diagram name="インフラ構成図" id="infra-diagram">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="家計簿アプリLife - インフラ構成図" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=24;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="550" y="20" width="400" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- User Device Section -->
+        <mxCell id="device-section" value="ユーザーデバイス" style="swimlane;horizontal=1;startSize=30;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="80" y="80" width="400" height="280" as="geometry" />
+        </mxCell>
+
+        <mxCell id="iphone" value="" style="sketch=0;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;fillColor=#505050;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;outlineConnect=0;align=center;shape=mxgraph.office.devices.cell_phone_iphone_standalone;" vertex="1" parent="device-section">
+          <mxGeometry x="40" y="60" width="59" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="iphone-label" value="iPhone / iPad&#xa;iOS 12.0+" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="device-section">
+          <mxGeometry x="20" y="170" width="100" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="android" value="" style="sketch=0;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;fillColor=#505050;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;outlineConnect=0;align=center;shape=mxgraph.office.devices.cell_phone_android_standalone;" vertex="1" parent="device-section">
+          <mxGeometry x="160" y="60" width="53" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="android-label" value="Android&#xa;(予定)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="device-section">
+          <mxGeometry x="140" y="170" width="100" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="flutter-app" value="Flutter App&#xa;家計簿アプリLife" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;fontStyle=1;fontSize=12;" vertex="1" parent="device-section">
+          <mxGeometry x="260" y="80" width="120" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="local-storage" value="ローカルストレージ" style="swimlane;horizontal=1;startSize=25;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="device-section">
+          <mxGeometry x="240" y="160" width="150" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="sqlite" value="SQLite&#xa;(budget.db)" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="local-storage">
+          <mxGeometry x="10" y="35" width="60" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="sharedpref" value="Shared&#xa;Preferences" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="local-storage">
+          <mxGeometry x="80" y="35" width="60" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- Flutter Architecture Section -->
+        <mxCell id="arch-section" value="アプリケーションアーキテクチャ (MVVM + Repository)" style="swimlane;horizontal=1;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="520" y="80" width="500" height="420" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ui-layer" value="UI Layer (Pages / Widgets)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;fontSize=11;fontStyle=1" vertex="1" parent="arch-section">
+          <mxGeometry x="150" y="50" width="200" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow1" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;" edge="1" parent="arch-section">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="250" y="90" as="sourcePoint" />
+            <mxPoint x="250" y="120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="riverpod" value="Riverpod Providers&#xa;(StateNotifierProvider)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1ba1e2;fontColor=#ffffff;strokeColor=#006EAF;fontSize=11;fontStyle=1" vertex="1" parent="arch-section">
+          <mxGeometry x="150" y="120" width="200" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow2" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;" edge="1" parent="arch-section">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="250" y="160" as="sourcePoint" />
+            <mxPoint x="250" y="190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="viewmodel" value="ViewModels (StateNotifier)&#xa;balance_with_saving_model / expense_model / income_model" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3c800;fontColor=#000000;strokeColor=#B09500;fontSize=10;fontStyle=1" vertex="1" parent="arch-section">
+          <mxGeometry x="100" y="190" width="300" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow3" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;" edge="1" parent="arch-section">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="250" y="240" as="sourcePoint" />
+            <mxPoint x="250" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="repository" value="Repositories&#xa;expense_repository / income_repository / category_repository" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;fontSize=10;fontStyle=1" vertex="1" parent="arch-section">
+          <mxGeometry x="100" y="270" width="300" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow4" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;" edge="1" parent="arch-section">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="320" as="sourcePoint" />
+            <mxPoint x="200" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="arrow5" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;" edge="1" parent="arch-section">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="320" as="sourcePoint" />
+            <mxPoint x="300" y="360" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="database-layer" value="Database Layer&#xa;(expense_database, etc.)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#6c8ebf;fontColor=#ffffff;strokeColor=#314354;fontSize=10;fontStyle=1" vertex="1" parent="arch-section">
+          <mxGeometry x="70" y="360" width="150" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="firebase-layer" value="Firebase Services&#xa;(Auth, Firestore, RealtimeDB)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;fontColor=#000000;strokeColor=#b85450;fontSize=10;fontStyle=1" vertex="1" parent="arch-section">
+          <mxGeometry x="280" y="360" width="150" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Models Section -->
+        <mxCell id="models" value="Freezed Models" style="swimlane;horizontal=1;startSize=20;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;fontColor=#333333;" vertex="1" parent="arch-section">
+          <mxGeometry x="420" y="50" width="70" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="model1" value="Expense" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" vertex="1" parent="models">
+          <mxGeometry y="25" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="model2" value="Income" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" vertex="1" parent="models">
+          <mxGeometry y="45" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="model3" value="Category" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" vertex="1" parent="models">
+          <mxGeometry y="65" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="model4" value="FixedExpense" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" vertex="1" parent="models">
+          <mxGeometry y="85" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="model5" value="RecurringIncome" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" vertex="1" parent="models">
+          <mxGeometry y="105" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="model6" value="Transfer" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" vertex="1" parent="models">
+          <mxGeometry y="125" width="70" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="model7" value="BalanceWith&#xa;Saving" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;" vertex="1" parent="models">
+          <mxGeometry y="145" width="70" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Firebase Cloud Section -->
+        <mxCell id="firebase-section" value="Firebase Cloud (budget-life-e1036)" style="swimlane;horizontal=1;startSize=30;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="80" width="200" height="280" as="geometry" />
+        </mxCell>
+
+        <mxCell id="firebase-auth" value="Firebase Auth&#xa;ユーザー認証" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffcc00;fontColor=#000000;strokeColor=#d6b656;fontSize=11;fontStyle=1" vertex="1" parent="firebase-section">
+          <mxGeometry x="30" y="50" width="140" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="firestore" value="Cloud Firestore&#xa;データ同期" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ff6600;fontColor=#ffffff;strokeColor=#d79b00;fontSize=11;fontStyle=1" vertex="1" parent="firebase-section">
+          <mxGeometry x="30" y="120" width="140" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="realtime-db" value="Realtime Database&#xa;リアルタイム更新" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ff3333;fontColor=#ffffff;strokeColor=#b85450;fontSize=11;fontStyle=1" vertex="1" parent="firebase-section">
+          <mxGeometry x="30" y="190" width="140" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- External Services Section -->
+        <mxCell id="external-section" value="外部サービス" style="swimlane;horizontal=1;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="80" y="400" width="400" height="200" as="geometry" />
+        </mxCell>
+
+        <mxCell id="admob" value="Google AdMob&#xa;広告配信" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4285f4;fontColor=#ffffff;strokeColor=#0066CC;fontSize=11;fontStyle=1" vertex="1" parent="external-section">
+          <mxGeometry x="30" y="50" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="local-notification" value="Local Notifications&#xa;ローカル通知" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9c27b0;fontColor=#ffffff;strokeColor=#7B1FA2;fontSize=11;fontStyle=1" vertex="1" parent="external-section">
+          <mxGeometry x="30" y="120" width="120" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="local-auth" value="Local Auth&#xa;生体認証&#xa;(Face ID / Touch ID)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#00bcd4;fontColor=#ffffff;strokeColor=#0097A7;fontSize=10;fontStyle=1" vertex="1" parent="external-section">
+          <mxGeometry x="180" y="50" width="100" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bg-fetch" value="Background Fetch&#xa;バックグラウンド処理&#xa;(自動入力)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#795548;fontColor=#ffffff;strokeColor=#5D4037;fontSize=10;fontStyle=1" vertex="1" parent="external-section">
+          <mxGeometry x="180" y="120" width="100" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="appstore" value="App Store&#xa;iOS配布" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#000000;fontColor=#ffffff;strokeColor=#333333;fontSize=11;fontStyle=1" vertex="1" parent="external-section">
+          <mxGeometry x="300" y="70" width="80" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Data Flow Section -->
+        <mxCell id="dataflow-section" value="データフロー" style="swimlane;horizontal=1;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="520" y="520" width="500" height="180" as="geometry" />
+        </mxCell>
+
+        <mxCell id="flow1" value="1. 支出/収入入力" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#60a917;fontColor=#ffffff;strokeColor=#2D7600;fontSize=10;" vertex="1" parent="dataflow-section">
+          <mxGeometry x="20" y="50" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="flow-arrow1" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="dataflow-section">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="100" y="70" as="sourcePoint" />
+            <mxPoint x="130" y="70" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="flow2" value="2. ViewModel&#xa;処理" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e3c800;fontColor=#000000;strokeColor=#B09500;fontSize=10;" vertex="1" parent="dataflow-section">
+          <mxGeometry x="130" y="50" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="flow-arrow2" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="dataflow-section">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="210" y="70" as="sourcePoint" />
+            <mxPoint x="240" y="70" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="flow3" value="3. Repository&#xa;保存" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a20025;fontColor=#ffffff;strokeColor=#6F0000;fontSize=10;" vertex="1" parent="dataflow-section">
+          <mxGeometry x="240" y="50" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="flow-arrow3" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="dataflow-section">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="320" y="70" as="sourcePoint" />
+            <mxPoint x="350" y="70" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="flow4" value="4. SQLite&#xa;+ Firebase" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#6c8ebf;fontColor=#ffffff;strokeColor=#314354;fontSize=10;" vertex="1" parent="dataflow-section">
+          <mxGeometry x="350" y="50" width="80" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="flow5" value="月替わり処理: 残高 → 貯金自動移行 (BalanceWithSavingModel)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;fontColor=#000000;strokeColor=#b85450;fontSize=10;" vertex="1" parent="dataflow-section">
+          <mxGeometry x="20" y="110" width="410" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="flow6" value="自動入力: FixedExpense/RecurringIncome → 指定日にExpense/Incomeへ自動挿入" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;fontColor=#000000;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="dataflow-section">
+          <mxGeometry x="20" y="145" width="410" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- SharedPreferences Keys -->
+        <mxCell id="prefs-section" value="SharedPreferences キー" style="swimlane;horizontal=1;startSize=25;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="400" width="200" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="pref1" value="balanse (月の手取り)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="prefs-section">
+          <mxGeometry x="10" y="30" width="180" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="pref2" value="saving (貯金設定額)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="prefs-section">
+          <mxGeometry x="10" y="50" width="180" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="pref3" value="total_savings (実際の貯金額)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="prefs-section">
+          <mxGeometry x="10" y="70" width="180" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="pref4" value="wallet_cash (財布残高)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="prefs-section">
+          <mxGeometry x="10" y="90" width="180" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="pref5" value="last_accessed_month" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="prefs-section">
+          <mxGeometry x="10" y="110" width="180" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="pref6" value="previous_remaining_balance" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="prefs-section">
+          <mxGeometry x="10" y="130" width="180" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="pref7" value="previous_wallet_remaining" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="prefs-section">
+          <mxGeometry x="10" y="150" width="180" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Connection Lines -->
+        <mxCell id="conn1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#00C853;" edge="1" parent="1" source="flutter-app" target="ui-layer">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="conn2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#FF6D00;dashed=1;" edge="1" parent="1" source="firebase-layer" target="firebase-auth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
